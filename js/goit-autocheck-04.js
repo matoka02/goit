@@ -1046,7 +1046,9 @@
 
 
 // // autocheck-04-26/48
+// // autocheck-04-27/48
 // // Дополни функцию getActiveUsers(users) так, чтобы она возвращала массив активных пользователей, значение свойства isActive которых true.
+// // Дополни функцию getInactiveUsers(users) так, чтобы она возвращала массив неактивных пользователей, значение свойства isActive которых false.
 
 // const users = [
 //   {
@@ -1121,10 +1123,539 @@
 //   }
 // ];
 
+// // мой вариант
+// const getActiveUsers = (users, isActive) => users.filter(user => String(user.isActive) === 'true');
+// console.log(getActiveUsers(users));
+// const getInactiveUsers = (users, isActive) => users.filter(user => String(user.isActive) === 'false');
+// console.log(getInactiveUsers(users));
+
+// // вариант с инверсией, т.к. булевые значения
+// const getActiveUsers = (users) => users.filter(user => user.isActive);
+// const getInactiveUsers = (users) => users.filter(user => !user.isActive);
+// console.log(getActiveUsers(users));
+// console.log(getInactiveUsers(users));
 
 
-// const getActiveUsers = users.filter((isActive) => !isActive || 1);
-// console.log(getActiveUsers);
+// // autocheck-04-28/48
+// // Используя метод find() дополни код так, чтобы:
+// // - В переменной bookWithTitle получился объект книги название которой (свойство title) совпадает со значением переменной BOOK_TITLE.
+// // - В переменной bookByAuthor получился объект книги автор который (свойство author) совпадает со значением переменной AUTHOR.
 
-// // // Мой вариант решения с методом includes, выведет те массивы, в которых есть совпадения
-// const getUsersWithFriend = (users, friendName) => users.filter(({friends}) => friends.includes(friendName));
+// const books = [
+//   {
+//     title: 'The Last Kingdom',
+//     author: 'Bernard Cornwell',
+//     rating: 8.38,
+//   },
+//   {
+//     title: 'Beside Still Waters',
+//     author: 'Robert Sheckley',
+//     rating: 8.51,
+//   },
+//   {
+//     title: 'The Dream of a Ridiculous Man',
+//     author: 'Fyodor Dostoevsky',
+//     rating: 7.75,
+//   },
+//     {
+//     title: 'Redder Than Blood',
+//     author: 'Tanith Lee',
+//     rating: 7.94
+//     },
+// ];
+// const BOOK_TITLE = 'The Dream of a Ridiculous Man';
+// const AUTHOR = 'Robert Sheckley';
+
+// // Мой вариант
+// const bookWithTitle = (books) => books.find((book) => book.title === BOOK_TITLE);
+// const bookByAuthor = (books) => books.find((book) => book.author === AUTHOR);
+// console.log(bookWithTitle(books));
+// console.log(bookByAuthor(books));
+
+// // Решение в автопроверке
+// const bookWithTitle = books.find((book) => book.title === BOOK_TITLE);
+// const bookByAuthor = books.find((book) => book.author === AUTHOR);
+
+
+// // autocheck-04-29/48
+// // Дополни функцию getUserWithEmail(users, email) так, чтобы она возвращала объект пользователя, почта которого (свойство email) совпадает со значением параметра email.
+
+// const users = [
+//   {
+//     name: "Moore Hensley",
+//     email: "moorehensley@indexia.com",
+//     eyeColor: "blue",
+//     friends: ["Sharron Pace"],
+//     isActive: false,
+//     balance: 2811,
+//     gender: "male"
+//   },
+//   {
+//     name: "Sharlene Bush",
+//     email: "sharlenebush@tubesys.com",
+//     eyeColor: "blue",
+//     friends: ["Briana Decker", "Sharron Pace"],
+//     isActive: true,
+//     balance: 3821,
+//     gender: "female"
+//   },
+//   {
+//     name: "Ross Vazquez",
+//     email: "rossvazquez@xinware.com",
+//     eyeColor: "green",
+//     friends: ["Marilyn Mcintosh", "Padilla Garrison", "Naomi Buckner"],
+//     isActive: false,
+//     balance: 3793,
+//     gender: "male"
+//   },
+//   {
+//     name: "Elma Head",
+//     email: "elmahead@omatom.com",
+//     eyeColor: "green",
+//     friends: ["Goldie Gentry", "Aisha Tran"],
+//     isActive: true,
+//     balance: 2278,
+//     gender: "female"
+//   },
+//   {
+//     name: "Carey Barr",
+//     email: "careybarr@nurali.com",
+//     eyeColor: "blue",
+//     friends: ["Jordan Sampson", "Eddie Strong"],
+//     isActive: true,
+//     balance: 3951,
+//     gender: "male"
+//   },
+//   {
+//     name: "Blackburn Dotson",
+//     email: "blackburndotson@furnigeer.com",
+//     eyeColor: "brown",
+//     friends: ["Jacklyn Lucas", "Linda Chapman"],
+//     isActive: false,
+//     balance: 1498,
+//     gender: "male"
+//   },
+//   {
+//     name: "Sheree Anthony",
+//     email: "shereeanthony@kog.com",
+//     eyeColor: "brown",
+//     friends: ["Goldie Gentry", "Briana Decker"],
+//     isActive: true,
+//     balance: 2764,
+//     gender: "female"
+//   }
+// ]
+
+// const getUserWithEmail = (users, email) => users.find((user) => user.email === email);
+// console.log(getUserWithEmail(users, "shereeanthony@kog.com"));
+// console.log(getUserWithEmail(users, "elmahead@omatom.com"));
+// console.log(getUserWithEmail(users, "blackburndotson@furnigeer.com"));
+// console.log(getUserWithEmail(users, "  "));
+
+
+// // autocheck-04-30/48
+// // Используя метод every() дополни код так, чтобы:
+// // - В переменной eachElementInFirstIsEven был результат проверки всех элементов массива firstArray на чётность.
+// // - В переменной eachElementInFirstIsOdd был результат проверки всех элементов массива firstArray на нечётность.
+// // - В переменной eachElementInSecondIsEven был результат проверки всех элементов массива secondArray на чётность.
+// // - В переменной eachElementInSecondIsOdd был результат проверки всех элементов массива secondArray на нечётность.
+// // - В переменной eachElementInThirdIsEven был результат проверки всех элементов массива thirdArray на чётность.
+// // - В переменной eachElementInThirdIsOdd был результат проверки всех элементов массива thirdArray на нечётность.
+
+// const firstArray = [26, 94, 36, 18];
+// const secondArray = [17, 61, 23];
+// const thirdArray = [17, 26, 94, 61, 36, 23, 18];
+
+// const eachElementInFirstIsEven = firstArray.every(value => value % 2 === 0);
+// const eachElementInFirstIsOdd = firstArray.every(value => value % 2 !== 0);
+
+// const eachElementInSecondIsEven = secondArray.every(value => value % 2 === 0);
+// const eachElementInSecondIsOdd = secondArray.every(value => value % 2 !== 0);
+
+// const eachElementInThirdIsEven = thirdArray.every(value => value % 2 === 0);
+// const eachElementInThirdIsOdd = thirdArray.every(value => value % 2 !== 0);
+
+// console.log(eachElementInFirstIsEven);          // true
+// console.log(eachElementInFirstIsOdd);           // false
+// console.log(eachElementInSecondIsEven);         // true
+// console.log(eachElementInSecondIsOdd);          // false
+// console.log(eachElementInThirdIsEven);          // true
+// console.log(eachElementInThirdIsOdd);           // false
+
+
+// // autocheck-04-31/48
+// // Дополни функцию isEveryUserActive(users) так, чтобы она проверяла все ли пользователи сейчас активны (свойство isActive) и возвращала true или false.
+
+// const users = [
+//   {
+//     name: "Moore Hensley",
+//     email: "moorehensley@indexia.com",
+//     eyeColor: "blue",
+//     friends: ["Sharron Pace"],
+//     isActive: false,
+//     balance: 2811,
+//     gender: "male"
+//   },
+//   {
+//     name: "Sharlene Bush",
+//     email: "sharlenebush@tubesys.com",
+//     eyeColor: "blue",
+//     friends: ["Briana Decker", "Sharron Pace"],
+//     isActive: true,
+//     balance: 3821,
+//     gender: "female"
+//   },
+//   {
+//     name: "Ross Vazquez",
+//     email: "rossvazquez@xinware.com",
+//     eyeColor: "green",
+//     friends: ["Marilyn Mcintosh", "Padilla Garrison", "Naomi Buckner"],
+//     isActive: false,
+//     balance: 3793,
+//     gender: "male"
+//   },
+//   {
+//     name: "Elma Head",
+//     email: "elmahead@omatom.com",
+//     eyeColor: "green",
+//     friends: ["Goldie Gentry", "Aisha Tran"],
+//     isActive: true,
+//     balance: 2278,
+//     gender: "female"
+//   },
+//   {
+//     name: "Carey Barr",
+//     email: "careybarr@nurali.com",
+//     eyeColor: "blue",
+//     friends: ["Jordan Sampson", "Eddie Strong"],
+//     isActive: true,
+//     balance: 3951,
+//     gender: "male"
+//   },
+//   {
+//     name: "Blackburn Dotson",
+//     email: "blackburndotson@furnigeer.com",
+//     eyeColor: "brown",
+//     friends: ["Jacklyn Lucas", "Linda Chapman"],
+//     isActive: false,
+//     balance: 1498,
+//     gender: "male"
+//   },
+//   {
+//     name: "Sheree Anthony",
+//     email: "shereeanthony@kog.com",
+//     eyeColor: "brown",
+//     friends: ["Goldie Gentry", "Briana Decker"],
+//     isActive: true,
+//     balance: 2764,
+//     gender: "female"
+//   }
+// ];
+
+// const isEveryUserActive = (users) => users.every(user => user.isActive);
+// // вернет false, т.к. не все элементы массива имеют true
+// console.log(isEveryUserActive(users));
+
+
+// // autocheck-04-32/48
+// // Используя метод some() дополни код так, чтобы:
+// // - В переменной anyElementInFirstIsEven был результат проверки наличия чётных элементов в массиве firstArray.
+// // - В переменной anyElementInFirstIsOdd был результат проверки наличия нечётных элементов в массиве firstArray.
+// // - В переменной anyElementInSecondIsEven был результат проверки наличия чётных элементов в массиве secondArray.
+// // - В переменной anyElementInSecondIsOdd был результат проверки наличия нечётных элементов в массиве secondArray.
+// // - В переменной anyElementInThirdIsEven был результат проверки наличия чётных элементов в массиве thirdArray.
+// // - В переменной anyElementInThirdIsOdd был результат проверки наличия нечётных элементов в массиве thirdArray.
+
+// const firstArray = [26, 94, 36, 18];
+// const secondArray = [17, 61, 23];
+// const thirdArray = [17, 26, 94, 61, 36, 23, 18];
+
+// const anyElementInFirstIsEven = firstArray.some(value => value % 2 === 0);
+// const anyElementInFirstIsOdd = firstArray.some(value => value % 2 !== 0);
+
+// const anyElementInSecondIsEven = secondArray.some(value => value % 2 === 0);
+// const anyElementInSecondIsOdd = secondArray.some(value => value % 2 !== 0);
+
+// const anyElementInThirdIsEven = thirdArray.some(value => value % 2 === 0);
+// const anyElementInThirdIsOdd = thirdArray.some(value => value % 2 !== 0);
+
+// // вернет false или true в зависимости от проверки
+// console.log(anyElementInFirstIsEven);          // true
+// console.log(anyElementInFirstIsOdd);           // false
+// console.log(anyElementInSecondIsEven);         // false
+// console.log(anyElementInSecondIsOdd);          // true
+// console.log(anyElementInThirdIsEven);          // true
+// console.log(anyElementInThirdIsOdd);           // true
+
+
+// // autocheck-04-33/48
+// // Дополни функцию isAnyUserActive(users) так, чтобы она проверяла наличие активных пользователей (свойство isActive) и возвращала true или false.
+
+// const users = [
+//   {
+//     name: "Moore Hensley",
+//     email: "moorehensley@indexia.com",
+//     eyeColor: "blue",
+//     friends: ["Sharron Pace"],
+//     isActive: false,
+//     balance: 2811,
+//     gender: "male"
+//   },
+//   {
+//     name: "Sharlene Bush",
+//     email: "sharlenebush@tubesys.com",
+//     eyeColor: "blue",
+//     friends: ["Briana Decker", "Sharron Pace"],
+//     isActive: true,
+//     balance: 3821,
+//     gender: "female"
+//   },
+//   {
+//     name: "Ross Vazquez",
+//     email: "rossvazquez@xinware.com",
+//     eyeColor: "green",
+//     friends: ["Marilyn Mcintosh", "Padilla Garrison", "Naomi Buckner"],
+//     isActive: false,
+//     balance: 3793,
+//     gender: "male"
+//   },
+//   {
+//     name: "Elma Head",
+//     email: "elmahead@omatom.com",
+//     eyeColor: "green",
+//     friends: ["Goldie Gentry", "Aisha Tran"],
+//     isActive: true,
+//     balance: 2278,
+//     gender: "female"
+//   },
+//   {
+//     name: "Carey Barr",
+//     email: "careybarr@nurali.com",
+//     eyeColor: "blue",
+//     friends: ["Jordan Sampson", "Eddie Strong"],
+//     isActive: true,
+//     balance: 3951,
+//     gender: "male"
+//   },
+//   {
+//     name: "Blackburn Dotson",
+//     email: "blackburndotson@furnigeer.com",
+//     eyeColor: "brown",
+//     friends: ["Jacklyn Lucas", "Linda Chapman"],
+//     isActive: false,
+//     balance: 1498,
+//     gender: "male"
+//   },
+//   {
+//     name: "Sheree Anthony",
+//     email: "shereeanthony@kog.com",
+//     eyeColor: "brown",
+//     friends: ["Goldie Gentry", "Briana Decker"],
+//     isActive: true,
+//     balance: 2764,
+//     gender: "female"
+//   }
+// ];
+
+// // const isAnyUserActive = users => {
+// //     const result = users.some(user => {
+// //         if (user.isActive) {
+// //             return user
+// //         };
+// //     });
+// //     return result;
+// // };
+
+// const isAnyUserActive = users => users.some(({isActive}) => isActive);
+// // вернет true, т.к. хоть один элемент массива имеет true
+// console.log(isAnyUserActive(users));
+
+
+// // autocheck-04-34/48
+// // Игровому сервису необходим функционал подсчёта среднего времени проведённого в играх. Дополни код так, чтобы в переменной totalPlayTime получилось общее игровое время из массива playtimes.
+
+// const players = {
+//     mango: 1270,
+//     poly: 468,
+//     ajax: 710,
+//     kiwi: 244
+// };
+// // закоментировано, чтобы вывести значения в консоль
+// // const playtimes = Object.values(players); // [1270, 468, 710, 244]
+// const playtimes = [1270, 468, 710, 244];
+
+// const totalPlayTime = playtimes.reduce((previosValue, number) => {return previosValue + number}, 0);
+
+// const averagePlayTime = totalPlayTime / playtimes.length;
+// console.log(playtimes);
+// console.log(totalPlayTime);             // 2692
+// console.log(averagePlayTime);           // 673
+
+
+// // autocheck-04-35/48
+// // Нашему сервису необходимо рассчитать среднее время проведённое в одной игре для каждого игрока, и получить общую сумму этих времён. Рассчитать время для каждого из игроков, можно разделив его время (свойство playtime) на количество игр (свойство gamesPlayed).
+
+// const players = [
+//     { name: "Mango", playtime: 1270, gamesPlayed: 4 },
+//     { name: "Poly", playtime: 469, gamesPlayed: 2 },
+//     { name: "Ajax", playtime: 690, gamesPlayed: 3 },
+//     { name: "Kiwi", playtime: 241, gamesPlayed: 1 },
+// ];
+
+// const totalAveragePlaytimePerGame = players.reduce((total, player) => {
+//     return total + (player.playtime / player.gamesPlayed)
+// }, 0);
+// console.log(totalAveragePlaytimePerGame);        // 1043
+
+
+// // autocheck-04-36/48
+// // Дополни функцию calculateTotalBalance(users) так, чтобы она считала и возвращала сумму всех средств (свойство balance) которые хранят пользователи из массива users.
+
+// const users = [
+//   {
+//     name: "Moore Hensley",
+//     email: "moorehensley@indexia.com",
+//     eyeColor: "blue",
+//     friends: ["Sharron Pace"],
+//     isActive: false,
+//     balance: 2811,
+//     gender: "male"
+//   },
+//   {
+//     name: "Sharlene Bush",
+//     email: "sharlenebush@tubesys.com",
+//     eyeColor: "blue",
+//     friends: ["Briana Decker", "Sharron Pace"],
+//     isActive: true,
+//     balance: 3821,
+//     gender: "female"
+//   },
+//   {
+//     name: "Ross Vazquez",
+//     email: "rossvazquez@xinware.com",
+//     eyeColor: "green",
+//     friends: ["Marilyn Mcintosh", "Padilla Garrison", "Naomi Buckner"],
+//     isActive: false,
+//     balance: 3793,
+//     gender: "male"
+//   },
+//   {
+//     name: "Elma Head",
+//     email: "elmahead@omatom.com",
+//     eyeColor: "green",
+//     friends: ["Goldie Gentry", "Aisha Tran"],
+//     isActive: true,
+//     balance: 2278,
+//     gender: "female"
+//   },
+//   {
+//     name: "Carey Barr",
+//     email: "careybarr@nurali.com",
+//     eyeColor: "blue",
+//     friends: ["Jordan Sampson", "Eddie Strong"],
+//     isActive: true,
+//     balance: 3951,
+//     gender: "male"
+//   },
+//   {
+//     name: "Blackburn Dotson",
+//     email: "blackburndotson@furnigeer.com",
+//     eyeColor: "brown",
+//     friends: ["Jacklyn Lucas", "Linda Chapman"],
+//     isActive: false,
+//     balance: 1498,
+//     gender: "male"
+//   },
+//   {
+//     name: "Sheree Anthony",
+//     email: "shereeanthony@kog.com",
+//     eyeColor: "brown",
+//     friends: ["Goldie Gentry", "Briana Decker"],
+//     isActive: true,
+//     balance: 2764,
+//     gender: "female"
+//   }
+// ];
+
+// const calculateTotalBalance = users.reduce((total, user) => {
+//     return total + user.balance
+// }, 0);
+
+// const calculateTotalBalance = users => users.reduce((total, user) => ( total + user.balance), 0);
+
+// // выведет обший баланс
+// console.log(calculateTotalBalance(users));
+
+
+// // autocheck-04-37/48
+// // Дополни функцию getTotalFriendCount(users) так, чтобы она считала и возвращала общее количество друзей (свойство friends) всех пользователей из массива users.
+
+// const users = [
+//   {
+//     name: "Moore Hensley",
+//     email: "moorehensley@indexia.com",
+//     eyeColor: "blue",
+//     friends: ["Sharron Pace"],
+//     isActive: false,
+//     balance: 2811,
+//     gender: "male"
+//   },
+//   {
+//     name: "Sharlene Bush",
+//     email: "sharlenebush@tubesys.com",
+//     eyeColor: "blue",
+//     friends: ["Briana Decker", "Sharron Pace"],
+//     isActive: true,
+//     balance: 3821,
+//     gender: "female"
+//   },
+//   {
+//     name: "Ross Vazquez",
+//     email: "rossvazquez@xinware.com",
+//     eyeColor: "green",
+//     friends: ["Marilyn Mcintosh", "Padilla Garrison", "Naomi Buckner"],
+//     isActive: false,
+//     balance: 3793,
+//     gender: "male"
+//   },
+//   {
+//     name: "Elma Head",
+//     email: "elmahead@omatom.com",
+//     eyeColor: "green",
+//     friends: ["Goldie Gentry", "Aisha Tran"],
+//     isActive: true,
+//     balance: 2278,
+//     gender: "female"
+//   },
+//   {
+//     name: "Carey Barr",
+//     email: "careybarr@nurali.com",
+//     eyeColor: "blue",
+//     friends: ["Jordan Sampson", "Eddie Strong"],
+//     isActive: true,
+//     balance: 3951,
+//     gender: "male"
+//   },
+//   {
+//     name: "Blackburn Dotson",
+//     email: "blackburndotson@furnigeer.com",
+//     eyeColor: "brown",
+//     friends: ["Jacklyn Lucas", "Linda Chapman"],
+//     isActive: false,
+//     balance: 1498,
+//     gender: "male"
+//   },
+//   {
+//     name: "Sheree Anthony",
+//     email: "shereeanthony@kog.com",
+//     eyeColor: "brown",
+//     friends: ["Goldie Gentry", "Briana Decker"],
+//     isActive: true,
+//     balance: 2764,
+//     gender: "female"
+//   }
+// ];
+
+// const getTotalFriendCount = users => users.reduce((total, user) => (user.friends.length += total), 0);
+// // выведет общее количество друзей
+// console.log(getTotalFriendCount(users));
