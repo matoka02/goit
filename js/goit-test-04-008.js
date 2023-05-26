@@ -108,7 +108,7 @@ console.log(cars);
 // //     return models;
 // // };
 
-// рефакторинг
+// // рефакторинг
 // const getModels = arr => arr.map(({model}) => model);
 // // массив, состоящий из моделей
 // console.log(getModels(cars));
@@ -135,7 +135,9 @@ console.log(cars);
 // console.log(makeCarWithDiscount(cars, 6));
 // console.log(makeCarWithDiscount(cars, 11));
 
+
 // // рефакторинг с округлением
+
 // const makeCarWithDiscount = (cars, discount) =>
 //     cars.map((car) => {
 //         car.price -= car.price / 100 * discount;
@@ -253,16 +255,16 @@ console.log(cars);
 // //     return result;
 // // };
 
-// // // рефакторинг
+// // рефакторинг
 // const sortByAscendingAmount = cars => cars.sort((a, b) =>
 //         a.amount - b.amount);
-// // // массив объектов отсортированный
+// // массив объектов отсортированный
 // console.table(sortByDescendingAmount(cars));
 
 
 // // 9. Сортировка моделей по алфавиту и наоборот
 
-// const sortByModel = (cars, order) => { 
+// const sortByModel = (cars, order) => {
 //     let result;
 //     if (order === 'asc') {
 //         // по алфавиту
@@ -274,7 +276,93 @@ console.log(cars);
 //     };
 //     return result;
 // };
-// // массив обїектов изменен и отсортирован
+// // массив объектов изменен и отсортирован
 // console.table(sortByModel(cars, 'asc'));
 // console.table(sortByModel(cars, 'desc'));
 
+
+// // <!-- Метод reduce -->
+
+// // 10. Подсчет кол-ва автомобилей всего
+
+// const getTotalAmount = cars => {
+//     const result = cars.reduce((acc, car, idx, arr) => {
+//         return acc + car.amount
+//     }, 0)
+//     return result;
+//     // // если указать , получим р-т в виде строки
+//     // const result = cars.reduce((acc, car, idx, arr) => {
+//     //     return acc + car.amount
+//     // }, '')
+//     // return result;
+// };
+// // // число
+// console.log(getTotalAmount(cars));
+
+
+// // <!-- Цепочки методов -->
+
+// // 11. Поиск моделей машин, которые есть на распродаже
+
+// const getModelOnSale = cars => {
+//     const result = cars.filter((car) => car.onSale)
+//         .map(({ model }) => model);
+//     return result;
+// };
+// // массив моделей
+// console.log(getModelOnSale(cars));
+
+
+// // 12. Сортировка моделей машин, которые есть на распродаже
+
+// const getSortedCarsOnSale = cars => {
+//     const result = cars.filter(({ onSale }) => onSale)
+//     .sort((a,b) => a.price-b.price);
+
+//     return result.reduce((acc, car, index) => {
+//         return acc + `${index+1}. ${car.make} ${car.model} цена ${car.price};\n`
+//     }, result.length ? `Количество авто ${result.length}:\n` : `Извините, такой модели нет`) ;
+// };
+// console.table(getSortedCarsOnSale(cars));
+
+
+// // 13. Сколько раз встречается буква?
+
+// const str = `dfsjhgflhj'p;jon,vbvgjfcjyrdrjdgfxbd`;
+// const st1 = `sdgsgs;dfgbmfx;cLgdf;GGGydhkdslhkfdlkhghdflghlfghkFFFFF`;
+
+// // использование метода reduce
+// function foo(str) {
+//     str = str.split(``);
+//     return str.reduce((acc, value) => {
+//         if (acc.hasOwnProperty(value)) {
+//             acc[value] += 1;
+//         } else {
+//             acc[value] = 1;
+//         }
+//         return acc;
+//     }, {})
+// };
+// foo(str);
+// foo(st1);
+
+// // использование метода for...of
+
+// function foo(str) {
+//     str = str.split(``);
+//     const acc = {};
+//     for (const value of str) {
+//         if (acc.hasOwnProperty(value)) {
+//             acc[value] += 1;
+//         } else {
+//             acc[value] = 1;
+//         }
+//     };
+//     return acc;
+// };
+// foo(str);
+// foo(st1);
+
+
+// console.table(foo(str));
+// console.table(foo(st1));
