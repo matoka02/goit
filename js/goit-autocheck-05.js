@@ -309,22 +309,28 @@
 //         // return this.items.splice(3, 0, newItem)
 
 //         // // вариант №2, индекс вычисляется
-//         const lastIndex = this.items.length;
-//         this.items.splice(lastIndex, 1, newItem);
-//         return this.items;
+//         // const lastIndex = this.items.length;
+//         // this.items.splice(lastIndex, 1, newItem);
+//         // return this.items;
+
+//         // решение в автопроверке
+//         this.items.push(newItem);
 //     }
+
 
 //     removeItem(itemToRemove) {
 //         // // вариант №1
 //         // return this.items.splice(1, 1)
 
 //         // // вариант №2, индекс вычисляется
-//         const itemIndex = this.items.indexOf(itemToRemove);
-//         this.items.splice(itemIndex, 1);
-//         return this.items;
+//         // const itemIndex = this.items.indexOf(itemToRemove);
+//         // this.items.splice(itemIndex, 1);
+//         // return this.items;
+            
+//         // решение в автопроверке
+//             this.items = this.items.filter((item) => item !== itemToRemove);
 //     }
 // };
-
 
 // const storage = new Storage(["Nanitoids", "Prolonger", "Antigravitator"]);
 // console.log(storage);
@@ -375,53 +381,366 @@
 
 
 // // autocheck-05-12/20
-// Выполни рефакторинг класса Car так, чтобы свойство brand было приватным и добавь два метода для публичного интерфейса, для чтения и изменения этого свойства.
-// - getBrand() - возвращает значение приватного свойства brand.
-// - changeBrand(newBrand) - изменяет значение приватного свойства brand на newBrand.
+// // Выполни рефакторинг класса Car так, чтобы свойство brand было приватным и добавь два метода для публичного интерфейса, для чтения и изменения этого свойства.
+// // - getBrand() - возвращает значение приватного свойства brand.
+// // - changeBrand(newBrand) - изменяет значение приватного свойства brand на newBrand.
 
-class Car {
-    #brand;
-    model;
-    price;
-    constructor({brand, model, price}) {
-        this.#brand = brand;
-        this.model = model;
-        this.price = price;
-    }
-    getBrand() {
-        return this.#brand;
-    }
-    changeBrand(newBrand) {
-        this.#brand = newBrand;
-    }
-}
-const car1 = new Car({
-    brand: "Audi",
-    model: "Q3",
-    price: 36000
-});
-const car2 = new Car({
-    brand: "BMW",
-    model: "X5",
-    price: 58900
-});
-const car3 = new Car({
-    brand: "Nissan",
-    model: "Murano",
-    price: 31700
-});
-// возвращение значения приватного свойства brand
-console.log(car1.getBrand());           // Audi
-// замена приватного свойства brand
-console.log(car1.changeBrand("Honda"));
-console.log(car1.getBrand());           // Honda
-console.log(car1);                      // Car {model: 'Q3', price: 36000, #brand: 'Honda'}
+// class Car {
+//     #brand;
+//     model;
+//     price;
+//     constructor({brand, model, price}) {
+//         this.#brand = brand;
+//         this.model = model;
+//         this.price = price;
+//     }
+//     getBrand() {
+//         return this.#brand;
+//     }
+//     changeBrand(newBrand) {
+//         this.#brand = newBrand;
+//     }
+// }
+// const car1 = new Car({
+//     brand: "Audi",
+//     model: "Q3",
+//     price: 36000
+// });
+// const car2 = new Car({
+//     brand: "BMW",
+//     model: "X5",
+//     price: 58900
+// });
+// const car3 = new Car({
+//     brand: "Nissan",
+//     model: "Murano",
+//     price: 31700
+// });
+// // возвращение значения приватного свойства brand
+// console.log(car1.getBrand());           // Audi
+// // замена приватного свойства brand
+// console.log(car1.changeBrand("Honda"));
+// console.log(car1.getBrand());           // Honda
+// console.log(car1);                      // Car {model: 'Q3', price: 36000, #brand: 'Honda'}
 
-// возвращение объектов
-console.log(car2);                      // Car {model: 'X5', price: 58900, #brand: 'BMW'}
-console.log(car3);                      // Car {model: 'Murano', price: 31700, #brand: 'Nissan'}
-
-
+// // возвращение объектов
+// console.log(car2);                      // Car {model: 'X5', price: 58900, #brand: 'BMW'}
+// console.log(car3);                      // Car {model: 'Murano', price: 31700, #brand: 'Nissan'}
 
 
+// // autocheck-05-13/20
+// // Выполни рефакторинг класса Storage, сделав свойство items приватным.
+// // Под комментарием мы добавили инициализацию экземпляра и вызовы методов в той последовательности, в которой твой код будут проверять тесты. Пожалуйста ничего там не меняй.
 
+// class Storage {
+//     #items;
+
+//     constructor(items) {
+//         this.#items = items;
+//     }
+
+//     getItems() {
+//         return this.#items
+//     }
+
+//     addItem(newItem) {
+//         this.#items.push(newItem);
+//     }
+
+//     removeItem(itemToRemove) {
+//         this.#items = this.#items.filter((item) => item !== itemToRemove);
+//     }
+// };
+
+// const storage = new Storage(["Nanitoids", "Prolonger", "Antigravitator"]);
+// console.log(storage);            // Storage {#items: Array(3)}
+// console.log(storage.getItems()); // ["Nanitoids", "Prolonger", "Antigravitator"]
+// storage.addItem("Droid");
+// console.log(storage.getItems()); // ["Nanitoids", "Prolonger", "Antigravitator", "Droid"]
+// storage.removeItem("Prolonger");
+// console.log(storage.getItems()); // ["Nanitoids", "Antigravitator", "Droid"]
+
+
+// // autocheck-05-14/20
+// // Выполни рефакторинг класса StringBuilder, сделав свойство value приватным.
+// // Под комментарием мы добавили инициализацию экземпляра и вызовы методов в той последовательности, в которой твой код будут проверять тесты. Пожалуйста ничего там не меняй.
+
+// class StringBuilder {
+//     #value;
+
+//     constructor(initialValue) {
+//         this.#value = initialValue;
+//     }
+
+//     getValue() {
+//         return this.#value;
+//     }
+//     padEnd(str) {
+//         this.#value += str;
+//     }
+//     padStart(str) {
+//         this.#value = str + this.#value;
+//     }
+//     padBoth(str) {
+//         this.padStart(str);
+//         this.padEnd(str);
+//     }
+// }
+
+// const builder = new StringBuilder(".");
+// console.log(builder.getValue());            // "."
+// builder.padStart("^");
+// console.log(builder.getValue());            // "^."
+// builder.padEnd("^");
+// console.log(builder.getValue());            // "^.^"
+// builder.padBoth("=");
+// console.log(builder.getValue());            // "=^.^="
+
+
+// // autocheck-05-15/20
+// // Выполни рефакторинг класса Car. Сделай свойства model и price приватными, также как #brand. Стандартизируй публичный интерфейс класса, заменив уже объявленные методы на геттеры и сеттеры brand, model и price для взаимодействия с приватными свойствами.
+
+// class Car {
+//     #brand;
+//     #model;
+//     #price;
+
+//     constructor({ brand, model, price }) {
+//         this.#brand = brand;
+//         this.#model = model;
+//         this.#price = price;
+//     }
+
+//     get brand() {
+//         return this.#brand;
+//     }
+
+//     set brand(newBrand) {
+//         this.#brand = newBrand;
+//     }
+
+//     get model() {
+//         return this.#model;
+//     }
+
+//     set model(newModel) {
+//         this.#model = newModel;
+//     }
+
+//     get price() {
+//         return this.#price;
+//     }
+
+//     set price(newPrice) {
+//         this.#price = newPrice;
+//     }
+// }
+// const car1 = new Car({
+//     brand: "Audi",
+//     model: "Q3",
+//     price: 36000
+// });
+// const car2 = new Car({
+//     brand: "BMW",
+//     model: "X5",
+//     price: 58900
+// });
+// const car3 = new Car({
+//     brand: "Nissan",
+//     model: "Murano",
+//     price: 31700
+// });
+
+// console.log(Car);
+// console.log(car1);                      // Car {#brand: 'Audi', #model: 'Q3', #price: 36000}
+// console.log(car2);                      // Car {#brand: 'BMW', #model: 'X5', #price: 58900}
+// console.log(car3);                      // Car {#brand: 'Nissan', #model: 'Murano', #price: 31700}
+
+
+// // autocheck-05-16/20
+// // Выполни рефакторинг класса Car. Добавь публичное статическое свойство MAX_PRICE со значением 50000 - максимально допустимая цена автомобиля.
+// // Добавь сеттеру price проверку передаваемого значения параметра newPrice. Если оно больше чем MAX_PRICE, сеттер ничего не делает, а если меньше или равно, то перезаписывает цену автомобиля.
+
+// class Car {
+//     static MAX_PRICE = 50000;
+
+//     #price;
+
+//     constructor({ price }) {
+//         this.#price = price;
+//     }
+
+//     get price() {
+//         return this.#price;
+//     }
+
+//     set price(newPrice) {
+//         if (newPrice <= Car.MAX_PRICE) this.#price = newPrice;
+//     }
+// }
+
+// const audi = new Car({ price: 35000 });
+// console.log(audi.price);                // 35000
+// audi.price = 49000;
+// console.log(audi.price);                // 49000
+// audi.price = 51000;
+// console.log(audi.price);                // 49000
+
+
+// // autocheck-05-17/20
+// // Добавь классу Car публичный статический метод checkPrice(price), принимающий цену автомобиля. Метод должен сравнить значения параметра price и приватного статического свойства MAX_PRICE.
+// // - Если цена автомобиля превышает максимальную, метод должен вернуть строку "Error! Price exceeds the maximum".
+// // - В противном случае метод должен вернуть строку "Success! Price is within acceptable limits".
+// // Под объявлением класса мы добавили инициализацию экземпляра и вызовы методов, чтобы показать как будет использоваться метод checkPrice(price).
+
+// class Car {
+//     static #MAX_PRICE = 50000;
+
+//     static checkPrice(price) {
+//         if (price <= Car.#MAX_PRICE) {
+//             return 'Success! Price is within acceptable limits';
+//         }
+//         return 'Error! Price exceeds the maximum';
+//     }
+
+//     constructor({ price }) {
+//         this.price = price;
+//     }
+// }
+// const audi = new Car({ price: 36000 });
+// const bmw = new Car({ price: 64000 });
+
+// console.log(Car.checkPrice(audi.price)); // "Success! Price is within acceptable limits"
+// console.log(Car.checkPrice(bmw.price)); // "Error! Price exceeds the maximum"
+
+
+// // autocheck-05-18/20
+// // В приложении нужен администратор с возможностью добавлять почты пользователей в чёрный список.
+// // - Объяви класс Admin, который наследует от класса User
+// // - Добавь классу Admin публичное статическое свойство AccessLevel (уровень доступа), значение которого это объект { BASIC: "basic", SUPERUSER: "superuser" }
+
+// class User {
+//     constructor(email) {
+//         this.email = email;
+//     }
+
+//     get email() {
+//         return this.email;
+//     }
+
+//     set email(newEmail) {
+//         this.email = newEmail;
+//     }
+// }
+
+// class Admin extends User {
+//     static AccessLevel = {
+//         BASIC: "basic",
+//         SUPERUSER: "superuser"
+//     }
+// }
+
+// console.log(Admin);
+// console.log(Admin.AccessLevel.BASIC);
+// console.log(Admin.AccessLevel.SUPERUSER);
+
+
+// // autocheck-05-19/20
+// // Добавь классу Admin метод constructor, который принимает один параметр - объект настроек с двумя свойствами email и accessLevel. Добавь классу Admin публичное свойство accessLevel, значение которого будет передаваться при вызове конструктора.
+// // Чтобы показать как будет использоваться класс Admin мы добавили инициализацию экземпляра под объявлением класса.
+
+// class User {
+//     email;
+
+//     constructor(email) {
+//         this.email = email;
+//     }
+
+//     get email() {
+//         return this.email;
+//     }
+
+//     set email(newEmail) {
+//         this.email = newEmail;
+//     }
+// }
+
+// class Admin extends User {
+
+//     static AccessLevel = {
+//         BASIC: "basic",
+//         SUPERUSER: "superuser",
+//     };
+
+//     constructor({ email, accessLevel }) {
+//         super(email);
+//         this.accessLevel = accessLevel;
+//     }
+// }
+
+// const mango = new Admin({
+//     email: "mango@mail.com",
+//     accessLevel: Admin.AccessLevel.SUPERUSER,
+// });
+
+// console.log(mango.email);               // "mango@mail.com"
+// console.log(mango.accessLevel);         // "superuser"
+
+
+// // autocheck-05-20/20
+// // Добавь классу Admin следующие свойства и методы.
+// // - Публичное свойство blacklistedEmails для хранения чёрного списка почтовых адресов пользователей. Значение по умолчанию это пустой массив.
+// // - Публичный метод blacklist(email) для добавления почты в чёрный список. Метод должен добавлять значение параметра email в массив хранящийся в свойстве blacklistedEmails.
+// // - Публичный метод isBlacklisted(email) для проверки почты в чёрном списке. Метод должен проверять наличие значения параметра email в массиве хранящемся в свойстве blacklistedEmails и возвращать true или false.
+// // После объявления класса мы добавили инициализацию экземпляра и вызовы методов в той последовательности, в которой твой код будут проверять тесты. Пожалуйста ничего там не меняй.
+
+// class User {
+//     email;
+
+//     constructor(email) {
+//         this.email = email;
+//     }
+
+//     get email() {
+//         return this.email;
+//     }
+
+//     set email(newEmail) {
+//         this.email = newEmail;
+//     }
+// }
+// class Admin extends User {
+
+//     static AccessLevel = {
+//         BASIC: "basic",
+//         SUPERUSER: "superuser",
+//     };
+
+//     constructor({ email, accessLevel }) {
+//         super(email);
+//         this.accessLevel = accessLevel;
+//     }
+
+//     blacklistedEmails = [];
+    
+//     blacklist(email) {
+//         this.blacklistedEmails.push(email);
+//     }
+
+//     isBlacklisted(email) {
+//         return this.blacklistedEmails.includes(email);
+//     }
+// }
+
+// const mango = new Admin({
+//     email: "mango@mail.com",
+//     accessLevel: Admin.AccessLevel.SUPERUSER,
+// });
+
+// console.log(mango.email);                    // "mango@mail.com"
+// console.log(mango.accessLevel);              // "superuser"
+
+// mango.blacklist("poly@mail.com");
+// console.log(mango.blacklistedEmails);        // ["poly@mail.com"]
+// console.log(mango.isBlacklisted("mango@mail.com"));      // false
+// console.log(mango.isBlacklisted("poly@mail.com"));       // true
