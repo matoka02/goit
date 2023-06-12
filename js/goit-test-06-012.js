@@ -186,47 +186,47 @@
 
 // // 6. Модальное окно
 
-// 1. слушатели
-const refs = {
-    openModalBtn: document.querySelector('[data-action="open-modal"]'),
-    closeModalBtn: document.querySelector('[data-action="close-modal"]'),
-    backdrop: document.querySelector('.js-backdrop'),
-};
+// // 1. слушатели
+// const refs = {
+//     openModalBtn: document.querySelector('[data-action="open-modal"]'),
+//     closeModalBtn: document.querySelector('[data-action="close-modal"]'),
+//     backdrop: document.querySelector('.js-backdrop'),
+// };
 
-// 2. события
-refs.openModalBtn.addEventListener('click', onOpenModal);
-refs.closeModalBtn.addEventListener('click', onCloseModal);
-refs.backdrop.addEventListener('click', onBackdropClick);
+// // 2. события
+// refs.openModalBtn.addEventListener('click', onOpenModal);
+// refs.closeModalBtn.addEventListener('click', onCloseModal);
+// refs.backdrop.addEventListener('click', onBackdropClick);
 
-// 3. функции по событиям
+// // 3. функции по событиям
 
-// 3.1 открытие
-function onOpenModal() {
-    window.addEventListener('keydown', onEscKeyPress);
-    document.body.classList.add('show-modal');
-};
-// 3.2 закрытие
-function onCloseModal() {
-    window.removeEventListener('keydown', onEscKeyPress);
-    document.body.classList.remove('show-modal');
-};
-// 3.3 считывание места клика в backdrop
-function onBackdropClick(event) {
-    console.log('Клик по backdrop');
-    console.log(event.currentTarget);
-    console.log(event.target);
+// // 3.1 открытие
+// function onOpenModal() {
+//     window.addEventListener('keydown', onEscKeyPress);
+//     document.body.classList.add('show-modal');
+// };
+// // 3.2 закрытие
+// function onCloseModal() {
+//     window.removeEventListener('keydown', onEscKeyPress);
+//     document.body.classList.remove('show-modal');
+// };
+// // 3.3 считывание места клика в backdrop
+// function onBackdropClick(event) {
+//     console.log('Клик по backdrop');
+//     console.log(event.currentTarget);
+//     console.log(event.target);
 
-    if (event.currentTarget === event.target){
-        console.log('Клик точно в backdrop');
-        onCloseModal();
-    };
-};
-// 3.4 считывание клика по Escape
-function onEscKeyPress(event) {
-    const ESC_KEY_PRESS = 'Escape';
-    const isEscKey = event.code === ESC_KEY_PRESS;
+//     if (event.currentTarget === event.target){
+//         console.log('Клик точно в backdrop');
+//         onCloseModal();
+//     };
+// };
+// // 3.4 считывание клика по Escape
+// function onEscKeyPress(event) {
+//     const ESC_KEY_PRESS = 'Escape';
+//     const isEscKey = event.code === ESC_KEY_PRESS;
 
-    if (isEscKey) {
-        onCloseModal
-    };
-};
+//     if (isEscKey) {
+//         onCloseModal
+//     };
+// };
