@@ -9,7 +9,7 @@
 // export default function add(a,b) {
 //     return a + b;
 // }
-// console.log(add(12, 4));
+// console.log(add(12, 4));        //16
 
 // // именной экспорт
 // export function add(a,b) {

@@ -1,37 +1,37 @@
 // "use strict";
 
-// 1. примеры экспорта
+
+
+// // 1. примеры экспорта
 
 // // дефолтный экспорт
-// export default function add(a,b) {
-//     return a + b;
-// }
-// console.log(add(12, 4));
+// import qwerty from "./goit-test-08-015";
+// console.log(qwerty(25,15));        //40
 
 // // именной экспорт
-// export function add(a,b) {
-//     return a + b;
-// }
-// console.log(add(12, 4));
+// import {add} from "./goit-test-08-015";
+// console.log(add(25,15));            //40
 
 
 // // 2. несколько экспортов default
-
-// const a = 10;
-// const b = 15;
-
-// export default a;
-// export default b;        // выведется только последнее значение
-
+// import qwerty from "./goit-test-08-015";
+// console.log(qwerty);            //15, значение a проигнорировано
 
 // // 3. именной экспорт
+// import { boo, foo } from "./goit-test-08-015";      // порядок не важен
+// foo();          // hello world
+// boo();          // my name is Anastasiia
 
-// function foo(){
-//     console.log('hello world');
-// };
+// import { boo } from "./goit-test-08-015";      // можно только 1 взять
+// boo();          // my name is Anastasiia
 
-// function boo(){
-//     console.log('my name is Anastasiia');
-// };
-
-// export {foo, boo};
+// import * as data from "./goit-test-08-015";      // импортируем все 
+// console.log(data);                          
+// // {__esModule: true}
+// // boo:(...)
+// // foo:(...)
+// // __esModule: true
+// // get boo:()=>boo
+// // get foo:()=>foo
+// // [[Prototype]]:Object
+// data.boo();      // my name is Anastasiia
