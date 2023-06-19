@@ -115,10 +115,13 @@ content.insertAdjacentHTML('beforeend', createMarkup());
 content.addEventListener('click', onClick);
 restart.addEventListener('click', onRestart);
 
+const X_KEY = 'PlayerX';
+const O_KEY = 'PlayerO';
+
 let player = 'X';
 
-const stepX = [];
-const stepO = [];
+let stepX = JSON.parse(localStorage.getItem(X_KEY)) || [];
+let stepO = JSON.parse(localStorage.getItem(O_KEY)) || [];
 
 const win = [
     [1, 2, 3],
@@ -130,6 +133,26 @@ const win = [
     [1, 5, 9],
     [3, 5, 7],
 ];
+
+function startGame() {
+    // console.log(stepX);
+    // console.log(stepO);
+    [...content.children].forEach(item => {
+        // console.dir(item.dataset.id);
+        const id = Number(item.dataset.id);
+
+        // console.log(id);
+        // console.log(stepX);
+        // console.log(stepX.includes(id));
+
+        if (stepX.includes(id)) {
+            item.textContent = 'X';
+        } else if (stepO.includes(id)){
+            item.textContent = 'O';
+        };
+    });
+};
+startGame();
 
 function createMarkup() {
     let markup = '';
@@ -145,17 +168,31 @@ function onClick(evt) {
         // console.dir(evt.target);
         const id = Number(evt.target.dataset.id);  
 
+        let result = false;
+
         if (player === "X") {
             stepX.push(id);
-            console.log(isWinner(stepX)); 
-            isWinner(stepX);            
+            // console.log(isWinner(stepX)); 
+            localStorage.setItem(X_KEY, JSON.stringify(stepX));
+            result = isWinner(stepX);          
         } else{
-            stepO.push(id)
+            stepO.push(id);
+            localStorage.setItem(O_KEY, JSON.stringify(stepO));
+            result = isWinner(stepO); 
         }; 
 
-        console.log('stepX', stepX);
-        console.log('stepO', stepO);
-        player = player === 'X' ? 'O' : 'X';
+        setTimeout(()=>{
+            if (result) {
+                alert(`Winner ${player}`);
+                onRestart(); 
+                return;
+            }; 
+            player = player === 'X' ? 'O' : 'X';
+        }); 
+
+        // console.log('stepX', stepX);
+        // console.log('stepO', stepO);
+
     } else {
         alert('Change!')
     };
@@ -173,5 +210,12 @@ function isWinner(arr) {
 
 function onRestart() {
     player = 'X';
-    content.innerHTML = createMarkup();
+    stepX = [];
+    stepO = [];
+
+    localStorage.removeItem(X_KEY); 
+    localStorage.removeItem(O_KEY); 
+    // localStorage.clear();
+    
+    content.innerHTML = createMarkup(); 
 };
