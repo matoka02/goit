@@ -213,9 +213,9 @@ function onRestart() {
     stepX = [];
     stepO = [];
 
-    localStorage.removeItem(X_KEY); 
-    localStorage.removeItem(O_KEY); 
-    // localStorage.clear();
+    // localStorage.removeItem(X_KEY); 
+    // localStorage.removeItem(O_KEY); 
+    localStorage.clear();
     
     content.innerHTML = createMarkup(); 
 };
