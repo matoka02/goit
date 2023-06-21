@@ -65,3 +65,34 @@
 
 // console.log('idInterval', idInterval);
 // console.log('idTime', idTime);
+
+
+// <!-- Обратный отчет -->
+
+const refs = {
+    dateDay: document.querySelector('.date-day'),
+    date: document.querySelector('.date'),
+    dateMonth: document.querySelector('.date-month'),
+    dateYear: document.querySelector('.date-year'),
+};
+
+const nameOfDay = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const nameOfMonth = ['January', 'February', 'March',
+'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
+];
+
+setInterval(()=>{
+    const currentTime = new Date();
+    const day = nameOfDay[currentTime.getDay()];
+    const dayOfMonth = currentTime.getDate().toString().padStart(2, '0');
+    const month = nameOfMonth[currentTime.getMonth()];
+    const year = currentTime.getFullYear();
+    console.log(day, dayOfMonth, month, year);
+    
+    refs.dateDay.textContent = day;
+    refs.date.textContent = dayOfMonth;
+    refs.dateMonth.textContent = month;
+    refs.dateYear.textContent = year;
+}, 1000);
+
+
