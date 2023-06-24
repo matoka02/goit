@@ -3,105 +3,105 @@
 
 // <!-- Лекция 21.10.2022 -->
 
-// // 1. Событие submit
+// 1. Событие submit
 
-// const cars = [
-// {
-//     id: 1,
-//     car: 'Honda',
-//     type: 'Civic',
-//     price: 12000,
-//     img: 'https://images.unsplash.com/photo-1494972308805-463bc619d34e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1473&q=80',
-// },
-// {
-//     id: 2,
-//     car: 'Audi',
-//     type: 'QT',
-//     price: 40000,
-//     img: 'https://images.unsplash.com/photo-1623776025811-fd139155a39b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=869&q=80',
-// },
-// {
-//     id: 3,
-//     car: 'BMW',
-//     type: '5 siries',
-//     price: 9000,
-//     img: 'https://images.unsplash.com/photo-1562965795-16cb921c6c2e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=825&q=80',
-// },
-// {
-//     id: 4,
-//     car: 'Honda',
-//     type: 'Accord',
-//     number: '+380958752729',
-//     price: 20000,
-//     img: 'https://images.unsplash.com/photo-1468679950062-7f9630082231?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80',
-// },
-// {
-//     id: 5,
-//     car: 'Volvo',
-//     type: 'X6',
-//     price: 7000,
-//     img: 'https://images.unsplash.com/photo-1516834474-48c0abc2a902?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=873&q=80',
-// },
-// ];
+const cars = [
+{
+    id: 1,
+    car: 'Honda',
+    type: 'Civic',
+    price: 12000,
+    img: 'https://images.unsplash.com/photo-1494972308805-463bc619d34e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1473&q=80',
+},
+{
+    id: 2,
+    car: 'Audi',
+    type: 'QT',
+    price: 40000,
+    img: 'https://images.unsplash.com/photo-1623776025811-fd139155a39b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=869&q=80',
+},
+{
+    id: 3,
+    car: 'BMW',
+    type: '5 siries',
+    price: 9000,
+    img: 'https://images.unsplash.com/photo-1562965795-16cb921c6c2e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=825&q=80',
+},
+{
+    id: 4,
+    car: 'Honda',
+    type: 'Accord',
+    number: '+380958752729',
+    price: 20000,
+    img: 'https://images.unsplash.com/photo-1468679950062-7f9630082231?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80',
+},
+{
+    id: 5,
+    car: 'Volvo',
+    type: 'X6',
+    price: 7000,
+    img: 'https://images.unsplash.com/photo-1516834474-48c0abc2a902?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=873&q=80',
+},
+];
 
-// // 1. слушатели
-// const list = document.querySelector('.js-list');
-// // console.log(list);
-// const form = document.querySelector('.js-search');
+// 1. слушатели
+const list = document.querySelector('.js-list');
+// console.log(list);
+const form = document.querySelector('.js-search');
 
-// // 2. событие
-// form.addEventListener('submit', onSearch);
+// 2. событие
+form.addEventListener('submit', onSearch);
 
-// // 3. функция на событие
-// function onSearch(evt) {
-//     // 3.1 сброс прослушивания, чтобы не перезагрузилась страница
-//     evt.preventDefault();
-//     // console.log(evt.currentTarget);         // <form action="submit" class="js-search">…</form>
-//     // console.dir(evt.currentTarget);         // form.js-search
-//     // console.log('olala', evt.currentTarget.elements.searchQuery);       // < input type = "text" name = "searchQuery" >
-//     // console.log('olala', evt.currentTarget.elements.searchKey);         // < select name = "searchKey" >​…​</select >
+// 3. функция на событие
+function onSearch(evt) {
+    // 3.1 сброс прослушивания, чтобы не перезагрузилась страница
+    evt.preventDefault();
+    // console.log(evt.currentTarget);         // <form action="submit" class="js-search">…</form>
+    // console.dir(evt.currentTarget);         // form.js-search
+    // console.log('olala', evt.currentTarget.elements.searchQuery);       // < input type = "text" name = "searchQuery" >
+    // console.log('olala', evt.currentTarget.elements.searchKey);         // < select name = "searchKey" >​…​</select >
 
-//     // 3.2 деструктуризация элементов evt.currentTarget
-//     const { searchQuery, searchKey } = evt.currentTarget.elements;
-//     // const (elements: { searchQuery, searchKey }) = evt.currentTarget.elements;
-//     // console.log(searchQuery);               // < input type = "text" name = "searchQuery" ></input>
-//     // console.log(searchKey);                 // < select name = "searchKey" >​…​</select >
+    // 3.2 деструктуризация элементов evt.currentTarget
+    const { searchQuery, searchKey } = evt.currentTarget.elements;
+    // const (elements: { searchQuery, searchKey }) = evt.currentTarget.elements;
+    // console.log(searchQuery);               // < input type = "text" name = "searchQuery" ></input>
+    // console.log(searchKey);                 // < select name = "searchKey" >​…​</select >
 
-//     // 3.3 получение значений
-//     console.log(searchQuery.value);               // Honda
-//     console.log(searchKey.value);                 // car
+    // 3.3 получение значений
+    console.log(searchQuery.value);               // Honda
+    console.log(searchKey.value);                 // car
 
-//     // // 3.4 фильтрация: метод filter и сравнение
-//     // const currentCars = cars.filter(item => item[searchKey.value].toLowerCase() === searchQuery.value.trim().toLowerCase());
-//     // 3.4 фильтрация: метод filter и совпадение частичное
-//     const currentCars = cars.filter(item => item[searchKey.value].toLowerCase().includes(searchQuery.value.trim().toLowerCase()));
-//     console.log(currentCars);
+    // // 3.4 фильтрация: метод filter и сравнение
+    // const currentCars = cars.filter(item => item[searchKey.value].toLowerCase() === searchQuery.value.trim().toLowerCase());
+    // 3.4 фильтрация: метод filter и совпадение частичное
+    const currentCars = cars.filter(item => item[searchKey.value].toLowerCase().includes(searchQuery.value.trim().toLowerCase()));
+    console.log(currentCars);
 
-//     // 3.5 проверка, если ли р-ты
-//     if (currentCars.length) {               // длина массива будет передана числом > булевое значение > true
-//         list.innerHTML = createMarkup(currentCars);
-//     } else {
-//         list.innerHTML = `<img src="https://colorlib.com/wp/wp-content/uploads/sites/2/404-error-page-templates.jpg.webp" alt="404-error-page" width='300px'></img>`;
-//     }
+    // 3.5 проверка, если ли р-ты
+    if (currentCars.length) {               // длина массива будет передана числом > булевое значение > true
+        list.innerHTML = createMarkup(currentCars);
+    } else {
+        list.innerHTML = `<img src="https://colorlib.com/wp/wp-content/uploads/sites/2/404-error-page-templates.jpg.webp" alt="404-error-page" width='300px'></img>`;
+    }
 
-//     // 3.6 перезагрузка страницы с отфильтрованными данными
-//     // list.innerHTML = createMarkup(currentCars);
-// };
+    // 3.6 перезагрузка страницы с отфильтрованными данными
+    // list.innerHTML = createMarkup(currentCars);
+};
 
-// // 4. функция создание элементов li
-// function createMarkup(arr) {
-//     return arr.map(({ car, type, price, img, id }) =>
-//         `<li data-id="${id}">
-//         <img src="${img}" alt="${type}" width='300px'>
-//         <h2>Марка: ${car}</h2>
-//         <h2>Модель: ${type}</h2>
-//         <p>Цена: ${price}</p>
-//         </li>`).join('');
-//     // console.log(markup);
-// };
+// 4. функция создание элементов li
+function createMarkup(arr) {
+    return arr.map(({ car, type, price, img, id }) =>
+        `<li data-id="${id}">
+        <img src="${img}" alt="${type}" width='300px'>
+        <h2>Марка: ${car}</h2>
+        <h2>Модель: ${type}</h2>
+        <p>Цена: ${price}</p>
+        </li>`).join('');
+    // console.log(markup);
+};
 
-// // 5. загрузка li в ul
-// list.insertAdjacentHTML('beforeend', createMarkup(cars));
+// 5. загрузка li в ul
+list.insertAdjacentHTML('beforeend', createMarkup(cars));
 
 
 // // 2. Событие input

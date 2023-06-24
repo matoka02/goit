@@ -121,96 +121,96 @@
 
 // // 1. Магазин машин
 
-// const refs = {
-//     staticItems: document.querySelectorAll('.js-item'),
-//     dynamicItems: document.getElementsByClassName('js-item'),
-//     ul: document.querySelector('ul'),
-// }
+const refs = {
+    staticItems: document.querySelectorAll('.js-item'),
+    dynamicItems: document.getElementsByClassName('js-item'),
+    ul: document.querySelector('ul'),
+}
 
-// const cars = [{
-//     id: 1,
-//     car: 'Honda',
-//     type: 'Civic',
-//     price: 12000,
-//     img: 'https://images.unsplash.com/photo-1494972308805-463bc619d34e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1473&q=80',
-// },
-// {
-//     id: 2,
-//     car: 'Audi',
-//     type: 'QT',
-//     price: 40000,
-//     img: 'https://images.unsplash.com/photo-1623776025811-fd139155a39b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=869&q=80',
-// },
-// {
-//     id: 3,
-//     car: 'BMW',
-//     type: '5 siries',
-//     price: 9000,
-//     img: 'https://images.unsplash.com/photo-1562965795-16cb921c6c2e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=825&q=80',
-// },
-// {
-//     id: 4,
-//     car: 'Honda',
-//     type: 'Accord',
-//     number: '+380958752729',
-//     price: 20000,
-//     img: 'https://images.unsplash.com/photo-1468679950062-7f9630082231?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80',
-// },
-// {
-//     id: 5,
-//     car: 'Volvo',
-//     type: 'X6',
-//     price: 7000,
-//     img: 'https://images.unsplash.com/photo-1516834474-48c0abc2a902?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=873&q=80',
-// },
-// ];
+const cars = [{
+    id: 1,
+    car: 'Honda',
+    type: 'Civic',
+    price: 12000,
+    img: 'https://images.unsplash.com/photo-1494972308805-463bc619d34e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1473&q=80',
+},
+{
+    id: 2,
+    car: 'Audi',
+    type: 'QT',
+    price: 40000,
+    img: 'https://images.unsplash.com/photo-1623776025811-fd139155a39b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=869&q=80',
+},
+{
+    id: 3,
+    car: 'BMW',
+    type: '5 siries',
+    price: 9000,
+    img: 'https://images.unsplash.com/photo-1562965795-16cb921c6c2e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=825&q=80',
+},
+{
+    id: 4,
+    car: 'Honda',
+    type: 'Accord',
+    number: '+380958752729',
+    price: 20000,
+    img: 'https://images.unsplash.com/photo-1468679950062-7f9630082231?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80',
+},
+{
+    id: 5,
+    car: 'Volvo',
+    type: 'X6',
+    price: 7000,
+    img: 'https://images.unsplash.com/photo-1516834474-48c0abc2a902?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=873&q=80',
+},
+];
 
-// const listRef = document.querySelector('.js-list');
+const listRef = document.querySelector('.js-list');
 
-// // const markup = cars.map(({ car, type, price, img, id }) =>
-// // `<li data-id="${id}">
-// // <img src="${img}" alt="${type}" width='300'>
-// // <h2>Марка: ${car}</h2>
-// // <h2>Модель: ${type}</h2>
-// // <p>Цена: ${price}</p>
-// // </li>`).join('');
-
-// // замер времени обработки, начало записи
-// // console.time('reduce');
-
-// // рефакторинг
-// const markup = cars.reduce((acc, { car, type, price, img, id }) =>
-// acc + `<li data-id="${id}">
-// <img src="${img}" alt="${type}">
+// const markup = cars.map(({ car, type, price, img, id }) =>
+// `<li data-id="${id}">
+// <img src="${img}" alt="${type}" width='300'>
 // <h2>Марка: ${car}</h2>
 // <h2>Модель: ${type}</h2>
 // <p>Цена: ${price}</p>
-// </li>`, '');
+// </li>`).join('');
 
-// // определение стилей CSS
-// // listRef.style.listStyle = 'none';           // list-style: none;
-// // listRef.style.display = 'flex';             // display: flex;
-// // listRef.style.flexWrap = 'wrap';            // flex-wrap: wrap;
+// замер времени обработки, начало записи
+// console.time('reduce');
 
-// // замер времени обработки, конец записи
-// // console.timeEnd('reduce');                  // reduce: 0.18701171875 ms
+// рефакторинг
+const markup = cars.reduce((acc, { car, type, price, img, id }) =>
+acc + `<li data-id="${id}">
+<img src="${img}" alt="${type}">
+<h2>Марка: ${car}</h2>
+<h2>Модель: ${type}</h2>
+<p>Цена: ${price}</p>
+</li>`, '');
 
-// // console.log(markup);
+// определение стилей CSS
+// listRef.style.listStyle = 'none';           // list-style: none;
+// listRef.style.display = 'flex';             // display: flex;
+// listRef.style.flexWrap = 'wrap';            // flex-wrap: wrap;
 
-// listRef.insertAdjacentHTML('beforeend', markup);
+// замер времени обработки, конец записи
+// console.timeEnd('reduce');                  // reduce: 0.18701171875 ms
 
-// const items = document.querySelectorAll('li');
-// items.forEach(item => item.style.width='300px')
-// console.log(items);
+// console.log(markup);
 
-// // поиск по id
-// refs.ul.insertAdjacentHTML('beforeend', markup);
-// refs.ul.addEventListener('click', (e) => {
-//     if (e.target.closest('li')) {
-//         // console.log(e.target);
-//         const id = e.target.closest('li').dataset.id
-//         const currentCar = cars.find(({id: cardId}) => cardId === Number(id));
-//         console.log(currentCar);
-//     }
-// })
+listRef.insertAdjacentHTML('beforeend', markup);
+
+const items = document.querySelectorAll('li');
+items.forEach(item => item.style.width='300px')
+console.log(items);
+
+// поиск по id
+refs.ul.insertAdjacentHTML('beforeend', markup);
+refs.ul.addEventListener('click', (e) => {
+    if (e.target.closest('li')) {
+        // console.log(e.target);
+        const id = e.target.closest('li').dataset.id
+        const currentCar = cars.find(({id: cardId}) => cardId === Number(id));
+        console.log(currentCar);
+    }
+})
 
