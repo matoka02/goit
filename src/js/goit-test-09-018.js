@@ -126,7 +126,7 @@ promise
         },
         error => {
             console.log(error);
-            throw new Error('2  no')
+            return ('2  no')
         }
     )
     .then(
@@ -136,7 +136,7 @@ promise
         },
         error => {
             console.log(error);
-            throw new Error('3 no')
+            console.log('3 no');
         }
     );
 
