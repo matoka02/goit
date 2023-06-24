@@ -1,2 +1,0 @@
-const o=Math.random()>.9;new Promise(((e,n)=>{setTimeout((()=>{o?e("Success! Value passed to resolve function"):n("Error! Error passed to reject function")}),0)})).then((o=>(console.log("onResolve call inside promise.then()"),console.log(o),"1 yes")),(o=>{throw console.log("onReject call inside promise.then()"),console.log(o),new Error("1 no")})).then((o=>(console.log(o),"2 yes")),(o=>{throw console.log(o),new Error("2  no")})).then((o=>{console.log(o),console.log("3 yes")}),(o=>{throw console.log(o),new Error("3 no")}));
-//# sourceMappingURL=goit-test-09-018.91bed5e7.js.map
