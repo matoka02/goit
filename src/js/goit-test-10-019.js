@@ -22,15 +22,16 @@ function onSearch(evt) {
     const {query: {value: searchValue}, days: {value: daysValue}} = evt.currentTarget.elements;
     // console.log(searchValue, daysValue);
 
+    // если выключить эту проверку, придут дефолтные згачения
     if (!searchValue) {
         alert('Empty field');
         return;
-    }
+    };
 
     forecastApi(searchValue, daysValue).then(data => {
         console.log(data.forecast.forecastday);
         createMarkup(data.forecast.forecastday);
-    })
+    });
 };
 
 function createMarkup(arr) {
@@ -45,6 +46,7 @@ function createMarkup(arr) {
 };
 
 function forecastApi(name='Kiev', value='7') {
+    // дефолтные параметры: name='Kiev', value='7'
     return fetch(`${BASE_URL}?key=${API_KEY}&q=${name}&days=${value}`)
     .then(resp => {
         console.log(resp);
@@ -55,5 +57,5 @@ function forecastApi(name='Kiev', value='7') {
     })
     // .then(data => console.log(data))
     .catch(err => console.error(err))
-}
+};
 // forecastApi();
