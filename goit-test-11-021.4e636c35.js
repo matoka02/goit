@@ -1,2 +1,0 @@
-const t=new class{#t;#o;constructor(t){this.#t=t,this.#o={headers:{}}}fetchCharacter(t=1){return fetch(`${this.#t}/character?page=${t}`,this.#o).then((t=>{if(!t.ok)throw new Error(t.statusText);return t.json()})).catch((t=>console.log(t)))}fetchLocation(t=1){return fetch(`${this.#t}/location?page=${t}`).then((t=>{if(!t.ok)throw new Error(t.statusText);return t.json()})).catch((t=>console.log(t)))}}("https://rickandmortyapi.com/api");t.fetchCharacter().then((t=>console.log(t))),t.fetchLocation().then((t=>console.log(t)));
-//# sourceMappingURL=goit-test-11-021.4e636c35.js.map
