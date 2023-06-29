@@ -76,31 +76,70 @@
 
 // // Update = PATCH
 
-const obj = {
-    name: 'Mango',
-    age: 22,
-    id: 1
-}
+// const obj = {
+//     name: 'Mango',
+//     age: 22,
+//     id: 1
+// }
 
-fetch(`https://jsonplaceholder.typicode.com/posts/1`, {
-    method: 'PUT',
-    body: JSON.stringify({
-        author: 'Poly'
-    })
-})
-.then(resp => resp.json())
-.then(data => console.log(data));
+// fetch(`https://jsonplaceholder.typicode.com/posts/1`, {
+//     method: 'PUT',
+//     body: JSON.stringify({
+//         author: 'Poly'
+//     })
+// })
+// .then(resp => resp.json())
+// .then(data => console.log(data));
 
 
 // // Delete = DELETE
 
-fetch(`https://jsonplaceholder.typicode.com/posts/1`, {
-    method: 'DELETE',
-})
-.then(resp => resp.json())
-.then(data => console.log(data));       // пустой объект
+// fetch(`https://jsonplaceholder.typicode.com/posts/1`, {
+//     method: 'DELETE',
+// })
+// .then(resp => resp.json())
+// .then(data => console.log(data));       // пустой объект
 
 
+// Постройка запроса в классе
+
+// https://rickandmortyapi.com/documentation/#location-schema
+export class API {
+    #BASE_URL;
+    #options;
+    constructor(url) {
+        this.#BASE_URL = url;
+        this.#options = {
+            headers: {
+                // место для ключа авторизации
+            }
+        }
+    };
+
+    fetchCharacter(value = 1) {
+    return fetch(`${this.#BASE_URL}/character?page=${value}`, this.#options).then(resp => {
+        if(!resp.ok){
+            throw new Error(resp.statusText)
+        }
+        return resp.json()
+    }).catch(err => console.log(err))
+    };
+
+    fetchLocation(value = 1){
+        return fetch(`${this.#BASE_URL}/location?page=${value}`).then(resp => {
+            if(!resp.ok){
+                throw new Error(resp.statusText)
+            }
+            return resp.json()
+        }).catch(err => console.log(err))
+    };
+};
+
+const rickandmortyApi = new API('https://rickandmortyapi.com/api')
+// console.log(rickandmortyApi);
+
+rickandmortyApi.fetchCharacter().then(data => console.log(data))    // 20 arrays
+rickandmortyApi.fetchLocation().then(data => console.log(data))     // 20 arrays
 
 
 
