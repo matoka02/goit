@@ -142,4 +142,60 @@ rickandmortyApi.fetchCharacter().then(data => console.log(data))    // 20 arrays
 rickandmortyApi.fetchLocation().then(data => console.log(data))     // 20 arrays
 
 
+// Поиск стран
+
+const arr = [{
+    "name": "Switzerland",
+    "topLevelDomain": [
+        ".ch"
+    ],
+    "alpha2Code": "CH",
+    "alpha3Code": "CHE",
+    "callingCodes": [
+        "41"
+    ],
+    "capital": "Bern",
+
+    "languages": [{
+            "iso639_1": "de",
+            "iso639_2": "deu",
+            "name": "German",
+            "nativeName": "Deutsch"
+        },
+        {
+            "iso639_1": "fr",
+            "iso639_2": "fra",
+            "name": "French",
+            "nativeName": "français"
+        },
+        {
+            "iso639_1": "it",
+            "iso639_2": "ita",
+            "name": "Italian",
+            "nativeName": "Italiano"
+        },
+        {
+            "iso639_2": "roh",
+            "name": "Romansh"
+        }
+    ]
+}]
+
+console.log(arr);
+
+const h = document.querySelector('.names');
+
+h.insertAdjacentHTML('beforeend',`languages of my country: ${ getNames(arr)} `);
+
+const result = arr.map(value => {
+    return value.languages.map(language => language.name)
+})
+console.log(result.join(', '));
+
+function getNames(arr){
+    return arr.map(value => {
+        return value.languages.map(language => language.name)
+    }).join(', ')
+}
+
 
