@@ -1,2 +1,0 @@
-!function(){"use strict";fetch("https://jsonplaceholder.typicode.com/posts/1",{method:"PUT",body:JSON.stringify({author:"Poly"})}).then((function(t){return t.json()})).then((function(t){return console.log(t)})),fetch("https://jsonplaceholder.typicode.com/posts/1",{method:"DELETE"}).then((function(t){return t.json()})).then((function(t){return console.log(t)}))}();
-//# sourceMappingURL=goit-test-11-021.f74d0044.js.map
