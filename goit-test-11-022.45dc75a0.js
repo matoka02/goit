@@ -1,0 +1,2 @@
+document.querySelector(".list");async function o(){const o=await[1,2,3,4,5].map((async o=>await fetch(`https://swapi.dev/api/people/${o}/`)));console.log(o);const a=await Promise.allSettled(o);return console.log(a),a.forEach((o=>console.log(o))),a}async function o(){const o=await[1,2,3,4,5].map((async o=>await fetch(`https://swapi.dev/api/people/${o}/`)));console.log(o);const a=await Promise.race(o);return console.log(a),a}o(),o();
+//# sourceMappingURL=goit-test-11-022.45dc75a0.js.map
