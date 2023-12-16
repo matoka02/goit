@@ -909,3 +909,245 @@
 
 
 /*--- 5.1 Типы данных ---*/
+
+// Взгляните на следующий код:
+
+// let str = "Привет";
+// str.test = 5;
+// console.log(str.test);    // Uncaught TypeError: Cannot create property 'test' on string 'Привет'
+
+// Как вы думаете, это сработает? Что выведется на экран?
+
+
+/*--- 5.2  Числа ---*/
+
+// let billion = 1_000_000_000;
+// console.log(billion);           // 1000000000
+// let billion2 = 1e9;
+// console.log(billion2);          // 1000000000
+// let ms = 1e-6;
+// console.log(ms);                // 0.000001
+
+// let a = 0b1111111;              // 255 - двоичная (бинарная) запись
+// let b = 0o377;                  // 255 - восьмеричная
+// let c = 0xff;                   // 255 - шестнадцатеричная
+
+// let num = 255;
+// console.log(num.toString(16));  // ff
+// console.log(num.toString(2));   // 1111111
+// console.log(num.toString(8));   // 377
+
+// console.log(123456..toString(36));    // 2n9c
+
+// console.log(parseInt('100px'));       // 100
+// console.log(parseFloat('12.5em'));    // 12.5
+// console.log(parseInt('a123'));        // NaN
+// console.log(parseInt('2n9c', 36));     // 123456
+
+// 5.2.1 Создайте скрипт, который запрашивает ввод двух чисел (используйте prompt) и после показывает их сумму.
+// P.S. Есть «подводный камень» при работе с типами.
+
+// let a = +prompt('Enter number', '');
+// let b = +prompt('Enter number', '');
+// console.log(a + b);
+
+// 5.2.2 Как правильно округлить 6.35?
+
+// console.log((6.35*10).toFixed(20));     // 63.50000000000000000000
+// console.log(Math.round(6.35*10)/10);    // 6.4
+
+
+// 5.2.3 Создайте функцию readNumber, которая будет запрашивать ввод числового значения до тех пор, пока посетитель его не введёт.
+// Функция должна возвращать числовое значение.
+// Также надо разрешить пользователю остановить процесс ввода, отправив пустую строку или нажав «Отмена». В этом случае функция должна вернуть null.
+
+// function readNumber() {
+//   let num;
+
+//   do {
+//     num = prompt("Введите число", 0);
+//   } while ( !isFinite(num) );
+
+//   if (num === null || num === '') return null;
+
+//   return +num;
+// };
+
+// console.log(`Число: ${readNumber()}`);
+
+// 5.2.4 Этот цикл – бесконечный. Он никогда не завершится, почему?
+// let i = 0;
+// while (i != 10) {
+//   i += 0.2;
+// }
+
+// let i = 0;
+// while (i < 11) {
+//   i += 0.2;
+//   if (i > 9.8 && i < 10.2) console.log(i);
+// }
+
+
+// 5.2.5 Встроенный метод Math.random() возвращает случайное число от 0 (включительно) до 1 (но не включая 1)
+// Напишите функцию random(min, max), которая генерирует случайное число с плавающей точкой от min до max (но не включая max).
+
+// function random(min, max) {
+//   return min + Math.random() * (max - min);
+// };
+// console.log(random(1, 5));
+// console.log(random(1, 5));
+// console.log(random(1, 5));
+
+// 5.2.6 Напишите функцию randomInteger(min, max), которая генерирует случайное целое (integer) число от min до max (включительно).
+// Любое число из интервала min..max должно появляться с одинаковой вероятностью.
+
+// function randomInteger(min, max) {
+//   let rand = min + Math.random() * (max + 1 - min);
+//   return Math.floor(rand);
+// };
+// console.log(randomInteger(1, 3));
+
+
+/*--- 5.3 Строки ---*/
+
+// 5.3.1 Напишите функцию ucFirst(str), возвращающую строку str с заглавным первым символом. Например:
+
+// function ucFirst(str) {
+//   if (!str) return str;
+//   return str[0].toUpperCase() + str.slice(1);
+// }
+// console.log(ucFirst('вася'));
+
+// 5.3.2 Напишите функцию checkSpam(str), возвращающую true, если str содержит 'viagra' или 'XXX', а иначе false.
+// Функция должна быть нечувствительна к регистру:
+
+// function checkSpam(str) {
+//   let lowerStr = str.toLowerCase();
+//   return lowerStr.includes('viagra') || lowerStr.includes('xxx');
+// };
+// console.log(checkSpam('buy ViAgRA now'));
+// console.log(checkSpam('innocent rabbit'));
+
+// 5.3.3 Создайте функцию truncate(str, maxlength), которая проверяет длину строки str и, если она превосходит maxlength, заменяет конец str на "…", так, чтобы её длина стала равна maxlength.
+// Результатом функции должна быть та же строка, если усечение не требуется, либо, если необходимо, усечённая строка.
+
+// function truncate(str, maxlength) {
+//   if (str.length < maxlength) return str;
+//   return str.slice(0, maxlength - 1) + '…'
+// };
+// console.log(truncate("Вот, что мне хотелось бы сказать на эту тему:", 20));
+
+// function truncate(str, maxlength) {
+//   return (str.length > maxlength) ?
+//     str.slice(0, maxlength - 1) + '…' : str;
+// };
+// console.log(truncate("Вот, что мне хотелось бы сказать на эту тему:", 20));
+
+// 5.3.4 Есть стоимость в виде строки "$120". То есть сначала идёт знак валюты, а затем – число.
+// Создайте функцию extractCurrencyValue(str), которая будет из такой строки выделять числовое значение и возвращать его.
+
+// function extractCurrencyValue(str) {
+//   if (!str) return alert('Неверный формат ввода');
+//   return +str.slice(1);
+// };
+// console.log(extractCurrencyValue('$120'));
+
+
+/*--- 5.4 Массивы ---*/
+
+// 5.4.1 Что выведет следующий код?
+// let fruits = ["Яблоки", "Груша", "Апельсин"];
+// let shoppingCart = fruits;
+// shoppingCart.push("Банан");
+// console.log(fruits.length);             // 4
+// console.log(shoppingCart.length);       // 4
+
+// 5.4.2 Давайте произведём 5 операций с массивом.
+// - Создайте массив styles с элементами «Джаз» и «Блюз».
+// - Добавьте «Рок-н-ролл» в конец.
+// - Замените значение в середине на «Классика». Ваш код для поиска значения в середине должен работать для массивов с любой длиной.
+// - Удалите первый элемент массива и покажите его.
+// - Вставьте Рэп и Регги в начало массива.
+
+// const styles = ['Джаз', 'Блюз'];
+// styles.push('Рок-н-ролл');
+// console.log(styles);
+// styles[Math.floor((styles.length - 1) / 2)] = 'Классика';
+// console.log(styles);
+// styles.shift();
+// console.log(styles);
+// styles.unshift('Рэп', 'Регги');
+// console.log(styles);
+
+// 5.4.3 Каков результат? Почему?
+
+// let arr = ["a", "b"];
+// arr.push(function() {
+//   console.log(this);        // ['a', 'b', ƒ]
+// });
+// console.log(arr[2]());      // undefined
+
+// 5.4.4 Напишите функцию sumInput(), которая:
+// - Просит пользователя ввести значения, используя prompt и сохраняет их в массив.
+// - Заканчивает запрашивать значения, когда пользователь введёт не числовое значение, пустую строку или нажмёт «Отмена».
+// - Подсчитывает и возвращает сумму элементов массива.
+// P.S. Ноль 0 – считается числом, не останавливайте ввод значений при вводе «0».
+
+// function sumInput() {
+//   let numbers = [];
+//   while (true) {
+//     let value = prompt("Введите число", 0);
+//     if (value === "" || value === null || !isFinite(value)) break;
+//     numbers.push(+value);
+//   }
+
+//   let sum = 0;
+//   for (let number of numbers) {
+//     sum += number;
+//   }
+//   return sum;
+// };
+// console.log(sumInput());
+
+// 5.4.5 На входе массив чисел, например: arr = [1, -2, 3, 4, -9, 6].
+// Задача: найти непрерывный подмассив в arr, сумма элементов в котором максимальна.
+// Функция getMaxSubSum(arr) должна возвращать эту сумму.
+// Если все элементы отрицательные – ничего не берём(подмассив пустой) и сумма равна «0»:
+// // Попробуйте придумать быстрое решение: O(n2), а лучше за О(n) операций.
+
+// function getMaxSubSum(arr) {
+//   let maxSum = 0; // если элементов не будет - возвращаем 0
+
+//   for (let i = 0; i < arr.length; i++) {
+//     let sumFixedStart = 0;
+//     for (let j = i; j < arr.length; j++) {
+//       sumFixedStart += arr[j];
+//       maxSum = Math.max(maxSum, sumFixedStart);
+//     }
+//   };
+
+//   return maxSum;
+// };
+
+// function getMaxSubSum(arr) {
+//   let maxSum = 0;
+//   let partialSum = 0;
+
+//   for (let item of arr) {                   // для каждого элемента массива
+//     partialSum += item;                     // добавляем значение элемента к partialSum
+//     maxSum = Math.max(maxSum, partialSum);  // запоминаем максимум на данный момент
+//     if (partialSum < 0) partialSum = 0;     // ноль если отрицательное
+//   }
+
+//   return maxSum;
+// };
+
+// console.log(getMaxSubSum([-1, 2, 3, -9]));        // 5
+// console.log(getMaxSubSum([-1, 2, 3, -9, 11]));    // 11
+// console.log(getMaxSubSum([-2, -1, 1, 2]));        // 3
+// console.log(getMaxSubSum([100, -9, 2, -3, 5]));   // 100
+// console.log(getMaxSubSum([1, 2, 3]));             // 6
+// console.log(getMaxSubSum([-1, -2, -3]));          // 0
+
+
+/*--- 5.5 Методы массивов ---*/
