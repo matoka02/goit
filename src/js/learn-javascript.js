@@ -1490,9 +1490,9 @@
 // console.log(keys);
 
 
-/*--- 5.9 WeakMap и WeakSet ---*/
+/*--- 5.8 WeakMap и WeakSet ---*/
 
-// 5.9.1 Есть массив сообщений:
+// 5.8.1 Есть массив сообщений:
 // У вас есть к ним доступ, но управление этим массивом происходит где-то ещё. Добавляются новые сообщения и удаляются старые, и вы не знаете в какой момент это может произойти.
 // Имея такую вводную информацию, решите, какую структуру данных вы могли бы использовать для ответа на вопрос «было ли сообщение прочитано?». Структура должна быть подходящей, чтобы можно было однозначно сказать, было ли прочитано это сообщение для каждого объекта сообщения.
 // P.S. Когда сообщение удаляется из массива messages, оно должно также исчезать из структуры данных.
@@ -1520,7 +1520,7 @@
 
 // messages.shift();
 
-// 5.9.2 Есть массив сообщений такой же, как и в предыдущем задании.
+// 5.8.2 Есть массив сообщений такой же, как и в предыдущем задании.
 // Теперь вопрос стоит так: какую структуру данных вы бы предложили использовать для хранения информации о том, когда сообщение было прочитано?
 // В предыдущем задании нам нужно было сохранить только факт прочтения «да или нет». Теперь же нам нужно сохранить дату, и она должна исчезнуть из памяти при удалении «сборщиком мусора» сообщения.
 // P.S. Даты в JavaScript можно хранить как объекты встроенного класса Date, которые мы разберём позднее.
@@ -1536,4 +1536,515 @@
 // readMap.set(messages[0], new Date(2017, 1, 1));
 
 
-/*--- 5.10 Object.keys, values, entries ---*/
+/*--- 5.9 Object.keys, values, entries ---*/
+
+// 5.9.1 Есть объект salaries с произвольным количеством свойств, содержащих заработные платы.
+// Напишите функцию sumSalaries(salaries), которая возвращает сумму всех зарплат с помощью метода Object.values и цикла for..of.
+// Если объект salaries пуст, то результат должен быть 0.
+
+// let salaries = {
+//   "John": 100,
+//   "Pete": 300,
+//   "Mary": 250
+// };
+
+// function sumSalaries(salaries) {
+//   let sum = 0;
+//   for (const salary of Object.values(salaries)) {
+//     sum += salary;
+//   };
+//   return sum;
+// };
+
+// console.log(sumSalaries(salaries));
+
+// 5.9.2 Напишите функцию count(obj), которая возвращает количество свойств объекта:
+// Постарайтесь сделать код как можно короче.
+// P.S. Игнорируйте символьные свойства, подсчитывайте только «обычные».
+
+// let user = {
+//   name: 'John',
+//   age: 30
+// };
+
+// function count(obj) {
+//   return Object.keys(obj).length;
+// };
+
+// console.log(count(user));
+
+
+/*--- 5.10 Деструктурирующее присваивание ---*/
+
+// 5.10.1 У нас есть объект:
+// Напишите деструктурирующее присваивание, которое:
+// - свойство name присвоит в переменную name.
+// - свойство years присвоит в переменную age.
+// - свойство isAdmin присвоит в переменную isAdmin (false, если нет такого свойства)
+// Пример переменных после вашего присваивания:
+
+// let user = {
+//   name: "John",
+//   years: 30
+// };
+
+// let { name, years: age, isAdmin = false } = user;
+
+// console.log(name);
+// console.log(age);
+// console.log(isAdmin);
+
+// 5.10.2 У нас есть объект salaries с зарплатами:
+// Создайте функцию topSalary(salaries), которая возвращает имя самого высокооплачиваемого сотрудника.
+// Если объект salaries пустой, то нужно вернуть null.
+// Если несколько высокооплачиваемых сотрудников, можно вернуть любого из них.
+// P.S. Используйте Object.entries и деструктурирование, чтобы перебрать пары ключ/значение.
+
+// let salaries = {
+//   "John": 100,
+//   "Pete": 300,
+//   "Mary": 250
+// };
+
+// function topSalary(salaries) {
+
+//   let max = 0;
+//   let maxName = null;
+
+//   for(const [name, salary] of Object.entries(salaries)) {
+//     if (max < salary) {
+//       max = salary;
+//       maxName = name;
+//     }
+//   }
+
+//   return maxName;
+// };
+
+
+/*--- 5.11 Дата и время ---*/
+
+// let date = new Date();
+// console.log(date.getHours());             // текущий часовой пояс
+// console.log(date.getUTCHours());          // Гринвич
+// console.log(date.getTimezoneOffset());    // разница в минутах между UTC и местным часовым поясом
+
+// 5.11.1 Создайте объект Date для даты: 20 февраля 2012 года, 3 часа 12 минут. Временная зона – местная.
+// Для вывода используйте alert.
+
+// let d = new Date(2012, 1, 20, 3, 12);
+// console.log(d);
+
+// 5.11.2 Напишите функцию getWeekDay(date), показывающую день недели в коротком формате: «ПН», «ВТ», «СР», «ЧТ», «ПТ», «СБ», «ВС».
+
+// let date = new Date(2014, 0, 3);
+// function getWeekDay(date) {
+//   let days = ['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'];
+//   return days[date.getDay()];
+// };
+// console.log(getWeekDay(date));
+
+// 5.11.3 В Европейских странах неделя начинается с понедельника (день номер 1), затем идёт вторник (номер 2) и так до воскресенья (номер 7). Напишите функцию getLocalDay(date), которая возвращает «европейский» день недели для даты date.
+
+// let date = new Date(2012, 0, 3);
+
+// function getLocalDay(date) {
+//   let day = date.getDay();
+//   if (day == 0) {
+//     day = 7
+//   };
+//   return day;
+// }
+
+// console.log(getLocalDay(date));
+
+// 5.11.4 Создайте функцию getDateAgo(date, days), возвращающую число, которое было days дней назад от даты date.
+// К примеру, если сегодня двадцатое число, то getDateAgo(new Date(), 1) вернёт девятнадцатое и getDateAgo(new Date(), 2) – восемнадцатое.
+// Функция должна надёжно работать при значении days=365 и больших значениях:
+// P.S. Функция не должна изменять переданный ей объект date.
+
+// function getDateAgo(date, days) {
+//   let dateCopy = new Date(date);
+//   dateCopy.setDate(date.getDate() - days);
+//   return dateCopy.getDate();
+// };
+
+// let date = new Date(2015, 0, 2);
+
+// console.log(getDateAgo(date, 1));
+// console.log(getDateAgo(date, 15));
+// console.log(getDateAgo(date, 365));
+
+// 5.11.5 Напишите функцию getLastDayOfMonth(year, month), возвращающую последнее число месяца. Иногда это 30, 31 или даже февральские 28/29.
+// Параметры:
+// - year – год из четырёх цифр, например, 2012.
+// - month – месяц от 0 до 11.
+// К примеру, getLastDayOfMonth(2012, 1) = 29 (високосный год, февраль).
+
+// function getLastDayOfMonth(year, month) {
+//   let date = new Date(year, month + 1, 0);
+//   return date.getDate();
+// };
+
+// console.log(getLastDayOfMonth(2012, 0));
+// console.log(getLastDayOfMonth(2012, 1));
+// console.log(getLastDayOfMonth(2013, 1));
+
+
+// 5.11.6 Сколько сегодня прошло секунд?
+// Напишите функцию getSecondsToday(), возвращающую количество секунд с начала сегодняшнего дня.
+// Например, если сейчас 10:00, и не было перехода на зимнее/летнее время, то:
+// getSecondsToday() == 36000 // (3600 * 10)
+// Функция должна работать в любой день, т.е. в ней не должно быть конкретного значения сегодняшней даты.
+
+// function getSecondsToday() {
+//   let now = new Date();
+
+//   // создаём объект с текущими днём/месяцем/годом
+//   let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+//   let diff = now - today; // разница в миллисекундах
+//   return Math.round(diff / 1000); // получаем секунды
+// };
+
+// console.log(getSecondsToday());
+
+// 5.11.7 Создайте функцию getSecondsToTomorrow(), возвращающую количество секунд до завтрашней даты.
+// Например, если сейчас 23:00, то:
+// getSecondsToTomorrow() == 3600
+// P.S. Функция должна работать в любой день, т.е. в ней не должно быть конкретного значения сегодняшней даты.
+
+// function getSecondsToTomorrow() {
+//   let now = new Date();
+
+//   // завтрашняя дата
+//   let tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+
+//   let diff = tomorrow - now; // разница в миллисекундах
+//   return Math.round(diff / 1000); // получаем секунды
+// };
+
+// console.log(getSecondsToTomorrow());
+
+// 5.11.8 Напишите функцию formatDate(date), форматирующую date по следующему принципу:
+// - Если спустя date прошло менее 1 секунды, вывести "прямо сейчас".
+// - В противном случае, если с date прошло меньше 1 минуты, вывести "n сек. назад".
+// - В противном случае, если меньше часа, вывести "m мин. назад".
+// - В противном случае, полная дата в формате "DD.MM.YY HH:mm". А именно: "день.месяц.год часы:минуты", всё в виде двух цифр, т.е. 31.12.16 10:00.
+
+// 1-й вариант
+// function formatDate(date) {
+//   let diff = new Date() - date; // разница в миллисекундах
+
+//   if (diff < 1000) { // меньше 1 секунды
+//     return 'прямо сейчас';
+//   }
+
+//   let sec = Math.floor(diff / 1000); // преобразовать разницу в секунды
+
+//   if (sec < 60) {
+//     return sec + ' сек. назад';
+//   }
+
+//   let min = Math.floor(diff / 60000); // преобразовать разницу в минуты
+//   if (min < 60) {
+//     return min + ' мин. назад';
+//   }
+
+//   // отформатировать дату
+//   // добавить ведущие нули к единственной цифре дню/месяцу/часам/минутам
+//   let d = date;
+//   d = [
+//     '0' + d.getDate(),
+//     '0' + (d.getMonth() + 1),
+//     '' + d.getFullYear(),
+//     '0' + d.getHours(),
+//     '0' + d.getMinutes()
+//   ].map(component => component.slice(-2)); // взять последние 2 цифры из каждой компоненты
+
+//   // соединить компоненты в дату
+//   return d.slice(0, 3).join('.') + ' ' + d.slice(3).join(':');
+// };
+
+// console.log(formatDate(new Date(new Date - 1)));
+// console.log(formatDate(new Date(new Date - 30 * 1000)));
+// console.log(formatDate(new Date(new Date - 5 * 60 * 1000)));
+
+// 2-й вариант
+// function formatDate(date) {
+//   let dayOfMonth = date.getDate();
+//   let month = date.getMonth() + 1;
+//   let year = date.getFullYear();
+//   let hour = date.getHours();
+//   let minutes = date.getMinutes();
+//   let diffMs = new Date() - date;
+//   let diffSec = Math.round(diffMs / 1000);
+//   let diffMin = diffSec / 60;
+//   let diffHour = diffMin / 60;
+
+//   // форматирование
+//   year = year.toString().slice(-2);
+//   month = month < 10 ? '0' + month : month;
+//   dayOfMonth = dayOfMonth < 10 ? '0' + dayOfMonth : dayOfMonth;
+//   hour = hour < 10 ? '0' + hour : hour;
+//   minutes = minutes < 10 ? '0' + minutes : minutes;
+
+//   if (diffSec < 1) {
+//     return 'прямо сейчас';
+//   } else if (diffMin < 1) {
+//     return `${diffSec} сек. назад`
+//   } else if (diffHour < 1) {
+//     return `${diffMin} мин. назад`
+//   } else {
+//     return `${dayOfMonth}.${month}.${year} ${hour}:${minutes}`
+//   }
+// };
+
+// console.log(formatDate(new Date(new Date - 1)));
+// console.log(formatDate(new Date(new Date - 30 * 1000)));
+// console.log(formatDate(new Date(new Date - 5 * 60 * 1000)));
+
+
+/*--- 5.12 Формат JSON, метод toJSON ---*/
+
+// 5.12.1 Преобразуйте user в JSON, затем прочитайте этот JSON в другую переменную.
+
+// let user = {
+//   name: "Василий Иванович",
+//   age: 35
+// };
+
+// let newUser=JSON.parse(JSON.stringify(user));
+
+// console.log(newUser);
+
+// 5.12.2 В простых случаях циклических ссылок мы можем исключить свойство, из-за которого они возникают, из сериализации по его имени.
+// Но иногда мы не можем использовать имя, так как могут быть и другие, нужные, свойства с этим именем во вложенных объектах. Поэтому можно проверять свойство по значению.
+// Напишите функцию replacer для JSON-преобразования, которая удалит свойства, ссылающиеся на meetup:
+
+// let room = {
+//   number: 23
+// };
+
+// let meetup = {
+//   title: "Совещание",
+//   occupiedBy: [{name: "Иванов"}, {name: "Петров"}],
+//   place: room
+// };
+
+// room.occupiedBy = meetup;
+// meetup.self = meetup;
+
+// console.log(JSON.stringify(meetup, function replacer(key, value) {
+//   return (key != "" && value == meetup) ? undefined : value;
+// }));
+
+
+/*--- 6.1 Рекурсия и стек ---*/
+
+// 6.1.1 Напишите функцию sumTo(n), которая вычисляет сумму чисел 1 + 2 + ... + n.
+// Например:
+// sumTo(1) = 1
+// sumTo(2) = 2 + 1 = 3
+// sumTo(3) = 3 + 2 + 1 = 6
+// sumTo(4) = 4 + 3 + 2 + 1 = 10
+// ...
+// sumTo(100) = 100 + 99 + ... + 2 + 1 = 5050
+// Сделайте три варианта решения:
+// - С использованием цикла.
+// - Через рекурсию, т.к. sumTo(n) = n + sumTo(n-1) for n > 1.
+// - С использованием формулы арифметической прогрессии.
+// Пример работы вашей функции:
+// function sumTo(n) { /*... ваш код ... */ }
+// alert( sumTo(100) ); // 5050
+// P.S. Какой вариант решения самый быстрый? Самый медленный? Почему?
+// P.P.S. Можно ли при помощи рекурсии посчитать sumTo(100000)?
+
+// console.time();
+// function sumTo(n) {
+//   let sum = 0;
+//   for (let i = 1; i <= n; i++) {
+//     sum += i;
+//   }
+//   return sum;
+// };
+// console.log(sumTo(100));
+// console.timeEnd();                    // default: 0.093994140625 ms
+
+// console.time();
+// function sumTo2(n) {
+//   if (n == 1) return 1;
+//   return n + sumTo2(n - 1);
+// };
+// console.log(sumTo2(100));
+// console.timeEnd();                    // default: 0.041015625 ms
+
+// console.time();
+// function sumTo3(n) {
+//   return n * (n + 1) / 2;
+// };
+// console.log(sumTo3(100));
+// console.timeEnd();                    // default: 0.02197265625 ms
+
+// 6.1.2 Факториал натурального числа – это число, умноженное на "себя минус один", затем на "себя минус два", и так далее до 1. Факториал n обозначается как n!
+// Определение факториала можно записать как:
+// n! = n * (n - 1) * (n - 2) * ...*1
+// Примеры значений для разных n:
+// 1! = 1
+// 2! = 2 * 1 = 2
+// 3! = 3 * 2 * 1 = 6
+// 4! = 4 * 3 * 2 * 1 = 24
+// 5! = 5 * 4 * 3 * 2 * 1 = 120
+// Задача – написать функцию factorial(n), которая возвращает n!, используя рекурсию.
+// alert( factorial(5) ); // 120
+// P.S. Подсказка: n! можно записать как n * (n-1)! Например: 3! = 3*2! = 3*2*1! = 6
+
+// // 1-й вариант
+// function factorial(n) {
+//   return (n != 1) ? n * factorial(n - 1) : 1;
+// };
+// console.log(factorial(5));
+
+// // 2-й вариант
+// function factorial2(n) {
+//   return n ? n * factorial(n - 1) : 1;
+// };
+// console.log(factorial2(5));
+
+// 6.1.3 Последовательность чисел Фибоначчи определяется формулой Fn = Fn-1 + Fn-2. То есть, следующее число получается как сумма двух предыдущих.
+// Первые два числа равны 1, затем 2(1+1), затем 3(1+2), 5(2+3) и так далее: 1, 1, 2, 3, 5, 8, 13, 21....
+// Числа Фибоначчи тесно связаны с золотым сечением и множеством природных явлений вокруг нас.
+// Напишите функцию fib(n) которая возвращает n-е число Фибоначчи.
+// Пример работы:
+// function fib(n) { /* ваш код */ }
+// alert(fib(3)); // 2
+// alert(fib(7)); // 13
+// alert(fib(77)); // 5527939700884757
+// P.S. Все запуски функций из примера выше должны работать быстро. Вызов fib(77) должен занимать не более доли секунды.
+
+// console.time();
+// function fib(n) {
+//   return n <= 1 ? n : fib(n - 1) + fib(n - 2);
+// };
+// console.timeEnd();
+
+// console.time();
+// function fib2(n) {
+//   let a = 1;
+//   let b = 1;
+//   for (let i = 3; i <= n; i++) {
+//     let c = a + b;
+//     a = b;
+//     b = c;
+//   }
+//   return b;
+// };
+// console.log(fib2(77));
+// console.timeEnd();
+
+// 6.1.4 Допустим, у нас есть односвязный список (как описано в главе Рекурсия и стек):
+// let list = {
+//   value: 1,
+//   next: {
+//     value: 2,
+//     next: {
+//       value: 3,
+//       next: {
+//         value: 4,
+//         next: null
+//       }
+//     }
+//   }
+// };
+// Напишите функцию printList(list), которая выводит элементы списка по одному.
+// Сделайте два варианта решения: используя цикл и через рекурсию.
+// Как лучше: с рекурсией или без?
+
+// let list = {
+//   value: 1,
+//   next: {
+//     value: 2,
+//     next: {
+//       value: 3,
+//       next: {
+//         value: 4,
+//         next: null
+//       }
+//     }
+//   }
+// };
+
+// console.time();
+// function printList(list) {
+//   let tmp = list;
+
+//   while (tmp) {
+//     console.log(tmp.value);
+//     tmp = tmp.next;
+//   }
+
+// };
+// printList(list);
+// console.timeEnd();
+
+// console.time();
+// function printList2(list) {
+
+//   console.log(list.value); // выводим текущий элемент
+
+//   if (list.next) {
+//     printList(list.next); // делаем то же самое для остальной части списка
+//   };
+
+// };
+
+// printList2(list);
+// console.timeEnd();
+
+// 6.1.5 Выведите односвязный список из предыдущего задания Вывод односвязного списка в обратном порядке.
+// Сделайте два решения: с использованием цикла и через рекурсию.
+
+// let list = {
+//   value: 1,
+//   next: {
+//     value: 2,
+//     next: {
+//       value: 3,
+//       next: {
+//         value: 4,
+//         next: null
+//       }
+//     }
+//   }
+// };
+
+// console.time();
+// function printReverseList(list) {
+//   if (list.next) {
+//     printReverseList(list.next);
+//   }
+//   console.log(list.value);
+// };
+// printReverseList(list);
+// console.timeEnd();
+
+// console.time();
+// function printReverseList2(list) {
+//   let arr = [];
+//   let tmp = list;
+
+//   while (tmp) {
+//     arr.push(tmp.value);
+//     tmp = tmp.next;
+//   }
+
+//   for (let i = arr.length - 1; i >= 0; i--) {
+//     console.log(arr[i]);
+//   }
+// }
+
+// printReverseList2(list);
+// console.timeEnd();
+
+
+/*--- 6.3 Область видимости переменных, замыкание ---*/
