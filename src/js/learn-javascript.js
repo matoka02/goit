@@ -2048,3 +2048,741 @@
 
 
 /*--- 6.3 Область видимости переменных, замыкание ---*/
+
+// 6.3.1 Функция sayHi использует имя внешней переменной. Какое значение будет использоваться при выполнении функции?
+// Такие ситуации встречаются как при разработке для браузера, так и для сервера. Функция может быть назначена на выполнение позже, чем она была создана, например, после действия пользователя или сетевого запроса.
+// Итак, вопрос: учитывает ли она последние изменения?
+
+// let name = "John";
+
+// function sayHi() {
+//   console.log("Hi, " + name);
+// };
+
+// name = "Pete";
+
+// sayHi(); // что будет показано: "John" или "Pete"?
+
+// 6.3.2 Приведенная ниже функция makeWorker создает другую функцию и возвращает ее. Эта новая функция может быть вызвана из другого места.
+// Будет ли она иметь доступ к внешним переменным из места своего создания, или из места вызова, или из обоих мест?
+// Какое значение будет показано? «Pete» или «John»?
+
+// function makeWorker() {
+//   let name = "Pete";
+
+//   return function() {
+//     console.log(name);
+//   };
+// };
+
+// let name = "John";
+
+// // создаём функцию
+// let work = makeWorker();
+
+// // вызываем её
+// work(); // что будет показано?
+
+// 6.3.3 Здесь мы делаем два счётчика: counter и counter2, используя одну и ту же функцию makeCounter.
+// Они независимы? Что покажет второй счётчик? 0,1 или 2,3 или что-то ещё?
+
+// function makeCounter() {
+//   let count = 0;
+
+//   return function() {
+//     return count++;
+//   };
+// };
+
+// let counter = makeCounter();
+// let counter2 = makeCounter();
+
+// console.log(counter());
+// console.log(counter());
+
+// console.log(counter2());
+// console.log(counter2());
+
+// 6.3.4 Здесь объект счётчика создан с помощью функции-конструктора.
+// Будет ли он работать? Что покажет?
+
+// function Counter() {
+//   let count = 0;
+
+//   this.up = function() {
+//     return ++count;
+//   };
+//   this.down = function() {
+//     return --count;
+//   };
+// };
+
+// let counter = new Counter();
+
+// console.log(counter.up());            // 1
+// console.log(counter.up());            // 2
+// console.log(counter.down());          // 1
+
+// 6.3.5 Посмотрите на код. Какой будет результат у вызова на последней строке?
+
+// let phrase = "Hello";
+
+// if (true) {
+//   let user = "John";
+
+//   function sayHi() {
+//     console.log(`${phrase}, ${user}`);
+//   }
+// }
+
+// sayHi();            // Uncaught ReferenceError: sayHi is not defined
+
+// 6.3.6 Напишите функцию sum, которая работает таким образом: sum(a)(b) = a+b.
+// Да, именно таким образом, используя двойные круглые скобки (не опечатка).
+
+// function sum(a) {
+//   return function(b) {
+//     return a + b; // берёт "a" из внешнего лексического окружения
+//   };
+// };
+
+// console.log(sum(1)(2));           // 3
+// console.log(sum(5)(-1));          // 4
+
+// 6.3.7 Что выведет данный код?
+// P.S. В этой задаче есть подвох. Решение не очевидно.
+
+// let x = 1;
+
+// function func() {
+//   console.log(x); // Uncaught ReferenceError: Cannot access 'x' before initialization
+
+//   let x = 2;
+// }
+
+// func();
+
+// 6.3.8 У нас есть встроенный метод arr.filter(f) для массивов. Он фильтрует все элементы с помощью функции f. Если она возвращает true, то элемент добавится в возвращаемый массив.
+// Сделайте набор «готовых к употреблению» фильтров:
+// - inBetween(a, b) – между a и b (включительно).
+// - inArray([...]) – находится в данном массиве.
+// Они должны использоваться таким образом:
+// - arr.filter(inBetween(3,6)) – выбирает только значения между 3 и 6 (включительно).
+// - arr.filter(inArray([1,2,3])) – выбирает только элементы, совпадающие с одним из элементов массива
+
+// function inBetween(a, b) {
+//   return function(x) {
+//     return x >= a && x <= b;
+//   };
+// };
+
+// function inArray(arr) {
+//   return function(x) {
+//     return arr.includes(x);
+//   };
+// };
+
+// let arr = [1, 2, 3, 4, 5, 6, 7];
+// console.log(arr.filter(inBetween(3,6)));
+// console.log(arr.filter(inArray([1,2,10])));
+
+// 6.3.9 У нас есть массив объектов, который нужно отсортировать:
+// Обычный способ был бы таким:
+
+// // по имени (Ann, John, Pete)
+// users.sort((a, b) => a.name > b.name ? 1 : -1);
+
+// // по возрасту (Pete, Ann, John)
+// users.sort((a, b) => a.age > b.age ? 1 : -1);
+// Можем ли мы сделать его короче, например вот таким?
+
+// users.sort(byField('name'));
+// users.sort(byField('age'));
+// То есть чтобы вместо функции мы просто писали byField(fieldName).
+// Напишите функцию byField, которая может быть использована для этого.
+
+
+// let users = [
+//   { name: "John", age: 20, surname: "Johnson" },
+//   { name: "Pete", age: 18, surname: "Peterson" },
+//   { name: "Ann", age: 19, surname: "Hathaway" }
+// ];
+
+// function byField(fieldName){
+//   return (a, b) => a[fieldName] > b[fieldName] ? 1 : -1;
+// };
+
+// users.sort(byField('name'));
+// users.sort(byField('age'));
+
+// 6.3.10 Следующий код создаёт массив из стрелков (shooters).
+// Каждая функция предназначена выводить их порядковые номера. Но что-то пошло не так…
+// Почему у всех стрелков одинаковые номера?
+
+// Почините код, чтобы он работал как задумано.
+
+// function makeArmy() {
+//   let shooters = [];
+
+//   let i = 0;
+//   while (i < 10) {
+//     let j = i;
+//     let shooter = function() { // функция shooter
+//       console.log(j); // должна выводить порядковый номер
+//     };
+//     shooters.push(shooter); // и добавлять стрелка в массив
+//     i++;
+//   }
+
+//   // ...а в конце вернуть массив из всех стрелков
+//   return shooters;
+// }
+
+// let army = makeArmy();
+
+// // все стрелки выводят 10 вместо их порядковых номеров (0, 1, 2, 3...)
+// army[0](); // 10 от стрелка с порядковым номером 0
+// army[1](); // 10 от стрелка с порядковым номером 1
+// army[2](); // 10 ...и т.д.
+
+
+/*--- 6.5 Объект функции, NFE ---*/
+
+// 6.5.1 Измените код makeCounter() так, чтобы счётчик мог уменьшать и устанавливать значение:
+// - counter() должен возвращать следующее значение (как и раньше).
+// - counter.set(value) должен устанавливать счётчику значение value.
+// - counter.decrease() должен уменьшать значение счётчика на 1.
+// Посмотрите код из песочницы с полным примером использования.
+// P.S. Для того, чтобы сохранить текущее значение счётчика, можно воспользоваться как замыканием, так и свойством функции. Или сделать два варианта решения: и так, и так.
+
+// function makeCounter() {
+//   let count = 0;
+
+//   function counter() {
+//     return count++;
+//   }
+
+//   counter.set = value => count = value;
+
+//   counter.decrease = () => count--;
+
+//   return counter;
+// };
+
+// 6.5.2 Напишите функцию sum, которая бы работала следующим образом:
+// P.S. Подсказка: возможно вам стоит сделать особый метод преобразования в примитив для функции.
+
+// function sum(a) {
+
+//   let currentSum = a;
+
+//   function f(b) {
+//     currentSum += b;
+//     return f;
+//   }
+
+//   f.toString = function() {
+//     return currentSum;
+//   };
+
+//   return f;
+// };
+
+// console.log(sum(1)(2));
+// console.log(sum(5)(-1)(2));
+// console.log(sum(6)(-1)(-2)(-3));
+// console.log(sum(0)(1)(2)(3)(4)(5));
+
+
+/*--- 6.8 Планирование: setTimeout и setInterval ---*/
+
+// let start = Date.now();
+// let times = [];
+
+// setTimeout(function run() {
+//   times.push(Date.now() - start); // запоминаем задержку от предыдущего вызова
+
+//   if (start + 100 < Date.now()) console.log(times); // показываем задержку через 100 мс
+//   else setTimeout(run); // если нужно ещё запланировать
+// });
+
+// 6.8.1 Напишите функцию printNumbers(from, to), которая выводит число каждую секунду, начиная от from и заканчивая to.
+// Сделайте два варианта решения.
+// - Используя setInterval.
+// - Используя рекурсивный setTimeout.
+
+// function printNumbers(from, to) {
+//   let current = from;
+
+//   let timerId = setInterval(function() {
+//     console.log(current);
+//     if (current == to) {
+//       clearInterval(timerId);
+//     }
+//     current++;
+//   }, 1000);
+// };
+
+// // использование:
+// printNumbers(5, 10);
+
+// function printNumbers2(from, to) {
+//   let current = from;
+
+//   setTimeout(function go() {
+//     console.log(current);
+//     if (current < to) {
+//       setTimeout(go, 1000);
+//     }
+//     current++;
+//   }, 1000);
+// };
+
+// // использование:
+// printNumbers2(5, 10);
+
+// function printNumbers3(from, to) {
+//   let current = from;
+
+//   function go() {
+//     console.log(current);
+//     if (current == to) {
+//       clearInterval(timerId);
+//     }
+//     current++;
+//   }
+
+//   go();
+//   let timerId = setInterval(go, 1000);
+// };
+
+// printNumbers3(5, 10);
+
+// 6.8.2 Когда будет выполнена запланированная функция?
+// - После цикла.
+// - Перед циклом.
+// - В начале цикла.
+// Что покажет alert?
+
+// let i = 0;
+
+// setTimeout(() => console.log(i), 100); // ?
+
+// // предположим, что время выполнения этой функции >100 мс
+// for(let j = 0; j < 100000000; j++) {
+//   i++;
+// };
+
+
+/*--- 6.9 Декораторы и переадресация вызова, call/apply ---*/
+
+// 6.9.1 Создайте декоратор spy(func), который должен возвращать обёртку, которая сохраняет все вызовы функции в своём свойстве calls.
+// Каждый вызов должен сохраняться как массив аргументов.
+// P.S.: Этот декоратор иногда полезен для юнит-тестирования. Его расширенная форма – sinon.spy – содержится в библиотеке Sinon.JS.
+
+// function work(a, b) {
+//   console.log(a + b); // произвольная функция или метод
+// }
+
+// work = spy(work);
+
+// work(1, 2); // 3
+// work(4, 5); // 9
+
+// for (let args of work.calls) {
+//   console.log('call:' + args.join()); // "call:1,2", "call:4,5"
+// };
+
+// function spy(func) {
+
+//   function wrapper(...args) {
+//     // мы используем ...args вместо arguments для хранения "реального" массива в wrapper.calls
+//     wrapper.calls.push(args);
+//     return func.apply(this, args);
+//   }
+
+//   wrapper.calls = [];
+
+//   return wrapper;
+// };
+
+// 6.9.2 Создайте декоратор delay(f, ms), который задерживает каждый вызов f на ms миллисекунд. Например:
+// Другими словами, delay(f, ms) возвращает вариант f с «задержкой на ms мс».
+// В приведённом выше коде f – функция с одним аргументом, но ваше решение должно передавать все аргументы и контекст this.
+
+// function f(x) {
+//   console.log(x);
+// }
+
+// // создаём обёртки
+// let f1000 = delay(f, 1000);
+// let f1500 = delay(f, 1500);
+
+// function delay(f, ms) {
+
+//   return function(...args) {
+//     let savedThis = this; // сохраняем this в промежуточную переменную
+//     setTimeout(function() {
+//       f.apply(savedThis, args); // используем её
+//     }, ms);
+//   };
+
+// };
+
+// f1000("test"); // показывает "test" после 1000 мс
+// f1500("test"); // показывает "test" после 1500 мс
+
+// 6.9.3 Задача — реализовать декоратор debounce.
+// Подсказка: это всего лишь несколько строк, если вдуматься :)
+
+// function debounce(func, ms) {
+//   let timeout;
+//   return function() {
+//     clearTimeout(timeout);
+//     timeout = setTimeout(() => func.apply(this, arguments), ms);
+//   };
+// };
+
+// 6.9.4 Создайте «тормозящий» декоратор throttle(f, ms), который возвращает обёртку.
+// При многократном вызове он передает вызов f не чаще одного раза в ms миллисекунд.
+
+// function throttle(func, ms) {
+
+//   let isThrottled = false,
+//     savedArgs,
+//     savedThis;
+
+//   function wrapper() {
+
+//     if (isThrottled) { // (2)
+//       savedArgs = arguments;
+//       savedThis = this;
+//       return;
+//     }
+
+//     func.apply(this, arguments); // (1)
+
+//     isThrottled = true;
+
+//     setTimeout(function() {
+//       isThrottled = false; // (3)
+//       if (savedArgs) {
+//         wrapper.apply(savedThis, savedArgs);
+//         savedArgs = savedThis = null;
+//       }
+//     }, ms);
+//   }
+
+//   return wrapper;
+// };
+
+
+/*--- 6.10 Привязка контекста к функции ---*/
+
+// 6.10.1 Что выведет функция?
+
+// function f() {
+//   console.log(this);          // null
+// };
+// let user = {
+//   g: f.bind(null)
+// };
+// user.g();
+
+// 6.10.2 Можем ли мы изменить this дополнительным связыванием?
+// Что выведет этот код?
+
+// function f() {
+//   console.log(this.name);       // Вася
+// };
+// f = f.bind( {name: "Вася"} ).bind( {name: "Петя" } );
+// f();
+
+// 6.10.3 В свойство функции записано значение. Изменится ли оно после применения bind? Обоснуйте ответ.
+
+// function sayHi() {
+//   console.log(this.name);       
+// };
+// sayHi.test = 5;
+
+// let bound = sayHi.bind({
+//   name: "Вася"
+// });
+
+// console.log( bound.test );        // undefined 
+
+// 6.10.4 Вызов askPassword() в приведённом ниже коде должен проверить пароль и затем вызвать user.loginOk/loginFail в зависимости от ответа.
+// Однако, его вызов приводит к ошибке. Почему?
+// Исправьте выделенную строку, чтобы всё работало (других строк изменять не надо).
+
+// function askPassword(ok, fail) {
+//   let password = prompt("Password?", '');
+//   if (password == "rockstar") ok();
+//   else fail();
+// };
+
+// let user = {
+//   name: 'Вася',
+//   loginOk() {
+//     console.log(`${this.name} logged in`);
+//   },
+//   loginFail() {
+//     console.log(`${this.name} failed to log in`);
+//   },
+// };
+
+// askPassword(user.loginOk.bind(user), user.loginFail.bind(user));
+
+// 6.10.5 Это задание является немного усложнённым вариантом одного из предыдущих – Исправьте функцию, теряющую "this".
+// Объект user был изменён. Теперь вместо двух функций loginOk/loginFail у него есть только одна – user.login(true/false).
+// Что нужно передать в вызов функции askPassword в коде ниже, чтобы она могла вызывать функцию user.login(true) как ok и функцию user.login(false) как fail?
+// Ваши изменения должны затрагивать только выделенный фрагмент кода.
+
+// function askPassword(ok, fail) {
+//   let password = prompt("Password?", '');
+//   if (password == "rockstar") ok();
+//   else fail();
+// }
+
+// let user = {
+//   name: 'John',
+
+//   login(result) {
+//     console.log( this.name + (result ? ' logged in' : ' failed to log in') );
+//   }
+// };
+
+// askPassword(() => user.login(true), () => user.login(false));
+// askPassword(user.login.bind(user, true), user.login.bind(user, false));
+
+
+/*--- 8.1 Прототипное наследование ---*/
+
+// 8.1.1 В приведённом ниже коде создаются и изменяются два объекта.
+// Какие значения показываются в процессе выполнения кода?
+
+// let animal = {
+//   jumps: null
+// };
+// let rabbit = {
+//   __proto__: animal,
+//   jumps: true
+// };
+// console.log(rabbit.jumps);        // true
+// delete rabbit.jumps;
+// console.log(rabbit.jumps);        // null
+// delete animal.jumps;
+// console.log(rabbit.jumps);        // undefined
+
+// 8.1.2 Задача состоит из двух частей.
+// У нас есть объекты. 
+// С помощью свойства __proto__ задайте прототипы так, чтобы поиск любого свойства выполнялся по следующему пути: pockets → bed → table → head. Например, pockets.pen должно возвращать значение 3 (найденное в table), а bed.glasses – значение 1 (найденное в head).
+// Ответьте на вопрос: как быстрее получить значение glasses – через pockets.glasses или через head.glasses? При необходимости составьте цепочки поиска и сравните их.
+
+// let head = {
+//   glasses: 1
+// };
+
+// let table = {
+//   pen: 3,
+//   __proto__: head,
+// };
+
+// let bed = {
+//   sheet: 1,
+//   pillow: 2,
+//   __proto__: table,
+// };
+
+// let pockets = {
+//   money: 2000,
+//   __proto__: bed,
+// };
+
+// console.log(pockets.pen);           // 3
+// console.log(bed.glasses);           // 1
+
+// 8.1.3 Объект rabbit наследует от объекта animal.
+// Какой объект получит свойство full при вызове rabbit.eat(): animal или rabbit?
+
+// let animal = {
+//   eat() {
+//     this.full = true;
+//   }
+// };
+
+// let rabbit = {
+//   __proto__: animal
+// };
+
+// rabbit.eat();
+
+// 8.1.4 У нас есть два хомяка: шустрый (speedy) и ленивый (lazy); оба наследуют от общего объекта hamster.
+// Когда мы кормим одного хомяка, второй тоже наедается. Почему? Как это исправить?
+
+// 1-й вариант
+// let hamster = {
+//   stomach: [],
+
+//   eat(food) {
+//     // this.stomach.push(food);
+//     this.stomach = [food]
+//   }
+// };
+
+// let speedy = {
+//   __proto__: hamster
+// };
+
+// let lazy = {
+//   __proto__: hamster
+// };
+
+// speedy.eat('apple');
+// console.log(speedy.stomach);
+// console.log(lazy.stomach);
+
+// 2-й вариант
+// let hamster = {
+//   stomach: [],
+
+//   eat(food) {
+//     this.stomach.push(food);
+//   }
+// };
+
+// let speedy = {
+//   __proto__: hamster,
+//   stomach: []
+// };
+
+// let lazy = {
+//   __proto__: hamster,
+//   stomach: []
+// };
+
+// // Шустрый хомяк нашёл еду
+// speedy.eat('apple');
+// console.log(speedy.stomach);    // apple
+// // console.log(lazy.stomach); 
+
+// // Живот ленивого хомяка пуст
+// console.log(lazy.stomach);      // <ничего>
+
+
+/*--- 8.2 F.prototype ---*/
+
+// 8.2.1 В коде ниже мы создаём нового кролика new Rabbit, а потом пытаемся изменить его прототип.
+// Сначала у нас есть такой код:
+
+// function Rabbit() { }
+// Rabbit.prototype = {
+//   eats: true
+// };
+
+// let rabbit = new Rabbit();
+// console.log(rabbit.eats);       // true
+// Rabbit.prototype = {};
+// console.log(rabbit.eats);       // true
+// Rabbit.prototype.eats = false;
+// console.log(rabbit.eats);       // false
+// delete rabbit.eats;
+// console.log(rabbit.eats);       // true
+// delete Rabbit.prototype.eats;
+// console.log(rabbit.eats);       // undefined
+
+// 8.2.2 Представьте, что у нас имеется некий объект obj, созданный функцией-конструктором – мы не знаем какой именно, но хотелось бы создать ещё один объект такого же типа.
+// Можем ли мы сделать так?
+// let obj2 = new obj.constructor();
+// Приведите пример функции-конструктора для объекта obj, с которой такой вызов корректно сработает. И пример функции-конструктора, с которой такой код поведёт себя неправильно.
+
+// function User(name) {
+//   this.name = name;
+// }
+// User.prototype = {}; // (*)
+
+// let user = new User('John');
+// let user2 = new user.constructor('Pete');
+
+// console.log( user2.name ); // undefined
+
+
+/*--- 8.3 Встроенные прототипы ---*/
+
+// 8.3.1 Добавьте всем функциям в прототип метод defer(ms), который вызывает функции через ms миллисекунд.
+// После этого должен работать такой код:
+
+// Function.prototype.defer = function(ms) {
+//   setTimeout(this, ms);
+// };
+
+// function f() {
+//   console.log('Hello');
+// };
+
+// f.defer(1000);
+
+// 8.3.2 Добавьте всем функциям в прототип метод defer(ms), который возвращает обёртку, откладывающую вызов функции на ms миллисекунд.
+// Например, должно работать так:
+// Пожалуйста, заметьте, что аргументы должны корректно передаваться оригинальной функции.
+
+// Function.prototype.defer = function (ms) {
+//   let f = this;
+//   return function (...args) {
+//     setTimeout(() => f.apply(this, args), ms);
+//   }
+// };
+
+// // check it
+// function f(a, b) {
+//   console.log(a + b);
+// };
+
+// f.defer(1000)(1, 2); // выведет 3 через 1 секунду.
+
+
+/*--- 8.4 Методы прототипов, объекты без свойства __proto__ ---*/
+
+// 8.4.1 Имеется объект dictionary, созданный с помощью Object.create(null) для хранения любых пар ключ/значение.
+// Добавьте ему метод dictionary.toString(), который должен возвращать список ключей, разделённых запятой. Ваш toString не должен выводиться при итерации объекта с помощью цикла for..in.
+// Вот так это должно работать:
+
+// let dictionary = Object.create(null, {
+//   toString: { // определяем свойство toString
+//     value() { // значение -- это функция
+//       return Object.keys(this).join();
+//     }
+//   }
+// });
+
+// dictionary.apple = "Apple";
+// dictionary.__proto__ = "test";
+
+// // apple и __proto__ выведены в цикле
+// for(let key in dictionary) {
+//   console.log(key); // "apple", затем "__proto__"
+// }
+
+// // список свойств, разделённых запятой, выведен с помощью toString
+// console.log(dictionary); // "apple,__proto__"
+
+// 8.4.2 Давайте создадим новый объект rabbit:
+// Все эти вызовы делают одно и тоже или нет?
+
+// function Rabbit(name) {
+//   this.name = name;
+// }
+// Rabbit.prototype.sayHi = function() {
+//   console.log(this.name);
+// };
+
+// let rabbit = new Rabbit("Rabbit");
+
+
+// rabbit.sayHi();                         // Rabbit
+// Rabbit.prototype.sayHi();               // undefined
+// Object.getPrototypeOf(rabbit).sayHi();  // undefined
+// rabbit.__proto__.sayHi();               // undefined
+
+
+/*--- 9.1 Класс: базовый синтаксис ---*/
