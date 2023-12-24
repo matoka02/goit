@@ -2786,3 +2786,399 @@
 
 
 /*--- 9.1 Класс: базовый синтаксис ---*/
+
+// 9.1.1 Класс Clock написан в функциональном стиле. Перепишите его, используя современный синтаксис классов.
+// P.S. Часики тикают в консоли. Откройте её, чтобы посмотреть.
+
+// class Clock {
+//   constructor({ template }) {
+//     this.template = template;
+//   }
+
+//   render() {
+//     let date = new Date();
+
+//     let hours = date.getHours();
+//     if (hours < 10) hours = '0' + hours;
+//     let mins = date.getMinutes();
+//     if (mins < 10) mins = '0' + mins;
+//     let secs = date.getSeconds();
+//     if (secs < 10) secs = '0' + secs;
+
+//     let output = this.template
+//       .replace('h', hours)
+//       .replace('m', mins)
+//       .replace('s', secs);
+
+//     console.log(output);
+//   }
+
+//   stop() {
+//     clearInterval(this.timer);
+//   }
+
+//   start() {
+//     this.render();
+//     this.timer = setInterval(() => this.render(), 1000);
+//   }
+// };
+
+// let clock = new Clock({ template: 'h:m:s' });
+// clock.start();
+// clock.stop();
+
+
+/*--- 9.2 Наследование классов ---*/
+
+// 9.2.1 В коде ниже класс Rabbit наследует Animal.
+// К сожалению, объект класса Rabbit не создаётся. Что не так? Исправьте ошибку.
+
+// class Animal {
+//   constructor(name) {
+//     this.name = name;
+//   }
+// };
+
+// class Rabbit extends Animal {
+//   constructor(name) {
+//     // this.name = name;
+//     super(name);
+//     this.created = Date.now();
+//   }
+// };
+
+// let rabbit = new Rabbit("Белый кролик");
+// console.log(rabbit.name);
+
+// 9.2.2 У нас есть класс Clock. Сейчас он выводит время каждую секунду. Создайте новый класс ExtendedClock, который будет наследоваться от Clock и добавьте параметр precision – количество миллисекунд между «тиками». Установите значение в 1000 (1 секунда) по умолчанию.
+// - Сохраните ваш код в файл extended-clock.js
+// - Не изменяйте класс clock.js. Расширьте его.
+
+// class Clock {
+//   constructor({ template }) {
+//     this.template = template;
+//   }
+
+//   render() {
+//     let date = new Date();
+
+//     let hours = date.getHours();
+//     if (hours < 10) hours = '0' + hours;
+//     let mins = date.getMinutes();
+//     if (mins < 10) mins = '0' + mins;
+//     let secs = date.getSeconds();
+//     if (secs < 10) secs = '0' + secs;
+
+//     let output = this.template
+//       .replace('h', hours)
+//       .replace('m', mins)
+//       .replace('s', secs);
+
+//     console.log(output);
+//   }
+
+//   stop() {
+//     clearInterval(this.timer);
+//   }
+
+//   start() {
+//     this.render();
+//     this.timer = setInterval(() => this.render(), 1000);
+//   }
+// };
+
+// class ExtendedClock extends Clock {
+//   constructor(options) {
+//     super(options);
+//     let { precision = 1000 } = options;
+//     this.precision = precision;
+//   }
+
+//   start() {
+//     this.render();
+//     this.timer = setInterval(() => this.render(), this.precision);
+//   }
+// };
+
+
+/*--- 9.3 Статические свойства и методы ---*/
+
+// 9.3.1 Как мы уже знаем, все объекты наследуют от Object.prototype и имеют доступ к «общим» методам объекта, например hasOwnProperty.
+// class Rabbit {
+//   constructor(name) {
+//     this.name = name;
+//   }
+// }
+// let rabbit = new Rabbit("Rab");
+// // метод hasOwnProperty от Object.prototype
+// console.log(rabbit.hasOwnProperty('name')); // true
+// Но что если мы явно напишем "class Rabbit extends Object" – тогда результат будет отличаться от обычного "class Rabbit"?
+// В чем разница?
+// Ниже пример кода с таким наследованием (почему он не работает? исправьте его):
+
+// class Rabbit extends Object {
+//   constructor(name) {
+//     super();
+//     this.name = name;
+//   }
+// };
+// let rabbit = new Rabbit("Кроль");
+// console.log(rabbit.hasOwnProperty('name'));       // true
+
+
+/*--- 9.6 Проверка класса: "instanceof" ---*/
+
+// 9.6.1 Почему instanceof в примере ниже возвращает true? Мы же видим, что a не создан с помощью B().
+
+// function A() { };
+// function B() { };
+
+// A.prototype = B.prototype = {};
+
+// let a = new A();
+
+// console.log(a instanceof B);        // true
+
+
+/*--- 10.1 Обработка ошибок, "try..catch" ---*/
+
+// 10.1.1 Сравните два фрагмента кода.
+// Первый использует finally для выполнения кода после try..catch:
+
+// try {
+//   начать работу
+//   работать
+// } catch (e) {
+//   обработать ошибку
+// } finally {
+//   очистить рабочее пространство
+// }
+
+// Второй фрагмент просто ставит очистку после try..catch:
+
+// try {
+//   начать работу
+//   работать
+// } catch (e) {
+//   обработать ошибку
+// }
+// очистить рабочее пространство
+
+// Нам определённо нужна очистка после работы, неважно возникли ошибки или нет.
+// Есть ли здесь преимущество в использовании finally или оба фрагмента кода одинаковы? Если такое преимущество есть, то дайте пример, когда оно проявляется.
+
+
+/*--- 10.2 Пользовательские ошибки, расширение Error ---*/
+
+// 10.2.1 Создайте класс FormatError, который наследует от встроенного класса SyntaxError.
+// Класс должен поддерживать свойства message, name и stack.
+// Пример использования:
+
+// class FormatError extends SyntaxError {
+//   constructor(message) {
+//     super(message);
+//     this.name = "FormatError";
+//   }
+// };
+
+// let err = new FormatError("ошибка форматирования");
+
+// console.log(err.message);       // ошибка форматирования
+// console.log(err.name);          // FormatError
+// console.log(err.stack);         // FormatError: ошибка форматирования at learn-javascript.js:2984:11
+// console.log(err instanceof FormatError);      // true
+// console.log(err instanceof SyntaxError);      // true (потому что наследует от SyntaxError)
+
+
+/*--- 11.2 Промисы ---*/
+
+// 11.2.1 Что выведет код ниже?
+
+// let promise = new Promise(function(resolve, reject) {
+//   resolve(1);
+
+//   setTimeout(() => resolve(2), 1000);
+// });
+
+// promise.then(alert); 
+
+// 11.2.2 Встроенная функция setTimeout использует колбэк-функции. Создайте альтернативу, использующую промисы.
+// Функция delay(ms) должна возвращать промис, который перейдёт в состояние «выполнен» через ms миллисекунд, так чтобы мы могли добавить к нему .then:
+
+// function delay(ms) {
+//   return new Promise(resolve => setTimeout(resolve, ms));
+// };
+
+// delay(3000).then(() => console.log('выполнилось через 3 секунды'));
+
+// 11.2.3 Перепишите функцию showCircle, написанную в задании Анимация круга с помощью колбэка таким образом, чтобы она возвращала промис, вместо того чтобы принимать в аргументы функцию-callback.
+// Новое использование:
+// showCircle(150, 150, 100).then(div => {
+//   div.classList.add('message-ball');
+//   div.append("Hello, world!");
+// });
+
+// См. learn-javascript-test.html
+
+
+/*--- 11.3 Цепочка промисов ---*/
+
+// 11.3.1 Являются ли фрагменты кода ниже эквивалентными? Другими словами, ведут ли они себя одинаково во всех обстоятельствах, для всех переданных им обработчиков?
+// promise.then(f1).catch(f2);
+// Против:
+// promise.then(f1, f2);
+
+
+/*--- 11.4 Промисы: обработка ошибок ---*/
+
+// 11.4.1 Что вы думаете? Выполнится ли .catch? Поясните свой ответ.
+
+// new Promise(function(resolve, reject) {
+//   setTimeout(() => {
+//     throw new Error("Whoops!");
+//   }, 1000);
+// }).catch(alert);                  // Uncaught Error: Whoops!
+
+
+/*--- 11.8 Async/await ---*/
+
+// 11.8.1 Перепишите один из примеров раздела Цепочка промисов, используя async/await вместо .then/catch:
+// function loadJson(url) {
+//   return fetch(url)
+//     .then(response => {
+//       if (response.status == 200) {
+//         return response.json();
+//       } else {
+//         throw new Error(response.status);
+//       }
+//     })
+// }
+// loadJson('no-such-user.json') // (3)
+//   .catch(alert); // Error: 404
+
+// async function loadJson(url) {          // (1)
+//   let response = await fetch(url);      // (2)
+
+//   if (response.status == 200) {
+//     let json = await response.json();   // (3)
+//     return json;
+//   }
+
+//   throw new Error(response.status);
+// }
+
+// loadJson('no-such-user.json').catch(alert);
+
+// 11.8.2 Ниже пример из раздела Цепочка промисов, перепишите его, используя async/await вместо .then/catch.
+// В функции demoGithubUser замените рекурсию на цикл: используя async/await, сделать это будет просто.
+
+// class HttpError extends Error {
+//   constructor(response) {
+//     super(`${response.status} for ${response.url}`);
+//     this.name = 'HttpError';
+//     this.response = response;
+//   }
+// }
+
+// function loadJson(url) {
+//   return fetch(url)
+//     .then(response => {
+//       if (response.status == 200) {
+//         return response.json();
+//       } else {
+//         throw new HttpError(response);
+//       }
+//     })
+// }
+
+// // Запрашивать логин, пока github не вернёт существующего пользователя.
+// function demoGithubUser() {
+//   let name = prompt("Введите логин?", "iliakan");
+
+//   return loadJson(`https://api.github.com/users/${name}`)
+//     .then(user => {
+//       console.log(`Полное имя: ${user.name}.`);
+//       return user;
+//     })
+//     .catch(err => {
+//       if (err instanceof HttpError && err.response.status == 404) {
+//         console.log("Такого пользователя не существует, пожалуйста, повторите ввод.");
+//         return demoGithubUser();
+//       } else {
+//         throw err;
+//       }
+//     });
+// }
+
+// demoGithubUser();
+
+// class HttpError extends Error {
+//   constructor(response) {
+//     super(`${response.status} for ${response.url}`);
+//     this.name = 'HttpError';
+//     this.response = response;
+//   }
+// }
+
+// async function loadJson(url) {
+//   let response = await fetch(url);
+//   if (response.status == 200) {
+//     return response.json();
+//   } else {
+//     throw new HttpError(response);
+//   }
+// }
+
+// // Запрашивать логин, пока github не вернёт существующего пользователя.
+// async function demoGithubUser() {
+
+//   let user;
+//   while(true) {
+//     let name = prompt("Введите логин?", "iliakan");
+
+//     try {
+//       user = await loadJson(`https://api.github.com/users/${name}`);
+//       break; // ошибок не было, выходим из цикла
+//     } catch(err) {
+//       if (err instanceof HttpError && err.response.status == 404) {
+//         // после alert начнётся новая итерация цикла
+//         console.log("Такого пользователя не существует, пожалуйста, повторите ввод.");
+//       } else {
+//         // неизвестная ошибка, пробрасываем её
+//         throw err;
+//       }
+//     }
+//   }
+
+
+//   console.log(`Полное имя: ${user.name}.`);
+//   return user;
+// }
+
+// demoGithubUser();
+
+// 11.8.3 Есть «обычная» функция. Как можно внутри неё получить результат выполнения async–функции?
+// async function wait() {
+//   await new Promise(resolve => setTimeout(resolve, 1000));
+
+//   return 10;
+// }
+// function f() {
+//   // ...что здесь написать?
+//   // чтобы вызвать wait() и дождаться результата "10" от async–функции
+//   // не забывайте, здесь нельзя использовать "await"
+// }
+// P.S. Технически задача очень простая, но этот вопрос часто задают разработчики, недавно познакомившиеся с async/await.
+
+// async function wait() {
+//   await new Promise(resolve => setTimeout(resolve, 1000));
+
+//   return 10;
+// };
+
+// function f() {
+//   // покажет 10 через 1 секунду
+//   wait().then(result => console.log(result));
+// };
+
+// f();
