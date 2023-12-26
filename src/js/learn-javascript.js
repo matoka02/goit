@@ -3182,3 +3182,227 @@
 // };
 
 // f();
+
+
+/*--- 12.1 Генераторы ---*/
+
+// function* generateSequence() {
+//   yield 1;
+//   yield 2;
+//   return 3;
+// };
+
+// let generator = generateSequence();
+// // console.log(generator);                   // generateSequence {<suspended>}
+// let one = generator.next();
+// console.log(JSON.stringify(one));         // {"value":1,"done":false}
+// let two = generator.next();
+// console.log(JSON.stringify(two));         // {"value":2,"done":false}
+// let three = generator.next();
+// console.log(JSON.stringify(three));         // {"value":2,"done":true}
+
+// 12.1.1 Есть много областей, где нам нужны случайные данные.
+// Одной из них является тестирование. Нам могут понадобиться случайные данные: текст, числа и т.д., чтобы хорошо всё проверить.
+// В JavaScript мы можем использовать Math.random(). Но если что-то пойдёт не так, то нам нужно будет перезапустить тест, используя те же самые данные.
+// Для этого используются так называемые «сеяные псевдослучайные генераторы». Они получают «зерно», как первое значение, и затем генерируют следующее, используя формулу. Так что одно и то же зерно даёт одинаковую последовательность, и, следовательно, весь поток легко воспроизводим. Нам нужно только запомнить зерно, чтобы воспроизвести последовательность.
+// Пример такой формулы, которая генерирует более-менее равномерно распределённые значения:
+// next = previous * 16807 % 2147483647
+// Если мы используем 1 как зерно, то значения будут:
+// 16807
+// 282475249
+// 1622650073
+// …и так далее…
+// Задачей является создать функцию-генератор pseudoRandom(seed), которая получает seed и создаёт генератор с указанной формулой.
+// Пример использования:
+
+// function* pseudoRandom(seed) {
+//   let value = seed;
+//   while(true) {
+//     value = value * 16807 % 2147483647
+//     yield value;
+//   }
+// };
+
+// let generator = pseudoRandom(1);
+
+// console.log(generator.next().value);            // 16807
+// console.log(generator.next().value);            // 282475249
+// console.log(generator.next().value);            // 1622650073
+
+// рефакторинг без генераторов
+// function pseudoRandom2(seed) {
+//   let value = seed;
+//   return function() {
+//     value = value * 16807 % 2147483647;
+//     return value;
+//   }
+// };
+
+// let generator2 = pseudoRandom2(1);
+
+// console.log(generator2());            // 16807
+// console.log(generator2());            // 282475249
+// console.log(generator2());            // 1622650073
+
+
+/*--- 13.1 Proxy и Reflect ---*/
+
+// 13.1.1 Обычно при чтении несуществующего свойства из объекта возвращается undefined.
+// Создайте прокси, который генерирует ошибку при попытке прочитать несуществующее свойство.
+// Это может помочь обнаружить программные ошибки пораньше.
+// Напишите функцию wrap(target), которая берёт объект target и возвращает прокси, добавляющий в него этот аспект функциональности.
+// Вот как это должно работать:
+// let user = {
+//   name: "John"
+// };
+// function wrap(target) {
+//   return new Proxy(target, {
+//       /* ваш код */
+//   });
+// }
+// user = wrap(user);
+
+// let user = {
+//   name: "John"
+// };
+
+// function wrap(target) {
+//   return new Proxy(target, {
+//     get(target, prop, receiver) {
+//       if (prop in target) {
+//         return Reflect.get(target, prop, receiver);
+//       } else {
+//         throw new ReferenceError(`Property does not exist: "${prop}"`)
+//       }
+//     }
+//   });
+// };
+
+// user = wrap(user);
+// console.log(user.name);
+// console.log(user.age);
+
+// 13.1.2 В некоторых языках программирования возможно получать элементы массива, используя отрицательные индексы, отсчитываемые с конца.
+// Вот так:
+// let array = [1, 2, 3];
+// array[-1]; // 3, последний элемент
+// array[-2]; // 2, предпоследний элемент
+// array[-3]; // 1, за два элемента до последнего
+// Другими словами, array[-N] – это то же, что и array[array.length - N].
+// Создайте прокси, который реализовывал бы такое поведение.
+// Вот как это должно работать:
+// let array = [1, 2, 3];
+// array = new Proxy(array, {
+//   /* ваш код */
+// });
+// alert( array[-1] ); // 3
+// alert( array[-2] ); // 2
+// // вся остальная функциональность массивов должна остаться без изменений
+
+// let array = [1, 2, 3];
+
+// array = new Proxy(array, {
+//   get(target, prop, receiver) {
+//     if (prop < 0) {
+//       // даже если обращение к элементу идёт как arr[1]
+//       // prop является строкой, нужно преобразовать её к числу
+//       prop = +prop + target.length;
+//     }
+//     return Reflect.get(target, prop, receiver);
+//   }
+// });
+
+// console.log(array[-1]);
+// console.log(array[-2]);
+
+// 13.1.3 Создайте функцию makeObservable(target), которая делает объект «наблюдаемым», возвращая прокси.
+// Вот как это должно работать:
+// function makeObservable(target) {
+//   /* ваш код */
+// }
+// let user = {};
+// user = makeObservable(user);
+// user.observe((key, value) => {
+//   alert(`SET ${key}=${value}`);
+// });
+// user.name = "John"; // выводит: SET name=John
+// Другими словами, возвращаемый makeObservable объект аналогичен исходному, но также имеет метод observe(handler), который позволяет запускать handler при любом изменении свойств.
+// При изменении любого свойства вызывается handler(key, value) с именем и значением свойства.
+// P.S. В этой задаче ограничьтесь, пожалуйста, только записью свойства. Остальные операции могут быть реализованы похожим образом.
+
+// let handlers = Symbol('handlers');
+
+// function makeObservable(target) {
+//   // 1. Создадим хранилище обработчиков
+//   target[handlers] = [];
+
+//   // положим туда функции-обработчики для вызовов в будущем
+//   target.observe = function (handler) {
+//     this[handlers].push(handler);
+//   };
+
+//   // 2. Создадим прокси для реакции на изменения
+//   return new Proxy(target, {
+//     set(target, property, value, receiver) {
+//       let success = Reflect.set(...arguments); // перенаправим операцию к оригинальному объекту
+//       if (success) { // если не произошло ошибки при записи свойства
+//         // вызовем обработчики
+//         target[handlers].forEach(handler => handler(property, value));
+//       }
+//       return success;
+//     }
+//   });
+// }
+
+// let user = {};
+
+// user = makeObservable(user);
+
+// user.observe((key, value) => {
+//   console.log(`SET ${key}=${value}`);
+// });
+
+// user.name = 'Jhon';
+
+
+/*--- 13.2 Eval: выполнение строки кода ---*/
+
+// 13.2.1 Создайте калькулятор, который запрашивает ввод какого-нибудь арифметического выражения и возвращает результат его вычисления.
+// В этой задаче нет необходимости проверять полученное выражение на корректность, просто вычислить и вернуть результат.
+// Давайте будем использовать eval для вычисления арифметических выражений:
+// Пользователь может ввести любой текст или код.
+// В целях безопасности ограничимся только арифметическими операциями, проверяя переданное expr с помощью регулярного выражения, чтобы удостовериться, что в нём содержатся только цифры и соответствующие операторы.
+
+// let expr = prompt("Введите арифметическое выражение:", '2*3+2');
+// console.log(eval(expr));        // 8
+
+
+/*--- 13.4 Ссылочный тип ---*/
+
+// 13.4.1 Каким будет результат выполнения этого кода?
+// P.S. Здесь есть подвох :)
+
+// let user = {
+//   name: "John",
+//   go: function() {console.log(this.name)}
+// }
+
+// (user.go)();                    // Uncaught ReferenceError: Cannot access 'user' before initialization
+
+// 13.4.2 В представленном ниже коде мы намерены вызвать obj.go() метод 4 раза подряд.
+// Но вызовы (1) и (2) работают иначе, чем (3) и (4). Почему?
+
+// let obj, method;
+
+// obj = {
+//   go: function() {console.log(this)}
+// };
+
+// obj.go();               // (1) [object Object]
+// (obj.go)();             // (2) [object Object]
+// (method = obj.go)();    // (3) undefined
+// (obj.go || obj.stop)(); // (4) undefined
+
+
+/*--- 13.5 Побитовые операторы ---*/
+
