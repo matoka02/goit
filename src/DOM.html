@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DOM</title>
-    <link rel="stylesheet" href="./css/dom.css">
-</head>
-<body>
+    <link rel="stylesheet" href="./css/dom.css" />
+  </head>
+  <body>
     <a href="./index.html">Go back</a>
 
     <!-- --- 1.3 Навигация по DOM-элементам --- -->
@@ -95,6 +95,198 @@
       <input type="submit" value="Search!">
     </form> -->
 
+    <!-- --- 1.5 Свойства узлов: тип, тег и содержимое --- -->
+
+    <!-- <ul>
+      <li>Животные
+        <ul>
+          <li>Млекопитающие
+            <ul>
+              <li>Коровы</li>
+              <li>Ослы</li>
+              <li>Собаки</li>
+              <li>Тигры</li>
+            </ul>
+          </li>
+          <li>Другие
+            <ul>
+              <li>Змеи</li>
+              <li>Птицы</li>
+              <li>Ящерицы</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>Рыбы
+        <ul>
+          <li>Аквариумные
+            <ul>
+              <li>Гуппи</li>
+              <li>Рыба-ангел</li>
+            </ul>
+          </li>
+          <li>Морские
+            <ul>
+              <li>Морская форель</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul> -->
+
+    <!-- --- 1.6 Атрибуты и свойства --- -->
+
+    <!-- <div data-widget-name="menu">Choose the genre</div> -->
+
+    <!-- <a name="list">the list</a>
+  <ul>
+    <li><a href="http://google.com">http://google.com</a></li>
+    <li><a href="/tutorial">/tutorial.html</a></li>
+    <li><a href="local/path">local/path</a></li>
+    <li><a href="ftp://ftp.com/my.zip">ftp://ftp.com/my.zip</a></li>
+    <li><a href="http://nodejs.org">http://nodejs.org</a></li>
+    <li><a href="http://internal.com/test">http://internal.com/test</a></li>
+  </ul> -->
+
+    <!-- --- 1.7 Изменение документа --- -->
+
+    <!-- <div id="elem1"></div>
+  <div id="elem2"></div>
+  <div id="elem3"></div> -->
+
+    <!-- <ol id="elem">
+    <li>Привет</li>
+    <li>Мир</li>
+  </ol> -->
+
+    <!-- <table id="table">
+    aaa
+    <tr>
+      <td>Тест</td>
+    </tr>
+  </table> -->
+
+    <!-- <h1>Создать список</h1> -->
+
+    <!-- <div id="container"></div> -->
+
+    <!-- <ul>
+    <li>Животные
+      <ul>
+        <li>Млекопитающие
+          <ul>
+            <li>Коровы</li>
+            <li>Ослы</li>
+            <li>Собаки</li>
+            <li>Тигры</li>
+          </ul>
+        </li>
+        <li>Другие
+          <ul>
+            <li>Змеи</li>
+            <li>Птицы</li>
+            <li>Ящерицы</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li>Рыбы
+      <ul>
+        <li>Аквариумные
+          <ul>
+            <li>Гуппи</li>
+            <li>Скалярии</li>
+          </ul>
+        </li>
+        <li>Морские
+          <ul>
+            <li>Морская форель</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul> -->
+
+    <!-- <div id="calendar"></div> -->
+
+    <!-- <div id="clock">
+      <span class="hour">hh</span>:<span class="min">mm</span>:<span class="sec"
+        >ss</span
+      >
+    </div>
+    <script>
+      let timerId;
+
+      function update() {
+        let clock = document.getElementById('clock');
+        let date = new Date(); // (*)
+        let hours = date.getHours();
+        if (hours < 10) hours = '0' + hours;
+        clock.children[0].innerHTML = hours;
+
+        let minutes = date.getMinutes();
+        if (minutes < 10) minutes = '0' + minutes;
+        clock.children[1].innerHTML = minutes;
+
+        let seconds = date.getSeconds();
+        if (seconds < 10) seconds = '0' + seconds;
+        clock.children[2].innerHTML = seconds;
+      }
+
+      function clockStart() {
+        // устанавить новый интервал только в том случае, если часы остановлены
+        // в противном случае мы бы переписали ссылку timerID на интервал выполнения и никогда больше не смогли бы остановить часы
+        if (!timerId) {
+          timerId = setInterval(update, 1000);
+        }
+        update(); // <--  начать тут же, не ждать 1 секунду пока первый setInterval сработает
+      }
+
+      function clockStop() {
+        clearInterval(timerId);
+        timerId = null; // <-- очистить timerID, чтобы указать, что часы были остановлены, чтобы можно было запустить их снова в clockStart()
+      }
+    </script>
+    <input type="button" onclick="clockStart()" value="Start" />
+    <input type="button" onclick="clockStop()" value="Stop" /> -->
+
+    <!-- <ul id="ul">
+      <li id="one">1</li>
+      <li id="two">4</li>
+    </ul> -->
+
+    <!-- <table id="table">
+      <tr>
+        <th>Имя</th>
+        <th>Фамилия</th>
+        <th>Возраст</th>
+      </tr>
+      <tr>
+        <td>John</td>
+        <td>Smith</td>
+        <td>10</td>
+      </tr>
+      <tr>
+        <td>Pete</td>
+        <td>Brown</td>
+        <td>15</td>
+      </tr>
+      <tr>
+        <td>Ann</td>
+        <td>Lee</td>
+        <td>5</td>
+      </tr>
+    </table> -->
+
+    <!-- --- 1.8 Стили и классы --- -->
+
+    <!-- <h2>Уведомление находится справа</h2>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum aspernatur quam ex eaque inventore quod voluptatem adipisci omnis nemo nulla fugit iste numquam ducimus cumque minima porro ea quidem maxime necessitatibus beatae labore soluta voluptatum
+      magnam consequatur sit laboriosam velit excepturi laborum sequi eos placeat et quia deleniti? Corrupti velit impedit autem et obcaecati fuga debitis nemo ratione iste veniam amet dicta hic ipsam unde cupiditate incidunt aut iure ipsum officiis soluta
+      temporibus. Tempore dicta ullam delectus numquam consectetur quisquam explicabo culpa excepturi placeat quo sequi molestias reprehenderit hic at nemo cumque voluptates quidem repellendus maiores unde earum molestiae ad.
+    </p> -->
+
     <script src="./js/DOM.js" type="module"></script>
-</body>
+  </body>
 </html>

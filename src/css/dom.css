@@ -8,3 +8,51 @@ td {
   border: 1px solid black;
   padding: 3px 5px;
 } */
+
+
+/* --- 1.7 Изменение документа --- */
+
+/* table{
+  border-collapse: collapse;
+}
+
+td, th{
+  border: 1px solid black;
+  padding: 3px;
+  text-align: center;
+}
+
+th{
+  font-weight: bold;
+  background-color: #e6e6e6;
+} */
+
+/* .hour {
+  color: red
+}
+
+.min {
+  color: green
+}
+
+.sec {
+  color: blue
+} */
+
+
+/* --- 1.8 Стили и классы --- */
+
+/* .notification {
+  position: fixed;
+  z-index: 1000;
+  padding: 5px;
+  border: 1px solid black;
+  font-size: 20px;
+  background: white;
+  text-align: center;
+}
+
+.welcome {
+  background: #b80000;
+  color: yellow;
+} */
