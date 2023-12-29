@@ -853,4 +853,147 @@
 // };
 
 
-/*--- 2.2 Всплытие и погружение ---*/
+/*--- 2.3 Делегирование событий ---*/
+
+// 2.3.1 Дан список сообщений с кнопками для удаления [x]. Заставьте кнопки работать.
+// В результате должно работать вот так:
+// P.S. Используйте делегирование событий. Должен быть лишь один обработчик на элементе-контейнере для всего.
+
+// container.onclick = function (evt) {
+//   if (evt.target.className != 'remove-button') return;
+//   let pane = evt.target.closest('.pane');
+//   pane.remove();
+// };
+
+// 2.3.2 Создайте дерево, которое по клику на заголовок скрывает-показывает потомков:
+// Требования:
+// - Использовать только один обработчик событий (применить делегирование)
+// - Клик вне текста заголовка (на пустом месте) ничего делать не должен.
+
+// // поместить все текстовые узлы в элемент <span>
+// // он занимает только то место, которое необходимо для текста
+// for (let li of tree.querySelectorAll('li')) {
+//   let span = document.createElement('span');
+//   li.prepend(span);
+//   span.append(span.nextSibling); // поместить текстовый узел внутрь элемента <span>
+// };
+
+// //  ловим клики на всём дереве
+// tree.onclick = function (evt) {
+//   if (evt.target.tagName != 'SPAN') return;
+//   let childrenContainer = evt.target.parentNode.querySelector('ul');
+//   if (!childrenContainer) return; // нет детей
+//   childrenContainer.hidden = !childrenContainer.hidden;
+// };
+
+// 2.3.3 Сделать таблицу сортируемой: при клике на элемент <th> строки таблицы должны сортироваться по соответствующему столбцу.
+// Каждый элемент <th> имеет атрибут data-type:
+// <table id="grid">
+//   <thead>
+//     <tr>
+//       <th data-type="number">Возраст</th>
+//       <th data-type="string">Имя</th>
+//     </tr>
+//   </thead>
+//   <tbody>
+//     <tr>
+//       <td>5</td>
+//       <td>Вася</td>
+//     </tr>
+//     <tr>
+//       <td>10</td>
+//       <td>Петя</td>
+//     </tr>
+//     ...
+//   </tbody>
+// </table>
+// В примере выше первый столбец содержит числа, а второй - строки. Функция сортировки должна это учитывать, ведь числа сортируются иначе, чем строки.
+// Сортировка должна поддерживать только типы "string" и "number".
+// P.S. Таблица может быть большой, с любым числом строк и столбцов.
+
+// grid.onclick = function(evt) {
+//   if (evt.target.tagName != 'TH') return;
+
+//   let th = evt.target;
+//   // если ячейка TH, тогда сортировать
+//   // cellIndex - это номер ячейки th:
+//   //   0 для первого столбца
+//   //   1 для второго и т.д.
+//   sortGrid(th.cellIndex, th.dataset.type);
+// };
+
+// function sortGrid(colNum, type) {
+//   let tbody = grid.querySelector('tbody');
+//   let rowsArray = Array.from(tbody.rows);
+//   // compare(a, b) сравнивает две строки, нужен для сортировки
+//   let compare;
+//   switch (type) {
+//     case 'number':
+//       compare = function(rowA, rowB) {
+//         return rowA.cells[colNum].innerHTML - rowB.cells[colNum].innerHTML;
+//       };
+//       break;
+//     case 'string':
+//       compare = function(rowA, rowB) {
+//         return rowA.cells[colNum].innerHTML > rowB.cells[colNum].innerHTML ? 1 : -1;
+//       };
+//       break;
+//   }
+
+//   // сортировка
+//   rowsArray.sort(compare);
+//   tbody.append(...rowsArray);
+// };
+
+// 2.3.4 Напишите JS-код, реализующий поведение «подсказка».
+// При наведении мыши на элемент с атрибутом data-tooltip, над ним должна показываться подсказка и скрываться при переходе на другой элемент.
+// Пример HTML с подсказками:
+// <button data-tooltip="эта подсказка длиннее, чем элемент">Короткая кнопка</button>
+// <button data-tooltip="HTML<br>подсказка">Ещё кнопка</button>
+// Результат в ифрейме с документом:
+// В этой задаче мы полагаем, что во всех элементах с атрибутом data-tooltip - только текст. То есть, в них нет вложенных тегов (пока).
+// Детали оформления:
+// - Отступ от подсказки до элемента с data-tooltip должен быть 5px по высоте.
+// - Подсказка должна быть, по возможности, посередине элемента.
+// - Подсказка не должна вылезать за границы экрана, в том числе если страница частично прокручена, если нельзя показать сверху - показывать снизу элемента.
+// - Текст подсказки брать из значения атрибута data-tooltip. Это может быть произвольный HTML.
+// Для решения вам понадобятся два события:
+// - mouseover срабатывает, когда указатель мыши заходит на элемент.
+// - mouseout срабатывает, когда указатель мыши уходит с элемента.
+// Примените делегирование событий: установите оба обработчика на элемент document, чтобы отслеживать «заход» и «уход» курсора на элементы с атрибутом data-tooltip и управлять подсказками с их же помощью.
+// После реализации поведения - люди, даже не знакомые с JavaScript смогут добавлять подсказки к элементам.
+// P.S. В один момент может быть показана только одна подсказка.
+
+// let tooltipElem;
+
+// document.onmouseover = function (evt) {
+//   let target = evt.target;
+//   // если у нас есть подсказка...
+//   let tooltipHtml = target.dataset.tooltip;
+//   if (!tooltipHtml) return;
+//   // ...создадим элемент для подсказки
+//   tooltipElem = document.createElement('div');
+//   tooltipElem.className = 'tooltip';
+//   tooltipElem.innerHTML = tooltipHtml;
+//   document.body.append(tooltipElem);
+//   // спозиционируем его сверху от аннотируемого элемента (top-center)
+//   let coords = target.getBoundingClientRect();
+//   let left = coords.left + (target.offsetWidth - tooltipElem.offsetWidth) / 2;
+//   if (left < 0) left = 0; // не заезжать за левый край окна
+//   let top = coords.top - tooltipElem.offsetHeight - 5;
+//   if (top < 0) { // если подсказка не помещается сверху, то отображать её снизу
+//     top = coords.top + target.offsetHeight + 5;
+//   };
+//   tooltipElem.style.left = left + 'px';
+//   tooltipElem.style.top = top + 'px';
+// };
+
+// document.onmouseout = function (evt) {
+//   if (tooltipElem) {
+//     tooltipElem.remove();
+//     tooltipElem = null;
+//   }
+// };
+
+
+/*--- 2.4 Действия браузера по умолчанию ---*/
