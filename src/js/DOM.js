@@ -997,3 +997,51 @@
 
 
 /*--- 2.4 Действия браузера по умолчанию ---*/
+
+// 2.4.1 Почему в коде ниже return false не работает?
+// <script>
+//   function handler() {
+//     alert( "..." );
+//     return false;
+//   }
+// </script>
+// <a href="https://w3.org" onclick="handler()">браузер откроет w3.org</a>
+// Браузер переходит по указанной ссылке, но нам этого не нужно.
+// Как поправить?
+
+// См. html  
+
+// 2.4.2 Сделайте так, чтобы при клике на ссылки внутри элемента id="contents" пользователю выводился вопрос о том, действительно ли он хочет покинуть страницу, и если он не хочет, то прерывать переход по ссылке.
+// Так это должно работать:
+// Детали:
+// - Содержимое #contents может быть загружено динамически и присвоено при помощи innerHTML. Так что найти все ссылки и поставить на них обработчики нельзя. Используйте делегирование.
+// - Содержимое может иметь вложенные теги, в том числе внутри ссылок, например, <a href=".."><i>...</i></a>.
+
+// contents.onclick = function(evt) {
+//   function handleLink(href) {
+//     let isLeaving = confirm(`Leave for ${href}?`);
+//     if (!isLeaving) return false;
+//   };
+//   let target = evt.target.closest('a');
+//   if (target && contents.contains(target)) {
+//     return handleLink(target.getAttribute('href'));
+//   };
+// };
+
+// 2.4.3 Создайте галерею изображений, в которой основное изображение изменяется при клике на уменьшенный вариант.
+// Например:
+// P.S. Используйте делегирование.
+
+// thumbs.onclick = function(evt) {
+//   let thumbnail = evt.target.closest('a');
+//   if (!thumbnail) return;
+//   showThumbnail(thumbnail.href, thumbnail.title);
+//   evt.preventDefault();
+// };
+// function showThumbnail(href, title) {
+//   largeImg.src = href;
+//   largeImg.alt = title;
+// };
+
+
+/*--- 3.1 Основы событий мыши ---*/
