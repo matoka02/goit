@@ -460,4 +460,397 @@
 // }, 2000);
 
 
-/*--- 1.9 Размеры и прокрутка элементов9 ---*/
+/*--- 1.9 Размеры и прокрутка элементов ---*/
+
+// 1.9.1 Свойство elem.scrollTop содержит размер прокрученной области при отсчёте сверху. А как подсчитать размер прокрутки снизу (назовём его scrollBottom)?
+// Напишите соответствующее выражение для произвольного элемента elem.
+// P.S. Проверьте: если прокрутки нет вообще или элемент полностью прокручен - оно должно давать 0.
+
+// let scrollBottom = elem.scrollHeight - elem.scrollTop - elem.clientHeight;
+
+// 1.9.2 Напишите код, который возвращает ширину стандартной полосы прокрутки.
+// Для Windows она обычно колеблется от 12px до 20px. Если браузер не выделяет место под полосу прокрутки (так тоже бывает, она может быть прозрачной над текстом), тогда значение может быть 0px.
+// P.S. Ваш код должен работать в любом HTML-документе, независимо от его содержимого.
+
+// let div = document.createElement('div');
+
+// div.style.overflow = 'scroll';
+// div.style.width = '50px';
+// div.style.height = '50px';
+
+// document.body.append(div);
+// let scrollWidth = div.offsetWidth - div.clientWidth;
+// div.remove();
+// console.log(scrollWidth);         // 17
+
+// 1.9.3 Исходный документ выглядит так:
+// Каковы координаты центра поля?
+// Вычислите их и используйте, чтобы поместить мяч в центр поля:
+// Элемент должен позиционироваться за счёт JavaScript, а не CSS.
+// Код должен работать с любым размером мяча (10, 20, 30 пикселей) и любым размером поля без привязки к исходным значениям.
+// P.S. Да, центрирование можно сделать при помощи чистого CSS, но задача именно на JavaScript. Далее будут другие темы и более сложные ситуации, когда JavaScript будет уже точно необходим, это - своего рода «разминка».
+
+// ball.offsetWidth=0 до того, как изображение загрузилось!
+// исправим это, установив ширину:
+// ball.style.left = Math.round(field.clientWidth / 2 - ball.offsetWidth / 2) + 'px';
+// ball.style.top = Math.round(field.clientHeight / 2 - ball.offsetHeight / 2) + 'px';
+
+// 1.9.4 В чём отличие между getComputedStyle(elem).width и elem.clientWidth?
+// Укажите хотя бы 3 отличия, лучше - больше.
+
+// Отличия:
+// - clientWidth возвращает число, а getComputedStyle(elem).width – строку с px на конце.
+// - getComputedStyle не всегда даст ширину, он может вернуть, к примеру, "auto" для строчного элемента.
+// - clientWidth соответствует внутренней области элемента, включая внутренние отступы padding, а CSS-ширина (при стандартном значении box-sizing) соответствует внутренней области без внутренних отступов padding.
+// - Если есть полоса прокрутки, и для неё зарезервировано место, то некоторые браузеры вычитают его из CSS-ширины (т.к. оно больше недоступно для содержимого), а некоторые - нет. Свойство clientWidth всегда ведёт себя одинаково: оно всегда обозначает размер за вычетом прокрутки, т.е. реально доступный для содержимого.
+
+
+/*--- 1.10 Размеры и прокрутка окна ---*/
+
+// высота/ширина окна (без прокрутки)
+// console.log(document.documentElement.clientHeight);       // 695
+// console.log(document.documentElement.clientWidth);        // 1079
+// высота/ширина окна + прокрутка
+// console.log(window.innerHeight);       // 695
+// console.log(window.innerWidth);        // 1062
+// полная высота
+// let scrollHeight = Math.max(
+// document.body.scrollHeight, document.documentElement.scrollHeight,
+// document.body.offsetHeight, document.documentElement.offsetHeight,
+// document.body.clientHeight, document.documentElement.clientHeight
+// );
+// console.log(scrollHeight);            // 2708
+// текущая прокрутка
+// console.log(window.pageXOffset);      // 0
+// console.log(window.pageYOffset);      // 0
+// прокрутка страницы относительно её текущего положения
+// window.scrollBy(0, 10);
+// прокрутка страницы на абсолютные координаты
+// window.scrollTo(0, 0);
+// прокрутка элемента к верху страницы
+// elem.scrollIntoView(true);
+// прокрутка элемента к низу страницы
+// elem.scrollIntoView(false);
+// запрет прокрутки
+// document.body.style.overflow = "hidden";
+// отмена запрета
+// document.body.style.overflow = "";
+
+
+/*--- 1.11 Координаты ---*/
+
+// 1.11.1 В ифрейме ниже располагается документ с зелёным «полем».
+// Используйте JavaScript, чтобы найти координаты углов, обозначенных стрелками.
+// В документе уже реализована функциональность, когда при клике на любом месте показываются соответствующие координаты.
+// Ваш код должен при помощи DOM получить четыре пары координат:
+// - верхний левый, внешний угол (это просто).
+// - нижний правый, внешний угол (тоже просто).
+// - верхний левый, внутренний угол (чуть сложнее).
+// - нижний правый, внутренний угол (есть несколько способов, выберите один).
+// Координаты, вычисленные вами, должны совпадать с теми, которые возвращаются по клику мыши.
+// P.S. Код должен работать, если у элемента другие размеры или есть рамка, без привязки к конкретным числам.
+
+// let fieldCoords = field.getBoundingClientRect();
+// let answer = [
+//   [ // 1
+//     fieldCoords.left,
+//     fieldCoords.top
+//   ],
+//   [ // 2
+//     fieldCoords.right,
+//     fieldCoords.bottom
+//   ],
+//   [ // 3
+//     fieldCoords.left + field.clientLeft,
+//     fieldCoords.top + field.clientTop
+//   ],
+//   [ // 4
+//     fieldCoords.left + field.clientLeft + field.clientWidth,
+//     fieldCoords.top + field.clientTop + field.clientHeight
+//   ]
+// ];
+// console.log(answer.join(' '));
+
+// 1.11.2 Создайте функцию positionAt(anchor, position, elem), которая позиционирует элемент elem в зависимости от значения свойства position рядом с элементом anchor.
+// Аргумент position - строка с одним из 3 значений:
+// - "top" - расположить elem прямо над anchor
+// - "right" - расположить elem непосредственно справа от anchor
+// - "bottom" - расположить elem прямо под anchor
+// Она используется внутри функции showNote(anchor, position, html), которая уже есть в исходном коде задачи. Она создаёт и показывает элемент-«заметку» с текстом html на заданной позиции position рядом с элементом anchor.
+
+/**
+ * Позиционирует элемент elem относительно элемента anchor в соответствии со значением position.
+ * @param {Node} anchor     элемент, около которого позиционируется другой элемент
+ * @param {string} position одно из: top/right/bottom
+ * @param {Node} elem       элемент, который позиционируется
+ * Оба элемента elem и anchor должны присутствовать в документе
+*/
+// function positionAt(anchor, position, elem) {
+
+//   let anchorCoords = anchor.getBoundingClientRect();
+
+//   switch (position) {
+//     case "top":
+//       elem.style.left = anchorCoords.left + "px";
+//       elem.style.top = anchorCoords.top - elem.offsetHeight + "px";
+//       break;
+
+//     case "right":
+//       elem.style.left = anchorCoords.left + anchor.offsetWidth + "px";
+//       elem.style.top = anchorCoords.top + "px";
+//       break;
+
+//     case "bottom":
+//       elem.style.left = anchorCoords.left + "px";
+//       elem.style.top = anchorCoords.top + anchor.offsetHeight + "px";
+//       break;
+//   }
+// };
+
+/**
+ * Показывает заметку с заданным содержимым на заданной позиции
+ * относительно элемента anchor.
+*/
+// function showNote(anchor, position, html) {
+
+//   let note = document.createElement('div');
+//   note.className = "note";
+//   note.innerHTML = html;
+//   document.body.append(note);
+
+//   positionAt(anchor, position, note);
+// }
+
+// // проверка
+// let blockquote = document.querySelector('blockquote');
+
+// showNote(blockquote, "top", "note above");
+// showNote(blockquote, "right", "note at the right");
+// showNote(blockquote, "bottom", "note below");
+
+// 1.11.3 Измените код решения предыдущего задания так, чтобы элемент заметки использовал свойство position:absolute вместо position:fixed.
+// Это предотвратит расхождение элементов при прокрутке страницы.
+// Используйте решение предыдущего задания для начала. Чтобы проверить решение в условиях с прокруткой, добавьте стиль элементу <body style="height: 2000px">.
+
+// function getCoords(elem) {
+//   let box = elem.getBoundingClientRect();
+//   return {
+//     top: box.top + pageYOffset,
+//     left: box.left + pageXOffset
+//   };
+// };
+
+// function positionAt(anchor, position, elem) {
+//   let anchorCoords = getCoords(anchor);
+//   switch (position) {
+//     case "top":
+//       elem.style.left = anchorCoords.left + "px";
+//       elem.style.top = anchorCoords.top - elem.offsetHeight + "px";
+//       break;
+//     case "right":
+//       elem.style.left = anchorCoords.left + anchor.offsetWidth + "px";
+//       elem.style.top = anchorCoords.top + "px";
+//       break;
+//     case "bottom":
+//       elem.style.left = anchorCoords.left + "px";
+//       elem.style.top = anchorCoords.top + anchor.offsetHeight + "px";
+//       break;
+//   }
+// };
+
+// function showNote(anchor, position, html) {
+//   let note = document.createElement('div');
+//   note.className = "note";
+//   note.innerHTML = html;
+//   document.body.append(note);
+//   positionAt(anchor, position, note);
+// };
+
+// // проверка
+// let blockquote = document.querySelector('blockquote');
+
+// showNote(blockquote, "top", "note above");
+// showNote(blockquote, "right", "note at the right");
+// showNote(blockquote, "bottom", "note below");
+
+// 1.11.4 Усовершенствуйте решение предыдущего задания Покажите заметку около элемента (абсолютное позиционирование): научите функцию positionAt(anchor, position, elem) вставлять elem внутрь anchor.
+// Новые значения для аргумента position:
+// - top-out, right-out, bottom-out - работают так же, как раньше, они вставляют elem сверху/справа/снизу anchor.
+// - top-in, right-in, bottom-in - вставляют elem внутрь anchor: прикливают его к верхнему/правому/нижнему краю.
+// Например:
+// //показывает заметку поверх цитаты
+// positionAt(blockquote, "top-out", note);
+// // показывает заметку внутри цитаты вблизи верхнего края элемента
+// positionAt(blockquote, "top-in", note);
+// Результат:
+// Для начала возьмите решение задания Покажите заметку около элемента (абсолютное позиционирование).
+
+// function getCoords(elem) {
+//   let box = elem.getBoundingClientRect();
+//   return {
+//     top: box.top + pageYOffset,
+//     left: box.left + pageXOffset
+//   };
+// };
+
+// function showNote(anchor, position, html) {
+//   let note = document.createElement('div');
+//   note.className = "note";
+//   note.innerHTML = html;
+//   document.body.append(note);
+//   positionAt(anchor, position, note);
+// };
+
+// function positionAt(anchor, position, elem) {
+//   let anchorCoords = getCoords(anchor);
+//   switch (position) {
+//     case "top-out":
+//       elem.style.left = anchorCoords.left + "px";
+//       elem.style.top = anchorCoords.top - elem.offsetHeight + "px";
+//       break;
+//     case "right-out":
+//       elem.style.left = anchorCoords.left + anchor.offsetWidth + "px";
+//       elem.style.top = anchorCoords.top + "px";
+//       break;
+//     case "bottom-out":
+//       elem.style.left = anchorCoords.left + "px";
+//       elem.style.top = anchorCoords.top + anchor.offsetHeight + "px";
+//       break;
+//     case "top-in":
+//       elem.style.left = anchorCoords.left + "px";
+//       elem.style.top = anchorCoords.top + "px";
+//       break;
+//     case "right-in":
+//       elem.style.width = '150px';
+//       elem.style.left = anchorCoords.left + anchor.offsetWidth - elem.offsetWidth + "px";
+//       elem.style.top = anchorCoords.top + "px";
+//       break;
+//     case "bottom-in":
+//       elem.style.left = anchorCoords.left + "px";
+//       elem.style.top = anchorCoords.top + anchor.offsetHeight - elem.offsetHeight + "px";
+//       break;
+//   }
+// };
+
+// let blockquote = document.querySelector('blockquote');
+
+// showNote(blockquote, "top-in", "note top-in");
+// showNote(blockquote, "top-out", "note top-out");
+// showNote(blockquote, "right-out", "note right-out");
+// showNote(blockquote, "bottom-in", "note bottom-in");
+
+
+/*--- 2.1 Введение в браузерные события ---*/
+
+// 2.1.1 Добавьте JavaScript к кнопке button, чтобы при нажатии элемент <div id="text"> исчезал.
+
+// document.getElementById('hider').onclick = function () {
+//   document.getElementById('text').hidden = true;
+// };
+
+// 2.1.2 Создайте кнопку, которая будет скрывать себя по нажатию.
+// См. html
+
+// 2.1.3 В переменной button находится кнопка. Изначально на ней нет обработчиков.
+// Который из обработчиков запустится? Что будет выведено при клике после выполнения кода?
+
+// button.addEventListener("click", () => console.log('1'));
+// button.removeEventListener("click", () => console.log('1'));
+// button.onclick = () => console.log(2);
+
+// 2.1.4 Пусть мяч перемещается при клике на поле, туда, куда был клик, вот так:
+// Требования:
+// - Центр мяча должен совпадать с местом нажатия мыши (если это возможно без пересечения краёв поля);
+// - CSS-анимация желательна, но не обязательна;
+// - Мяч ни в коем случае не должен пересекать границы поля;
+// - При прокрутке страницы ничего не должно ломаться;
+// Заметки:
+// - Код должен уметь работать с различными размерами мяча и поля, не привязываться к каким-либо фиксированным значениям.
+// - Используйте свойства event.clientX/event.clientY для определения координат мыши при клике.
+
+// field.onclick = function(evt) {
+//   // координаты поля относительно окна браузера
+//   let fieldCoords = this.getBoundingClientRect();
+//   // мяч имеет абсолютное позиционирование (position:absolute), поле - относительное (position:relative)
+//   // таким образом, координаты мяча рассчитываются относительно внутреннего, верхнего левого угла поля
+//   let ballCoords = {
+//     top: evt.clientY - fieldCoords.top - field.clientTop - ball.clientHeight / 2,
+//     left: evt.clientX - fieldCoords.left - field.clientLeft - ball.clientWidth / 2
+//   };
+//   // запрещаем пересекать верхнюю границу поля
+//   if (ballCoords.top < 0) ballCoords.top = 0;
+//   // запрещаем пересекать левую границу поля
+//   if (ballCoords.left < 0) ballCoords.left = 0;
+//   // запрещаем пересекать правую границу поля
+//   if (ballCoords.left + ball.clientWidth > field.clientWidth) {
+//     ballCoords.left = field.clientWidth - ball.clientWidth;
+//   };
+//   // запрещаем пересекать нижнюю границу поля
+//   if (ballCoords.top + ball.clientHeight > field.clientHeight) {
+//     ballCoords.top = field.clientHeight - ball.clientHeight;
+//   };
+//   ball.style.left = ballCoords.left + 'px';
+//   ball.style.top = ballCoords.top + 'px';
+// };
+
+// 2.1.5 Создать меню, которое по нажатию открывается либо закрывается:
+// P.S. HTML/CSS исходного документа можно и нужно менять.
+
+// let menuElem = document.getElementById('sweeties');
+// let titleElem = menuElem.querySelector('.title');
+
+// titleElem.onclick = function () {
+//   menuElem.classList.toggle('open');
+// };
+
+// 2.1.6 Есть список сообщений.
+// При помощи JavaScript для каждого сообщения добавьте в верхний правый угол кнопку закрытия.
+// Результат должен выглядеть, как показано здесь:
+
+// let panes = document.querySelectorAll('.pane');
+
+// for(let pane of panes) {
+//   pane.insertAdjacentHTML("afterbegin", '<button class="remove-button">[x]</button>');
+//   // кнопка становится первым потомком плитки (pane)
+//   pane.firstChild.onclick = () => pane.remove();
+// };
+
+// 2.1.7 Создайте «Карусель» - ленту изображений, которую можно листать влево-вправо нажатием на стрелочки.
+// В дальнейшем к ней можно будет добавить анимацию, динамическую подгрузку и другие возможности.
+// P.S. В этой задаче разработка структуры HTML/CSS составляет 90% решения.
+
+/* этот код помечает картинки, для удобства разработки */
+// let i = 1;
+// for(let li of carousel.querySelectorAll('li')) {
+//   li.style.position = 'relative';
+//   li.insertAdjacentHTML('beforeend', `<span style="position:absolute;left:0;top:0">${i}</span>`);
+//   i++;
+// };
+
+// /* конфигурация */
+// let width = 130; // ширина картинки
+// let count = 3; // видимое количество изображений
+
+// let list = carousel.querySelector('ul');
+// let listElems = carousel.querySelectorAll('li');
+
+// let position = 0; // положение ленты прокрутки
+
+// carousel.querySelector('.prev').onclick = function() {
+//   // сдвиг влево
+//   position += width * count;
+//   // последнее передвижение влево может быть не на 3, а на 2 или 1 элемент
+//   position = Math.min(position, 0)
+//   list.style.marginLeft = position + 'px';
+// };
+
+// carousel.querySelector('.next').onclick = function() {
+//   // сдвиг вправо
+//   position -= width * count;
+//   // последнее передвижение вправо может быть не на 3, а на 2 или 1 элемент
+//   position = Math.max(position, -width * (listElems.length - count));
+//   list.style.marginLeft = position + 'px';
+// };
+
+
+/*--- 2.2 Всплытие и погружение ---*/
