@@ -1045,3 +1045,499 @@
 
 
 /*--- 3.1 Основы событий мыши ---*/
+
+// 3.1.1 Создайте список, в котором элементы могут быть выделены, как в файловых менеджерах.
+// При клике на элемент списка выделяется только этот элемент (добавляется класс .selected), отменяется выделение остальных элементов.
+// Если клик сделан вместе с Ctrl (Cmd для Mac), то выделение переключается на элементе, но остальные элементы при этом не изменяются.
+// P.S. В этом задании все элементы списка содержат только текст. Без вложенных тегов.
+// P.P.S. Предотвратите стандартное для браузера выделение текста при кликах.
+
+// ul.onclick = function(evt) {
+//   if (evt.target.tagName != "LI") return;
+
+//   if (evt.ctrlKey || evt.metaKey) {
+//     toggleSelect(evt.target);
+//   } else {
+//     singleSelect(evt.target);
+//   }
+// };
+
+// // предотвращает ненужное выделение элементов списка при клике
+// ul.onmousedown = function() {
+//   return false;
+// };
+
+// function toggleSelect(li) {
+//   li.classList.toggle('selected');
+// };
+
+// function singleSelect(li) {
+//   let selected = ul.querySelectorAll('.selected');
+//   for(let elem of selected) {
+//     elem.classList.remove('selected');
+//   };
+//   li.classList.add('selected');
+// };
+
+
+/*--- 3.2 Движение мыши: mouseover/out, mouseenter/leave ---*/
+
+// 3.2.1 Напишите JavaScript код, который показывает подсказку над элементом с атрибутом data-tooltip. Значение атрибута должно становиться текстом подсказки.
+// Это похоже на задачу Поведение "подсказка", но здесь элементы с подсказками могут быть вложены друг в друга. Показываться должна подсказка на самом глубоко вложенном элементе.
+// Только одна подсказка может быть показана в любой момент времени.
+// Например:
+// <div data-tooltip="Здесь - домашний интерьер" id="house">
+//   <div data-tooltip="Здесь - крыша" id="roof"></div>
+//   ...
+//   <a href="https://ru.wikipedia.org/wiki/%D0%A2%D1%80%D0%B8_%D0%BF%D0%BE%D1%80%D0%BE%D1%81%D1%91%D0%BD%D0%BA%D0%B0" data-tooltip="Читать далее…">Наведи курсор на меня</a>
+// </div>
+
+// let tooltip;
+
+// document.onmouseover = function (evt) {
+//   // важно: быстро движущийся курсор может прыгнуть сразу к дочернему элементу, пропустив родительский
+//   // так что событие mouseover произойдёт сразу на дочернем элементе.
+
+//   let anchorElem = evt.target.closest('[data-tooltip]');
+//   if (!anchorElem) return;
+//   // показываем подсказку и запоминаем её
+//   tooltip = showTooltip(anchorElem, anchorElem.dataset.tooltip);
+// };
+
+// document.onmouseout = function () {
+//   // возможно такое, что произошло событие mouseout, но мы всё ещё внутри элемента
+//   // (оно было где-то внутри и всплыло)
+//   // но в этом случае сразу же последует событие mouseover,
+//   // то есть подсказка исчезнет и потом снова покажется
+//   //
+//   // к счастью, этого не будет видно,
+//   // так как оба события происходят почти одновременно
+//   if (tooltip) {
+//     tooltip.remove();
+//     tooltip = false;
+//   }
+// };
+
+// function showTooltip(anchorElem, html) {
+//   let tooltipElem = document.createElement('div');
+//   tooltipElem.className = 'tooltip';
+//   tooltipElem.innerHTML = html;
+//   document.body.append(tooltipElem);
+
+//   let coords = anchorElem.getBoundingClientRect();
+
+//   // позиционируем подсказку над центром элемента
+//   let left = coords.left + (anchorElem.offsetWidth - tooltipElem.offsetWidth) / 2;
+//   if (left < 0) left = 0;
+
+//   let top = coords.top - tooltipElem.offsetHeight - 5;
+//   if (top < 0) {
+//     top = coords.top + anchorElem.offsetHeight + 5;
+//   };
+
+//   tooltipElem.style.left = left + 'px';
+//   tooltipElem.style.top = top + 'px';
+
+//   return tooltipElem;
+// };
+
+// 3.2.2 Напишите функцию, которая показывает подсказку над элементом только в случае, когда пользователь передвигает мышь на него, но не через него.
+// Другими словами, если пользователь подвинул курсор на элементе и остановился - показывать подсказку. А если он просто быстро провёл курсором по элементу, то не надо ничего показывать. Кому понравится лишнее мелькание?
+// Технически, мы можем измерять скорость прохода курсора мыши над элементом, и если она низкая, то можно посчитать, что пользователь остановил курсор над элементом, и показать ему подсказку. А если скорость высокая, то тогда не показывать.
+// Создайте для этого универсальный объект new HoverIntent(options).
+// Его настройки options:
+// - elem - отслеживаемый элемент.
+// - over - функция, вызываемая, при заходе на элемент, считаем что заход - это когда курсор медленно двигается или остановился над элементом.
+// - out - функция, вызываемая при уходе курсора с элемента (если был заход).
+// Пример использования такого объекта для показа подсказки:
+// // пример подсказки
+// let tooltip = document.createElement('div');
+// tooltip.className = "tooltip";
+// tooltip.innerHTML = "Tooltip";
+// // объект будет отслеживать движение мыши и вызывать функции over/out
+// new HoverIntent({
+//   elem,
+//   over() {
+//     tooltip.style.left = elem.getBoundingClientRect().left + 'px';
+//     tooltip.style.top = elem.getBoundingClientRect().bottom + 5 + 'px';
+//     document.body.append(tooltip);
+//   },
+//   out() {
+//     tooltip.remove();
+//   }
+// });
+// Если двигать курсор над «часами» быстро, то ничего не произойдёт, а если вы замедлите движение курсора над элементом или остановите его, то будет показана подсказка.
+// Обратите внимание: подсказка не должна пропадать (мигать), когда курсор переходит между дочерними элементами часов.
+
+// 'use strict';
+
+// // 3.2.2.1 Универсальный объект new HoverIntent(options)
+// class HoverIntent {
+
+//   constructor({
+//     sensitivity = 0.1, // скорость ниже 0.1px/ms значит "курсор на элементе"
+//     interval = 100,    // измеряем скорость каждые 100ms
+//     elem,
+//     over,
+//     out
+//   }) {
+//     this.sensitivity = sensitivity;
+//     this.interval = interval;
+//     this.elem = elem;
+//     this.over = over;
+//     this.out = out;
+
+//     // убедитесь, что "this" сохраняет своё значение для обработчиков.
+//     this.onMouseMove = this.onMouseMove.bind(this);
+//     this.onMouseOver = this.onMouseOver.bind(this);
+//     this.onMouseOut = this.onMouseOut.bind(this);
+
+//     // и в функции, измеряющей время (вызываемой из setInterval)
+//     this.trackSpeed = this.trackSpeed.bind(this);
+
+//     elem.addEventListener("mouseover", this.onMouseOver);
+//     elem.addEventListener("mouseout", this.onMouseOut);
+//   };
+
+//   onMouseOver(evt) {
+
+//     if (this.isOverElement) {
+//       // Игнорируем событие над элементом,
+//       // так как мы уже измеряем скорость
+//       return;
+//     }
+
+//     this.isOverElement = true;
+
+//     // после каждого движения измеряем дистанцию
+//     // между предыдущими и текущими координатами курсора
+//     // если скорость меньше sensivity, то она считается медленной
+
+//     this.prevX = evt.pageX;
+//     this.prevY = evt.pageY;
+//     this.prevTime = Date.now();
+
+//     elem.addEventListener('mousemove', this.onMouseMove);
+//     this.checkSpeedInterval = setInterval(this.trackSpeed, this.interval);
+//   };
+
+//   onMouseOut(evt) {
+//     // если ушли с элемента
+//     if (!evt.relatedTarget || !elem.contains(evt.relatedTarget)) {
+//       this.isOverElement = false;
+//       this.elem.removeEventListener('mousemove', this.onMouseMove);
+//       clearInterval(this.checkSpeedInterval);
+//       if (this.isHover) {
+//         // если была остановка движения на элементе
+//         this.out.call(this.elem, evt);
+//         this.isHover = false;
+//       }
+//     }
+//   };
+
+//   onMouseMove(evt) {
+//     this.lastX = evt.pageX;
+//     this.lastY = evt.pageY;
+//     this.lastTime = Date.now();
+//   };
+
+//   trackSpeed() {
+
+//     let speed;
+
+//     if (!this.lastTime || this.lastTime == this.prevTime) {
+//       // курсор не двигался
+//       speed = 0;
+//     } else {
+//       speed = Math.sqrt(
+//         Math.pow(this.prevX - this.lastX, 2) +
+//         Math.pow(this.prevY - this.lastY, 2)
+//       ) / (this.lastTime - this.prevTime);
+//     }
+
+//     if (speed < this.sensitivity) {
+//       clearInterval(this.checkSpeedInterval);
+//       this.isHover = true;
+//       this.over.call(this.elem);
+//     } else {
+//       // скорость высокая, запоминаем новые координаты
+//       this.prevX = this.lastX;
+//       this.prevY = this.lastY;
+//       this.prevTime = this.lastTime;
+//     }
+//   };
+
+//   destroy() {
+//     elem.removeEventListener('mousemove', this.onMouseMove);
+//     elem.removeEventListener('mouseover', this.onMouseOver);
+//     elem.removeEventListener('mouseout', this.onMouseOut);
+//   };
+
+// };
+
+// // 3.2.2.2 Тесты dispatchEvent
+// describe("hoverIntent", function() {
+
+//   function mouse(eventType, x, y, options) {
+//     let eventOptions = Object.assign({
+//       bubbles: true,
+//       clientX: x,
+//       clientY: y,
+//       pageX: x,
+//       pageY: y,
+//       target: elem
+//     }, options || {});
+
+//     elem.dispatchEvent(new MouseEvent(eventType, eventOptions));
+//   };
+
+//   let isOver;
+//   let hoverIntent;
+
+//   before(function() {
+//     this.clock = sinon.useFakeTimers();
+//   });
+
+//   after(function() {
+//     this.clock.restore();
+//   });
+
+//   beforeEach(function() {
+//     isOver = false;
+
+//     hoverIntent = new HoverIntent({
+//       elem: elem,
+//       over: function() {
+//         isOver = true;
+//       },
+//       out: function() {
+//         isOver = false;
+//       }
+//     });
+//   })
+
+//   afterEach(function() {
+//     if (hoverIntent) {
+//       hoverIntent.destroy();
+//     }
+//   })
+
+//   it("mouseover -> immediately no tooltip", function() {
+//     mouse('mouseover', 10, 10);
+//     assert.isFalse(isOver);
+//   });
+
+//   it("mouseover -> pause shows tooltip", function() {
+//     mouse('mouseover', 10, 10);
+//     this.clock.tick(100);
+//     assert.isTrue(isOver);
+//   });
+
+//   it("mouseover -> fast mouseout no tooltip", function() {
+//     mouse('mouseover', 10, 10);
+//     setTimeout(
+//       () => mouse('mouseout', 300, 300, { relatedTarget: document.body}),
+//       30
+//     );
+//     this.clock.tick(100);
+//     assert.isFalse(isOver);
+//   });
+
+
+//   it("mouseover -> slow move -> tooltips", function() {
+//     mouse('mouseover', 10, 10);
+//     for(let i=10; i<200; i+= 10) {
+//       setTimeout(
+//         () => mouse('mousemove', i/5, 10),
+//         i
+//       );
+//     }
+//     this.clock.tick(200);
+//     assert.isTrue(isOver);
+//   });
+
+//   it("mouseover -> fast move -> no tooltip", function() {
+//     mouse('mouseover', 10, 10);
+//     for(let i=10; i<200; i+= 10) {
+//       setTimeout(
+//         () => mouse('mousemove', i, 10),
+//         i
+//       );
+//     }
+//     this.clock.tick(200);
+//     assert.isFalse(isOver);
+//   });
+
+// });
+
+// // 3.2.2.3 для демо
+// setTimeout(function() {
+//   new HoverIntent({
+//     elem,
+//     over() {
+//       tooltip.style.left = elem.getBoundingClientRect().left + 5 + 'px';
+//       tooltip.style.top = elem.getBoundingClientRect().bottom + 5 + 'px';
+//       tooltip.hidden = false;
+//     },
+//     out() {
+//       tooltip.hidden = true;
+//     }
+//   });
+// }, 2000);
+
+
+/*--- 3.3 Drag'n'Drop с событиями мыши ---*/
+
+// 3.3.1 Создайте слайдер:
+// Захватите мышкой синий бегунок и двигайте его.
+// Важные детали:
+// - Слайдер должен нормально работать при резком движении мыши влево или вправо за пределы полосы. При этом бегунок должен останавливаться чётко в нужном конце полосы.
+// - При нажатом бегунке мышь может выходить за пределы полосы слайдера, но слайдер пусть всё равно работает (это удобно для пользователя).
+
+// let thumb = slider.querySelector('.thumb');
+
+// thumb.onmousedown = function (evt) {
+//   // предотвратить запуск выделения (действие браузера)
+//   evt.preventDefault(); 
+//   // shiftY здесь не нужен, слайдер двигается только по горизонтали
+//   let shiftX = evt.clientX - thumb.getBoundingClientRect().left;
+//   document.addEventListener('mousemove', onMouseMove);
+//   document.addEventListener('mouseup', onMouseUp);
+
+//   function onMouseMove(evt) {
+//     let newLeft = evt.clientX - shiftX - slider.getBoundingClientRect().left;
+//     // курсор вышел из слайдера => оставить бегунок в его границах.
+//     if (newLeft < 0) {
+//       newLeft = 0;
+//     };
+//     let rightEdge = slider.offsetWidth - thumb.offsetWidth;
+//     if (newLeft > rightEdge) {
+//       newLeft = rightEdge;
+//     };
+//     thumb.style.left = newLeft + 'px';
+//   };
+
+//   function onMouseUp() {
+//     document.removeEventListener('mouseup', onMouseUp);
+//     document.removeEventListener('mousemove', onMouseMove);
+//   }
+
+// };
+
+// thumb.ondragstart = function () {
+//   return false;
+// };
+
+// 3.3.2 В этой задаче вы можете проверить своё понимание сразу нескольких аспектов Drag’n’Drop и DOM.
+// Сделайте так, чтобы элементы с классом draggable можно было переносить мышкой. Как мяч в этой главе.
+// Требования к реализации:
+// - Используйте делегирование событий для отслеживания начала перетаскивания: только один обработчик событий mousedown на документе.
+// - Если элементы подносят к верхней/нижней границе окна - оно должно прокручиваться вверх/вниз, чтобы позволить дальнейшее перетаскивание.
+// - Горизонтальная прокрутка отсутствует (чуть-чуть упрощает задачу, её просто добавить).
+// - Элемент при переносе, даже при резких движениях мышкой, не должен даже частично попасть вне окна.
+// Демо слишком велико для размещения здесь, перейдите по ссылке ниже.
+// https://ru.js.cx/task/drag-heroes/solution/
+
+// let isDragging = false;
+
+// document.addEventListener('mousedown', function (evt) {
+
+//   let dragElement = evt.target.closest('.draggable');
+//   if (!dragElement) return;
+//   evt.preventDefault();
+//   dragElement.ondragstart = function () {
+//     return false;
+//   };
+
+//   let coords, shiftX, shiftY;
+//   startDrag(dragElement, evt.clientX, evt.clientY);
+
+//   function onMouseUp(event) {
+//     finishDrag();
+//   };
+
+//   function onMouseMove(event) {
+//     moveAt(event.clientX, event.clientY);
+//   };
+
+//   // в начале перемещения элемента:
+//   //   запоминаем место клика по элементу (shiftX, shiftY),
+//   //   переключаем позиционирование элемента (position:fixed) и двигаем элемент
+//   function startDrag(element, clientX, clientY) {
+//     if (isDragging) {
+//       return;
+//     };
+//     isDragging = true;
+
+//     document.addEventListener('mousemove', onMouseMove);
+//     element.addEventListener('mouseup', onMouseUp);
+
+//     shiftX = clientX - element.getBoundingClientRect().left;
+//     shiftY = clientY - element.getBoundingClientRect().top;
+
+//     element.style.position = 'fixed';
+
+//     moveAt(clientX, clientY);
+//   };
+
+//   // переключаемся обратно на абсолютные координаты
+//   // чтобы закрепить элемент относительно документа
+//   function finishDrag() {
+//     if (!isDragging) {
+//       return;
+//     };
+//     isDragging = false;
+
+//     dragElement.style.top = parseInt(dragElement.style.top) + pageYOffset + 'px';
+//     dragElement.style.position = 'absolute';
+
+//     document.removeEventListener('mousemove', onMouseMove);
+//     dragElement.removeEventListener('mouseup', onMouseUp);
+//   };
+
+//   function moveAt(clientX, clientY) {
+//     // вычисляем новые координаты (относительно окна)
+//     let newX = clientX - shiftX;
+//     let newY = clientY - shiftY;
+//     // проверяем, не переходят ли новые координаты за нижний край окна:
+//     // сначала вычисляем гипотетический новый нижний край окна
+//     let newBottom = newY + dragElement.offsetHeight;
+//     // затем, если новый край окна выходит за пределы документа, прокручиваем страницу
+//     if (newBottom > document.documentElement.clientHeight) {
+//       // координата нижнего края документа относительно окна
+//       let docBottom = document.documentElement.getBoundingClientRect().bottom;
+//       // простой скролл документа на 10px вниз имеет проблему -
+//       // он может прокручивать документ за его пределы,
+//       // поэтому используем Math.min(расстояние до конца, 10)
+//       let scrollY = Math.min(docBottom - newBottom, 10);
+//       // вычисления могут быть не совсем точны - случаются ошибки при округлении,
+//       // которые приводят к отрицательному значению прокрутки. отфильтруем их:
+//       if (scrollY < 0) scrollY = 0;
+//       window.scrollBy(0, scrollY);
+//       // быстрое перемещение мыши может поместить курсор за пределы документа вниз
+//       // если это произошло -
+//       // ограничиваем новое значение Y максимально возможным исходя из размера документа:
+//       newY = Math.min(newY, document.documentElement.clientHeight - dragElement.offsetHeight);
+//     };
+//     // проверяем, не переходят ли новые координаты за верхний край окна (по схожему алгоритму)
+//     if (newY < 0) {
+//       // прокручиваем окно вверх
+//       let scrollY = Math.min(-newY, 10);
+//       if (scrollY < 0) scrollY = 0; // проверяем ошибки точности
+//       window.scrollBy(0, -scrollY);
+//       // быстрое перемещение мыши может поместить курсор за пределы документа вверх
+//       newY = Math.max(newY, 0); // newY не может быть меньше нуля
+//     };
+//     // ограничим newX размерами окна
+//     // согласно условию, горизонтальная прокрутка отсутствует, поэтому это не сложно:
+//     if (newX < 0) newX = 0;
+//     if (newX > document.documentElement.clientWidth - dragElement.offsetWidth) {
+//       newX = document.documentElement.clientWidth - dragElement.offsetWidth;
+//     };
+
+//     dragElement.style.left = newX + 'px';
+//     dragElement.style.top = newY + 'px';
+//   }
+// });
+
+/*--- 3.4 Клавиатура: keydown и keyup ---*/
