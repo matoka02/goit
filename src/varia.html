@@ -1,13 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>learn-javascript</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>varia</title>
+  <link rel="stylesheet" href="./css/varia.css">
 </head>
 <body>
-    <a href="./index.html">Go back</a>
-    <a href="./learn-javascript-test.html">learn-javascript-test</a>
-    <script src="./js/learn-javascript.js" type="module"></script>
+  <a href="./index.html">Go back</a>
+
+  <!-- --- 1.2 Общение между окнами --- -->
+
+  <!-- <iframe src="/" id="iframe"></iframe> -->
+  <!-- <iframe src="https://javascript.info/" id="iframe"></iframe> -->
+  <!-- <iframe src="/" style="height:80px" name="win" id="iframe"></iframe> -->
+
+  <!-- --- 2.4 File и FileReader --- -->
+
+  <input type="file" onchange="showFile(this)">
+  <script>
+    function showFile(input) {
+      let file = input.files[0];
+
+      console.log(`File name: ${file.name}`);               // например, my.png
+      console.log(`Last modified: ${file.lastModified}`);   // например, 1552830408824
+    }
+  </script>
+  <input type="file" onchange="readFile(this)">
+  <script>
+    function readFile(input) {
+      let file = input.files[0];
+      let reader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = function () {
+        console.log(reader.result);
+      };
+      reader.onerror = function () {
+        console.log(reader.error);
+      };
+    };
+  </script>
+
+
+  <script src="./js/varia.js" type="module"></script>
 </body>
+
 </html>
