@@ -2013,3 +2013,139 @@
 
 // // должно выводиться 300
 // preloadImages(sources, testLoaded);
+
+
+/*--- 6.2 Selection и Range ---*/
+
+// let range = new Range();
+// range.setStart(p, 0);
+// range.setEnd(p, 2);
+// console.log(range);                         // Range commonAncestorContainer: p#p, startContainer: p#p, startOffset: 0, endContainer: p#p, endOffset: 2, …}
+// alert(range);                               // Example: italic
+// document.getSelection().addRange(range);
+
+// let range = new Range();
+// range.setStart(p.firstChild, 2);
+// range.setEnd(p.querySelector('b').firstChild, 3);
+// console.log(range);                        // Range {commonAncestorContainer: p#p, startContainer: text, startOffset: 2, endContainer: text, endOffset: 3, …}
+// alert(range);                              // ample: italic and bol
+// window.getSelection().addRange(range);
+
+// let range = new Range();
+
+// // Каждый описанный метод представлен здесь:
+// let methods = {
+//   deleteContents() {
+//     range.deleteContents()
+//   },
+//   extractContents() {
+//     let content = range.extractContents();
+//     result.innerHTML = "";
+//     result.append("Извлечено: ", content);
+//   },
+//   cloneContents() {
+//     let content = range.cloneContents();
+//     result.innerHTML = "";
+//     result.append("Клонировано: ", content);
+//   },
+//   insertNode() {
+//     let newNode = document.createElement('u');
+//     newNode.innerHTML = "НОВЫЙ УЗЕЛ";
+//     range.insertNode(newNode);
+//   },
+//   surroundContents() {
+//     let newNode = document.createElement('u');
+//     try {
+//       range.surroundContents(newNode);
+//     } catch (e) { alert(e) }
+//   },
+//   resetExample() {
+//     p.innerHTML = `Example: <i>italic</i> and <b>bold</b>`;
+//     result.innerHTML = "";
+
+//     range.setStart(p.firstChild, 2);
+//     range.setEnd(p.querySelector('b').firstChild, 3);
+
+//     window.getSelection().removeAllRanges();
+//     window.getSelection().addRange(range);
+//   }
+// };
+
+// for (let method in methods) {
+//   document.write(`<div><button onclick="methods.${method}()">${method}</button></div>`);
+// }
+// methods.resetExample();
+
+// document.onselectionchange = function() {
+//   let selection = document.getSelection();
+
+//   cloned.innerHTML = astext.innerHTML = "";
+
+//   // Клонируем DOM-элементы из диапазонов (здесь мы поддерживаем множественное выделение)
+//   for (let i = 0; i < selection.rangeCount; i++) {
+//     cloned.append(selection.getRangeAt(i).cloneContents());
+//   }
+
+//   // Получаем как текст
+//   astext.innerHTML += selection;
+// };
+
+
+/*--- 6.3 Событийный цикл: микрозадачи и макрозадачи ---*/
+
+// setTimeout(() => console.log('timeout'));               // 3 - макрозадача
+// Promise.resolve().then(() => console.log('promise'));   // 2 - микрозадача
+// console.log('code');                                    // 1 - синхронный вызов
+
+// 6.3.1 Что код выведет в консоли?
+
+// setTimeout(function timeout() {
+//   console.log('Таймаут');
+// }, 0);                                            // 4
+
+// let p = new Promise(function (resolve, reject) {
+//   console.log('Создание промиса');
+//   resolve();
+// });                                               // 1
+
+// p.then(function () {
+//   console.log('Обработка промиса');
+// });                                               // 3
+
+// console.log('Конец скрипта');                     // 2
+
+// 6.3.2 Что код выведет в консоли?
+
+// console.log(1);
+// // Первая строка выполняется сразу и выводит `1`.
+// // Очереди микрозадач и макрозадач на данный момент пусты.
+
+// setTimeout(() => console.log(2));
+// // `setTimeout` ставит переданный колбэк в очередь макрозадач
+// // - содержимое очереди макрозадач:
+// //   `console.log(2)`
+
+// Promise.resolve().then(() => console.log(3));
+// // В очередь микрозадач ставится колбэк, выводящий `3`
+// // - содержимое очереди микрозадач:
+// //   `console.log(3)`
+
+// Promise.resolve().then(() => setTimeout(() => console.log(4)));
+// // В очередь микрозадач ставится колбэк с `setTimeout`
+// // - содержимое очереди микрозадач:
+// //   `console.log(3); setTimeout(...4)`
+
+// Promise.resolve().then(() => console.log(5));
+// // В очередь микрозадач ставится колбэк, выводящий `5`
+// // - содержимое очереди микрозадач:
+// //   `console.log(3); setTimeout(...4); console.log(5)`
+
+// setTimeout(() => console.log(6));
+// // `setTimeout` ставит переданный колбэк в очередь макрозадач
+// // - содержимое очереди макрозадач:
+// //   `console.log(2); console.log(6)`
+
+// console.log(7);
+// // Тут же выводит `7`.
+
+1-7-3-5-2-6-4
