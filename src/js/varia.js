@@ -65,7 +65,7 @@
 //   let totalLength = arrays.reduce((acc, value) => acc + value.length, 0);
 
 //   let result = new Uint8Array(totalLength);
-  
+
 //   if (!arrays.length) return result;
 
 //   // копируем каждый из массивов в result
@@ -85,3 +85,106 @@
 // См. html
 
 
+/*--- 3.1 Fetch ---*/
+
+// 3.1.1 Создайте асинхронную функцию getUsers(names), которая получает на вход массив логинов пользователей GitHub, запрашивает у GitHub информацию о них и возвращает массив объектов-пользователей.
+// Информация о пользователе GitHub с логином USERNAME доступна по ссылке: https://api.github.com/users/USERNAME.
+// В песочнице есть тестовый пример.
+// Важные детали:
+// - На каждого пользователя должен приходиться один запрос fetch.
+// - Запросы не должны ожидать завершения друг друга. Надо, чтобы данные приходили как можно быстрее.
+// - Если какой-то запрос завершается ошибкой или оказалось, что данных о запрашиваемом пользователе нет, то функция должна возвращать null в массиве результатов.
+
+// describe("getUsers", function () {
+//   it("gets users from GitHub", async function () {
+//     let users = await getUsers(['iliakan', 'remy', 'no.such.users']);
+//     assert.equal(users[0].login, 'iliakan');
+//     assert.equal(users[1].login, 'remy');
+//     assert.equal(users[2], null);
+//   });
+// });
+
+// async function getUsers(names) {
+//   let jobs = [];
+
+//   for (let name of names) {
+//     let job = fetch(`https://api.github.com/users/${name}`).then(
+//       successResponse => {
+//         if (successResponse.status != 200) {
+//           return null;
+//         } else {
+//           return successResponse.json();
+//         }
+//       },
+//       failResponse => {
+//         return null;
+//       }
+//     );
+//     jobs.push(job);
+//   }
+
+//   let results = await Promise.all(jobs);
+//   console.log(results);
+
+//   // (3) [{…}, {…}, null]
+//   // 0:{login: 'matoka02', id: 120492521, node_id: 'U_kgDOBy6R6Q', avatar_url: 'https://avatars.githubusercontent.com/u/120492521?v=4', gravatar_id: '', …}
+//   // 1:{login: 'tessaNAM', id: 142529764, node_id: 'U_kgDOCH7U5A', avatar_url: 'https://avatars.githubusercontent.com/u/142529764?v=4', gravatar_id: '', …}
+//   // 2:null
+//   // length:3
+//   // [[Prototype]]:Array(0)
+
+//   return results;
+// };
+
+
+/*--- 3.3 Fetch: ход загрузки ---*/
+
+// // Шаг 1: начинаем загрузку fetch, получаем поток для чтения
+// let response = await fetch('https://api.github.com/repos/javascript-tutorial/en.javascript.info/commits?per_page=100');
+// const reader = response.body.getReader();
+
+// // Шаг 2: получаем длину содержимого ответа
+// const contentLength = +response.headers.get('Content-Length');
+
+// // Шаг 3: считываем данные:
+// let receivedLength = 0; // количество байт, полученных на данный момент
+// let chunks = []; // массив полученных двоичных фрагментов (составляющих тело ответа)
+// while(true) {
+//   const {done, value} = await reader.read();
+//   if (done) break;
+//   chunks.push(value);
+//   receivedLength += value.length;
+//   console.log(`Получено ${receivedLength} из ${contentLength}`)
+// };
+
+// // Шаг 4: соединим фрагменты в общий типизированный массив Uint8Array
+// let chunksAll = new Uint8Array(receivedLength); // (4.1)
+// let position = 0;
+// for(let chunk of chunks) {
+//   chunksAll.set(chunk, position); // (4.2)
+//   position += chunk.length;
+// };
+
+// // Шаг 5: декодируем Uint8Array обратно в строку
+// let result = new TextDecoder("utf-8").decode(chunksAll);
+
+// // Готово!
+// let commits = JSON.parse(result);
+// console.log(commits[0].author.login);           // iliakan
+
+
+/*--- 3.5 Fetch: запросы на другие сайты ---*/
+
+// 3.5.1 Как вы, вероятно, знаете, существует HTTP-заголовок Referer, который обычно содержит адрес страницы, инициировавшей сетевой запрос.
+// Например, при запросе (fetch) http://google.com с http://javascript.info/some/url заголовки выглядят так:
+// Accept: */*
+// Accept-Charset: utf-8
+// Accept-Encoding: gzip,deflate,sdch
+// Connection: keep-alive
+// Host: google.com
+// Origin: http://javascript.info
+// Referer: http://javascript.info/some/url
+// Как вы можете видеть, присутствуют и Referer, и Origin.
+// Вопросы:
+// - Почему нужен Origin, если Referer содержит даже больше информации?
+// - Возможно ли отсутствие Referer или Origin, или это неправильно?
