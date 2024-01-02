@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>varia</title>
+  <script src="https://en.js.cx/libs/animate.js"></script>
   <link rel="stylesheet" href="./css/varia.css">
 </head>
+
 <body>
   <a href="./index.html">Go back</a>
 
@@ -43,9 +46,71 @@
 
   <!-- <script src="https://ru.js.cx/test/libs.js"></script> -->
 
-  <!-- --- 3.3 Fetch: ход загрузки --- -->
+  <!-- --- 4.2 LocalStorage, sessionStorage --- -->
 
-  
+  <!-- <textarea style='width:200px; height: 60px;' id='area' placeholder='Напишите сообщение здесь'></textarea>
+  <br>
+  <button onclick="localStorage.removeItem('area');area.value=''">Очистить</button> -->
+
+  <!-- --- 5.2 CSS-анимации --- -->
+
+  <!-- <img id="flyjet" src="https://en.js.cx/clipart/flyjet.jpg"> -->
+
+  <!-- <img id="flyjet" src="https://en.js.cx/clipart/flyjet.jpg"> -->
+
+  <!-- <button onclick="showCircle(150, 150, 100)">showCircle(150, 150, 100)</button>
+  <script>
+    function showCircle(cx, cy, radius) {
+      let div = document.createElement('div');
+      div.style.width = 0;
+      div.style.height = 0;
+      div.style.left = cx + 'px';
+      div.style.top = cy + 'px';
+      div.className = 'circle';
+      document.body.append(div);
+
+      setTimeout(() => {
+        div.style.width = radius * 2 + 'px';
+        div.style.height = radius * 2 + 'px';
+      }, 0);
+    };
+  </script> -->
+
+  <!-- <button onclick="go()">Нажми на меня</button>
+  <script>
+    function go() {
+      showCircle(150, 150, 100, div => {
+        div.classList.add('message-ball');
+        div.append("Привет, мир!");
+      });
+    }
+
+    function showCircle(cx, cy, radius, callback) {
+      let div = document.createElement('div');
+      div.style.width = 0;
+      div.style.height = 0;
+      div.style.left = cx + 'px';
+      div.style.top = cy + 'px';
+      div.className = 'circle';
+      document.body.append(div);
+
+      setTimeout(() => {
+        div.style.width = radius * 2 + 'px';
+        div.style.height = radius * 2 + 'px';
+
+        div.addEventListener('transitionend', function handler() {
+          div.removeEventListener('transitionend', handler);
+          callback(div);
+        });
+      }, 0);
+    }
+  </script> -->
+
+  <!-- --- 5.3 JavaScript-анимации --- -->
+
+  <!-- <div id="field">
+    <img src="https://en.js.cx/clipart/ball.svg" width="40" height="40" id="ball">
+  </div> -->
 
   <script src="./js/varia.js" type="module"></script>
 </body>

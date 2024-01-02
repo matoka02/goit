@@ -1,0 +1,69 @@
+/* --- 5.2 CSS-анимации --- */
+
+/* img {
+  cursor: pointer;
+}
+
+#flyjet {
+  width: 40px;
+  height: 24px;
+  transition: all 3s;
+}
+
+#flyjet.growing {
+  width: 400px;
+  height: 240px;
+} */
+
+/* img {
+  display: block;
+  cursor: pointer;
+}
+
+#flyjet {
+  width: 40px;
+  height: 24px;
+  transition: all 3s cubic-bezier(0.25, 1.5, 0.75, 1.5);
+}
+
+#flyjet.growing {
+  width: 400px;
+  height: 240px;
+} */
+
+/* .circle {
+  transition-property: width, height;
+  transition-duration: 2s;
+  position: fixed;
+  transform: translateX(-50%) translateY(-50%);
+  background-color: red;
+  border-radius: 50%;
+} */
+
+/* .message-ball {
+  font-size: 20px;
+  line-height: 200px;
+  text-align: center;
+}
+.circle {
+  transition-property: width, height;
+  transition-duration: 2s;
+  position: fixed;
+  transform: translateX(-50%) translateY(-50%);
+  background-color: red;
+  border-radius: 50%;
+} */
+
+
+/* --- 5.3 JavaScript-анимации --- */
+
+/* #field {
+  height: 200px;
+  border-bottom: 3px black groove;
+  position: relative;
+}
+
+#ball {
+  position: absolute;
+  cursor: pointer;
+} */

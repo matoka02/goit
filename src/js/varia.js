@@ -274,3 +274,227 @@
 
 
 /*--- 4.1 Куки, document.cookie ---*/
+
+// function getCookie(name) {
+//   let matches = document.cookie.match(new RegExp(
+//     "(?:^|; )" + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + "=([^;]*)"
+//   ));
+//   return matches ? decodeURIComponent(matches[1]) : undefined;
+// };
+
+// function setCookie(name, value, options = {}) {
+
+//   options = {
+//     path: '/',
+//     // при необходимости добавьте другие значения по умолчанию
+//     ...options
+//   };
+
+//   if (options.expires instanceof Date) {
+//     options.expires = options.expires.toUTCString();
+//   };
+
+//   let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+//   for (let optionKey in options) {
+//     updatedCookie += "; " + optionKey;
+//     let optionValue = options[optionKey];
+//     if (optionValue !== true) {
+//       updatedCookie += "=" + optionValue;
+//     }
+//   };
+
+//   document.cookie = updatedCookie;
+// };
+
+
+// function deleteCookie(name) {
+//   setCookie(name, "", {
+//     'max-age': -1
+//   })
+// };
+
+
+/*--- 4.2 LocalStorage, sessionStorage ---*/
+
+// localStorage.setItem('test', 1);
+// console.log(localStorage.getItem('test'));      // 1
+// console.log(localStorage);                      // Storage {test: '1', loglevel: 'INFO', length: 2}
+// delete localStorage.test;
+// console.log(localStorage);                      // Storage {loglevel: 'INFO', length: 1}
+
+// // перебор ключей
+// for(let i=0; i<localStorage.length; i++) {
+//   let key = localStorage.key(i);
+//   console.log(`${key}: ${localStorage.getItem(key)}`);
+// };
+
+// for(let key in localStorage) {
+//   console.log(key); // покажет getItem, setItem и другие встроенные свойства
+// };
+
+// for(let key in localStorage) {
+//   if (!localStorage.hasOwnProperty(key)) {
+//     continue; // пропустит такие ключи, как "setItem", "getItem" и так далее
+//   }
+//   console.log(`${key}: ${localStorage.getItem(key)}`);
+// };
+
+// let keys = Object.keys(localStorage);
+// for(let key of keys) {
+//   console.log(`${key}: ${localStorage.getItem(key)}`);
+// };
+
+// 4.2.1 Создайте поле textarea, значение которого будет автоматически сохраняться при каждом его изменении.
+// Когда пользователь закроет страницу и потом откроет её заново он должен увидеть последнее введённое значение.
+
+// 1-й вариант 
+// area.value = localStorage.getItem('area');
+// area.oninput = () => {
+//   localStorage.setItem('area', area.value)
+// };
+
+// 2-й вариант 
+// let area = document.getElementById('area');
+// let areaText = localStorage.getItem('areaText');
+// area.value = (areaText) ? areaText : '';
+
+// function saveElemText(elem) {
+//   if (elem.value) localStorage.setItem(elem.id + 'Text', elem.value)
+//   else localStorage.removeItem(elem.id + 'Text');
+// };
+
+// let saveTimer = null;
+
+// area.oninput = function () {
+//   clearTimeout(saveTimer);
+//   // Сохранить, если перерыв после последнего ввода был более 1250 мс
+//   saveTimer = setTimeout(saveElemText, 1250, this);
+// };
+
+// // Сохранить при закрытии браузера/страницы
+// // (таймер перерыва может не успеть сработать)
+// window.onunload = () => saveElemText(area);
+
+
+/*--- 5.2 CSS-анимации ---*/
+
+// 5.2.1 Реализуйте анимацию, как в примере ниже (клик на самолёт):
+// - При нажатии картинка изменяет размеры с 40x24px до 400x240px (увеличивается в 10 раз).
+// - Время анимации 3 секунды.
+// - По окончании анимации вывести сообщение: «Анимация закончилась!».
+// - Если во время анимации будут дополнительные клики по картинке - они не должны ничего «сломать».
+
+// let ended = false;
+
+// flyjet.onclick = function () {
+//   flyjet.addEventListener('transitionend', function () {
+//     if (!ended) {
+//       ended = true;
+//       alert('Анимация закончилась!');
+//     }
+//   });
+//   flyjet.classList.add('growing');
+// };
+
+// 5.2.2 Модифицируйте решение предыдущей задачи Анимировать самолёт (CSS) , чтобы в процессе анимации изображение выросло больше своего стандартного размера 400x240px («выпрыгнуло»), а затем вернулось к нему.
+// Должно получиться, как в примере ниже (клик на самолёт):
+// В качестве исходного кода возьмите решение прошлой задачи.
+
+// flyjet.onclick = function() {
+//   flyjet.classList.add('growing');
+// };
+
+// 5.2.3 Напишите функцию showCircle(cx, cy, radius), которая будет рисовать постепенно растущий круг.
+// - cx,cy - координаты центра круга относительно окна браузера,
+// - radius - радиус круга.
+// Нажмите на кнопку ниже, чтобы увидеть как это должно выглядеть:
+// В исходном коде уже указаны правильные CSS-стили круга, таким образам задача заключается в том, чтобы сделать правильную анимацию.
+
+// см. html
+
+// 5.2.4 В задаче Анимированный круг показывается анимированный растущий круг.
+// Теперь предположим, что нам нужен не просто круг, а чтобы в нём было ещё и сообщение. Сообщение должно появиться после завершения анимации (круг полностью вырос), в противном случае это будет выглядеть некрасиво.
+// В решении задачи функция showCircle(cx, cy, radius) рисует окружность, но не даёт возможности отследить, когда она будет готова.
+// В аргументы добавьте колбэк: showCircle(cx, cy, radius, callback) который будет вызываться по завершении анимации. Колбэк в качестве аргумента должен получить круг <div>.
+// Вот пример:
+// showCircle(150, 150, 100, div => {
+//   div.classList.add('message-ball');
+//   div.append("Hello, world!");
+// });
+// За основу возьмите решение задачи Анимированный круг.
+
+// см. html
+
+
+/*--- 5.3 JavaScript-анимации ---*/
+
+// 5.3.1 Создайте прыгающий мячик. Кликните, чтобы посмотреть, как это должно выглядеть:
+
+// function makeEaseOut(timing) {
+//   return function (timeFraction) {
+//     return 1 - timing(1 - timeFraction);
+//   }
+// };
+
+// function bounce(timeFraction) {
+//   for (let a = 0, b = 1; 1; a += b, b /= 2) {
+//     if (timeFraction >= (7 - 4 * a) / 11) {
+//       return -Math.pow((11 - 6 * a - 11 * timeFraction) / 4, 2) + Math.pow(b, 2)
+//     }
+//   }
+// };
+
+// ball.onclick = function () {
+//   let to = field.clientHeight - ball.clientHeight;
+//   animate({
+//     duration: 2000,
+//     timing: makeEaseOut(bounce),
+//     draw(progress) {
+//       ball.style.top = to * progress + 'px'
+//     }
+//   });
+// };
+
+// 5.3.2 Сделайте отскок мяча вправо. Как в примере:
+// Напишите код для анимации. Расстояние слева 100px.
+// Возьмите решение предыдущей задачи Анимируйте прыгающий мячик за основу.
+
+// function makeEaseOut(timing) {
+//   return function(timeFraction) {
+//     return 1 - timing(1 - timeFraction);
+//   }
+// };
+
+// function bounce(timeFraction) {
+//   for (let a = 0, b = 1; 1; a += b, b /= 2) {
+//     if (timeFraction >= (7 - 4 * a) / 11) {
+//       return -Math.pow((11 - 6 * a - 11 * timeFraction) / 4, 2) + Math.pow(b, 2)
+//     }
+//   }
+// };
+
+// function quad(timeFraction) {
+//   return Math.pow(timeFraction, 2);
+// };
+
+// ball.onclick = function() {
+//   let height = field.clientHeight - ball.clientHeight;
+//   let width = 100;
+//   // анимация top (прыжки)
+//   animate({
+//     duration: 2000,
+//     timing: makeEaseOut(bounce),
+//     draw: function(progress) {
+//       ball.style.top = height * progress + 'px'
+//     }
+//   });
+//   // анимация left (движение вправо)
+//   animate({
+//     duration: 2000,
+//     timing: makeEaseOut(quad),
+//     draw: function(progress) {
+//       ball.style.left = width * progress + "px"
+//     }
+//   });
+// };
