@@ -188,3 +188,89 @@
 // Вопросы:
 // - Почему нужен Origin, если Referer содержит даже больше информации?
 // - Возможно ли отсутствие Referer или Origin, или это неправильно?
+
+
+/*--- 3.7 Объекты URL ---*/
+
+// let url1 = new URL('https://javascript.info/profile/admin');
+// let url2 = new URL('/profile/admin', 'https://javascript.info');
+// let url3 = new URL('tester', url1);
+// console.log(url1.protocol);       // https:
+// console.log(url1.host);           // javascript.info
+// console.log(url1.pathname);       // /profile/admin
+// console.log(url2);
+// console.log(url3);
+
+// let url = new URL('https://google.com/search');
+// url.searchParams.set('q', 'test me!'); // добавим параметр, содержащий пробел и !
+// console.log(url.href); // https://google.com/search?q=test+me%21
+// url.searchParams.set('tbs', 'qdr:y'); // параметр с двоеточием :
+// // параметры автоматически кодируются
+// console.log(url.href); // https://google.com/search?query=test+me%21&tbs=qdr%3Ay
+// // перебрать параметры (в исходном виде)
+// for(let [name, value] of url.searchParams) {
+//   console.log(`${name}=${value}`); // q=test me!, далее tbs=qdr:y
+// };
+
+
+/*--- 3.10 Длинные опросы ---*/
+
+// Примерный код клиентской функции subscribe, которая реализует длинные опросы:
+
+// async function subscribe() {
+//   let response = await fetch("/subscribe");
+
+//   if (response.status == 502) {
+//     // Статус 502 - это таймаут соединения;
+//     // возможен, когда соединение ожидало слишком долго
+//     // и сервер (или промежуточный прокси) закрыл его
+//     // давайте восстановим связь
+//     await subscribe();
+//   } else if (response.status != 200) {
+//     // Какая-то ошибка, покажем её
+//     showMessage(response.statusText);
+//     // Подключимся снова через секунду.
+//     await new Promise(resolve => setTimeout(resolve, 1000));
+//     await subscribe();
+//   } else {
+//     // Получим и покажем сообщение
+//     let message = await response.text();
+//     showMessage(message);
+//     // И снова вызовем subscribe() для получения следующего сообщения
+//     await subscribe();
+//   }
+// };
+
+// subscribe();
+
+
+/*--- 3.11 WebSocket ---*/
+
+// let socket = new WebSocket("wss://javascript.info/article/websocket/demo/hello");
+
+// socket.onopen = function(e) {
+//   console.log("[open] Соединение установлено");
+//   console.log("Отправляем данные на сервер");
+//   socket.send("Меня зовут Тесса");
+// };
+
+// socket.onmessage = function(evt) {
+//   console.log(`[message] Данные получены с сервера: ${evt.data}`);
+// };
+
+// socket.onclose = function(evt) {
+//   if (evt.wasClean) {
+//     console.log(`[close] Соединение закрыто чисто, код=${evt.code} причина=${evt.reason}`);
+//   } else {
+//     // например, сервер убил процесс или сеть недоступна
+//     // обычно в этом случае event.code 1006
+//     console.log('[close] Соединение прервано');
+//   }
+// };
+
+// socket.onerror = function(error) {
+//   console.log(`[error]`);
+// };
+
+
+/*--- 4.1 Куки, document.cookie ---*/
