@@ -745,61 +745,279 @@
 
 /*--- 7.11 Скобочные группы ---*/
 
-let str1 = 'site.com my.site.com';
-let regexp1 = /(\w+\.)+\w+/g;
-console.log(str1.match(regexp1));             // ['site.com', 'my.site.com']
+// let str1 = 'site.com my.site.com';
+// let regexp1 = /(\w+\.)+\w+/g;
+// console.log(str1.match(regexp1));             // ['site.com', 'my.site.com']
 
-let str2 = 'my@mail.com @ his@site.com.uk';
-let regexp2 = /[-.\w]+@([\w-]+\.)+[\w-]+/g;
-console.log(str2.match(regexp2));             // ['my@mail.com', 'his@site.com.uk']
+// let str2 = 'my@mail.com @ his@site.com.uk';
+// let regexp2 = /[-.\w]+@([\w-]+\.)+[\w-]+/g;
+// console.log(str2.match(regexp2));             // ['my@mail.com', 'his@site.com.uk']
 
-let str3 = '<h1>Hello, world!</h1>';
-let regexp3 = /<(.*?)>/;
-let tag = str3.match(regexp3)
-console.log(tag[0]);                         // <h1>
-console.log(tag[1]);                         // h1
+// let str3 = '<h1>Hello, world!</h1>';
+// let regexp3 = /<(.*?)>/;
+// let tag = str3.match(regexp3)
+// console.log(tag[0]);                         // <h1>
+// console.log(tag[1]);                         // h1
 
-let str4 = '<span class="my">';
-let regexp4 = /<(([a-z]+)\s*([^>]*))>/;
-let result = str4.match(regexp4);
-console.log(result[0]);                         // <span class="my">
-console.log(result[1]);                         // span class="my"
-console.log(result[2]);                         // span
-console.log(result[3]);                         // class="my"
+// let str4 = '<span class="my">';
+// let regexp4 = /<(([a-z]+)\s*([^>]*))>/;
+// let result = str4.match(regexp4);
+// console.log(result[0]);                         // <span class="my">
+// console.log(result[1]);                         // span class="my"
+// console.log(result[2]);                         // span
+// console.log(result[3]);                         // class="my"
 
-let str5 = '<h1> <h2>';
-let regexp5 = /<(.*?)>/g;
-let tags = str5.match(regexp5)
-console.log(tags);                           // ['<h1>', '<h2>']
+// let str5 = '<h1> <h2>';
+// let regexp5 = /<(.*?)>/g;
+// let tags = str5.match(regexp5)
+// console.log(tags);                           // ['<h1>', '<h2>']
     
-let results1 = '<h1> <h2>'.matchAll(/<(.*?)>/gi);
-console.log(results1);                        // RegExpStringIterator {}
-console.log(results1[0]);                     // undefined
-results = Array.from(results);
-console.log(results1[0]);                     // ['<h1>', 'h1', index: 0, input: '<h1> <h2>', groups: undefined]
-console.log(results1[1]);                     // ['<h2>', 'h2', index: 5, input: '<h1> <h2>', groups: undefined]
+// let results1 = '<h1> <h2>'.matchAll(/<(.*?)>/gi);
+// console.log(results1);                        // RegExpStringIterator {}
+// console.log(results1[0]);                     // undefined
+// results1 = Array.from(results1);
+// console.log(results1[0]);                     // ['<h1>', 'h1', index: 0, input: '<h1> <h2>', groups: undefined]
+// console.log(results1[1]);                     // ['<h2>', 'h2', index: 5, input: '<h1> <h2>', groups: undefined]
+
+// let results2 = '<h1> <h2>'.matchAll(/<(.*?)>/gi);
+// for (const result of results2) {
+//   console.log(result);
+// };
+
+// let [ta1, tag2] = '<h1> <h2>'.matchAll(/<(.*?)>/gi);
+
+// let str = "2019-10-30 2020-01-01";
+// let dateRegexp = /(?<year>[0-9]{4})-(?<month>[0-9]{2})-(?<day>[0-9]{2})/g;
+// let results = str.matchAll(dateRegexp);
+// // дата в формате «год-месяц-день»
+// for(let result of results) {
+//   let {year, month, day} = result.groups;
+//   console.log(`${day}.${month}.${year}`);
+// };
+// // дата в формате «день.месяц.год»
+// console.log(str.replace(dateRegexp, '$<day>.$<month>.$<year>'));
+
+// 7.11/1 MAC-адрес сетевого интерфейса состоит из 6-ти двузначных шестнадцатеричных чисел, разделённых двоеточиями.
+// Например: '01:32:54:67:89:AB'.
+// Напишите регулярное выражение, которое проверит, является ли строка MAC-адресом.
+// Использование:
+// let regexp = /ваш regexp/;
+// alert( regexp.test('01:32:54:67:89:AB') ); // true
+// alert( regexp.test('0132546789AB') ); // false (нет двоеточий)
+// alert( regexp.test('01:32:54:67:89') ); // false (5 чисел, должно быть 6)
+// alert( regexp.test('01:32:54:67:89:ZZ') ) // false (ZZ в конце строки)
+
+// let regexp = /^[0-9a-f]{2}(:[0-9a-f]{2}){5}$/i;
+// console.log(regexp.test('01:32:54:67:89:AB'));      // true
+// console.log(regexp.test('0132546789AB'));           // false
+// console.log(regexp.test('01:32:54:67:89'));         // false
+// console.log(regexp.test('01:32:54:67:89:ZZ'));      // false
+
+// 7.11.2 Напишите регулярное выражение, которое соответствует цветам в формате #abc или #abcdef. То есть: # и за ним 3 или 6 шестнадцатеричных цифр.
+// Пример использования:
+// let regexp = /ваш шаблон/g;
+// let str = "color: #3f3; background-color: #AA00ef; and: #abcd";
+// alert( str.match(regexp) ); // #3f3 #AA00ef
+// P.S. Это должно быть ровно 3 или 6 шестнадцатеричных цифр. При этом значения с 4-мя цифрами типа #abcd не должны совпадать в результат.
+
+// let regexp = /#([a-f0-9]{3}){1,2}\b/gi;
+// let str = "color: #3f3; background-color: #AA00ef; and: #abcd";
+// console.log(str.match(regexp));               // ['#3f3', '#AA00ef']
+
+// 7.11.3 Напишите регулярное выражение, которое ищет любые десятичные числа, включая целочисленные, с плавающей точкой и отрицательные.
+// Пример использования:
+// let regexp = /ваш шаблон/g;
+// let str = "-1.5 0 2 -123.4.";
+// alert( str.match(regexp) ); // -1.5, 0, 2, -123.4
+
+// let regexp = /-?\d+(\.\d+)?/g;
+// let str = "-1.5 0 2 -123.4.";
+// console.log(str.match(regexp));             // ['-1.5', '0', '2', '-123.4']
+
+// 7.11.4 Арифметическое выражение включает два числа и оператор между ними. Например:
+// 1 + 2
+// 1.2 * 3.4
+// -3 / -6
+// -2 - 2
+// Оператором может быть: "+", "-", "*" или "/".
+// В выражении могут быть пробелы в начале, в конце или между частями выражения.
+// Создайте функцию parse(expr), которая принимает выражение и возвращает массив из трёх элементов:
+// - Первое число.
+// - Оператор.
+// - Второе число.
+// Например:
+// let [a, op, b] = parse("1.2 * 3.4");
+// alert(a); // 1.2
+// alert(op); // *
+// alert(b); // 3.4
+
+// let regexp = /(-?\d+(\.\d+)?)\s*([-+*\/])\s*(-?\d+(\.\d+)?)/;
+// console.log('1.2 + 12'.match(regexp));
+
+// function parse(expr) {
+//   let regexp = /(-?\d+(?:\.\d+)?)\s*([-+*\/])\s*(-?\d+(?:\.\d+)?)/;
+//   let result = expr.match(regexp);
+//   if (!result) return [];
+//   result.shift();
+//   return result;
+// };
+
+// console.log(parse('-1.23 * 3.45'));         // ['-1.23', '*', '3.45', index: 0, input: '-1.23 * 3.45', groups: undefined]
+
+
+/*--- 7.12 Обратные ссылки в шаблоне: \N и \k<имя> ---*/
+
+// let str = `He said: "She's the one!".`;
+// let regexp = /(['"])(.*?)\1/g;
+// console.log(str.match(regexp));               // [`"She's the one!"`]
+// let namedRegexp = /(?<quote>['"])(.*?)\k<quote>/g;
+// console.log(str.match(namedRegexp));          // [`"She's the one!"`]
+
+
+/*--- 7.13 Альтернация (или) | ---*/
+
+// let regexp = /html|css|java(script)?/gi;
+// let str = "Сначала появился язык Java, затем HTML, потом JavaScript";
+// console.log(str.match(regexp));                 // ['Java', 'HTML', 'JavaScript']
+
+// let timedRegexp = /([01]\d|2[0-3]):[0-5]\d/g;
+// console.log("00:00 10:10 23:59 25:99 1:2".match(timedRegexp)); // ['00:00', '10:10', '23:59']
+
+// 7.13.1 Существует много языков программирования, например, Java, JavaScript, PHP, C, C++.
+// Напишите регулярное выражение, которое найдёт их все в строке Java JavaScript PHP C++ C:
+// let regexp = /ваше регулярное выражение/флаги;
+// alert("Java JavaScript PHP C++ C".match(regexp)); // Java JavaScript PHP C++ C
+
+// let regexp = /Java(Script)?|C(\+\+)?|PHP/g;
+// let str = "Java, JavaScript, PHP, C, C++";
+// console.log(str.match(regexp));             // ['Java', 'JavaScript', 'PHP', 'C', 'C++']
+
+// 7.13.2 BB-код имеет вид [tag]...[/tag], где tag - это один из: b, url или quote.
+// Например:
+// [b]текст[/b]
+// [url]http://ya.ru[/url]
+// BB-коды могут быть вложенными. Но сам в себя тег не может быть вложен, например:
+// Возможно:
+// [url] [b]http://ya.ru[/b] [/url]
+// [quote] [b]текст[/b] [/quote]
+// Не может быть:
+// [b][b]текст[/b][/b]
+// Теги могут содержать переносы строк, это допустимо:
+// [quote]
+//   [b]текст[/b]
+// [/quote]
+// Создайте регулярное выражение для поиска всех BB-кодов и их содержимого.
+// Например:
+// let regexp = /ваше регулярное выражение/флаги;
+// let str = "..[url]http://ya.ru[/url]..";
+// alert( str.match(regexp) ); // [url]http://ya.ru[/url]
+// Если теги вложены, то нужно искать самый внешний тег (при желании можно продолжить поиск в его содержимом):
+// let regexp = /ваше регулярное выражение/флаги;
+// let str = "..[url][b]http://ya.ru[/b][/url]..";
+// alert( str.match(regexp) ); // [url][b]http://ya.ru[/b][/url]
+
+// let regexp = /\[(b|url|quote)].*?\[\/\1]/gs;
+// let str = `
+//   [b]привет![/b]
+//   [quote]
+//     [url]http://ya.ru[/url]
+//   [/quote]
+// `;
+// console.log(str.match(regexp));           // ['[b]привет![/b]', '[quote]\n    [url]http://ya.ru[/url]\n  [/quote]']
+
+// 7.13.3 Создайте регулярное выражение для поиска строк в двойных кавычках "...".
+// Важно, что строки должны поддерживать экранирование с помощью обратного слеша, по аналогии со строками JavaScript. Например, кавычки могут быть вставлены как \", новая строка как \n, а сам обратный слеш как \\.
+// let str = "Как вот \"здесь\".";
+// В частности, обратите внимание: двойная кавычка после обратного слеша \" не оканчивает строку.
+// Поэтому мы должны искать от одной кавычки до другой, игнорируя встречающиеся экранированные кавычки.
+// В этом и состоит основная сложность задачи, которая без этого условия была бы элементарной.
+// Примеры подходящих строк:
+// .. "test me" ..
+// .. "Скажи \"Привет\"!" ... (строка с экранированными кавычками)
+// .. "\\" ..  (внутри двойной слеш)
+// .. "\\ \"" ..  (внутри двойной слеш и экранированная кавычка)
+// В JavaScript приходится удваивать обратные слеши, чтобы добавлять их в строку, как здесь:
+// let str = ' .. "test me" .. "Скажи \\"Привет\\"!" .. "\\\\ \\"" .. ';
+// // эта строка в памяти:
+// alert(str); //  .. "test me" .. "Скажи \"Привет\"!" .. "\\ \"" ..
+
+// let regexp = /"(\\.|[^"\\])*"/g;
+// let str = ' .. "test me" .. "Скажи \\"Привет\\"!" .. "\\\\ \\"" .. ';
+// console.log(str.match(regexp));                 // ['"test me"', '"Скажи \\"Привет\\"!"', '"\\\\ \\""']
+
+// 7.13.4 Напишите регулярное выражение, которое ищет тег <style...>. Оно должно искать весь тег: он может как не иметь атрибутов <style>, так и иметь несколько <style type="..." id="...">.
+// …Но регулярное выражение не должно находить <styler>!
+// Например:
+// let regexp = /ваше регулярное выражение/g;
+// alert( '<style> <styler> <style test="...">'.match(regexp) ); // <style>, <style test="...">
+
+// let regexp = /<style(>|\s.*?>)/g;
+// let str = '<style> <styler> <style test="...">';
+// console.log(str.match(regexp));                 // ['<style>', '<style test="...">']
+
+
+/*--- 7.14 Опережающие и ретроспективные проверки ---*/
+
+// let str = '1 индейка стоит 30€';
+// let str2 = '2 индейки стоят 60€';
+// // опережающая проверка
+// let regexp = /\d+(?=€)/;
+// console.log(str.match(regexp));                   // ['30', index: 16, input: '1 индейка стоит 30€', groups: undefined]
+// let regexpLookahead = /\d+(?=\s)(?=.*30)/;
+// console.log(str.match(regexpLookahead));          // ['1', index: 0, input: '1 индейка стоит 30€', groups: undefined]
+// // негативная опережающая проверка
+// let regexpNegativeLookahead = /\d+(?!€)/;
+// console.log(str2.match(regexpNegativeLookahead));  // ['2', index: 0, input: '2 индейки стоят $60', groups: undefined]
+
+// let str3 = '1 индейка стоит $30';
+// let str4 = '2 индейки стоят $60';
+// // ретроспективная проверка
+// let regexpLookbehind = /(?<=\$)\d+/;
+// console.log(str3.match(regexpLookbehind));                   // ['30', index: 17, input: '1 индейка стоит $30', groups: undefined]
+// // негативная ретроспективная проверка
+// let regexpNegativeLookbehind = /(?<!\$)\d+/;
+// console.log(str4.match(regexpNegativeLookbehind));           // ['2', index: 0, input: '2 индейки стоят $60', groups: undefined]
+
+// 7.14.1 Найдите неотрицательные целые
+// Есть строка с целыми числами.
+// Создайте регулярное выражение, которое ищет только неотрицательные числа. Ноль разрешён.
+// Пример использования:
+// let regexp = /ваше регулярное выражение/g;
+// let str = "0 12 -5 123 -18";
+// alert( str.match(regexp) ); // 0, 12, 123
+
+// let regexp = /(?<![-\d])\d+/g;
+// let str = "0 12 -5 123 -18";
+// console.log(str.match(regexp));         // ['0', '12', '123']
+
+// 7.14.2 Вставьте после фрагмента
+// У нас есть строка с HTML-документом.
+// Напишите регулярное выражение которое вставляет <h1>Hello</h1> сразу же после тега <body>. У тега могут быть атрибуты.
+// Например:
+// let regexp = /ваше регулярное выражение/;
+// let str = `
+// <html>
+//   <body style="height: 200px">
+//   ...
+//   </body>
+// </html>
+// `;
+// str = str.replace(regexp, `<h1>Hello</h1>`);
+// После этого значение str:
+// <html>
+//   <body style="height: 200px"><h1>Hello</h1>
+//   ...
+//   </body>
+// </html>
+
+// let str = '...<body style="...">...';
+// str = str.replace(/<body.*?>/, '$&<h1>Hello</h1>');
+// console.log(str);         // ...<body style="..."><h1>Hello</h1>...
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-//
-//
-// 
-// 7.10 Жадные и ленивые квантификаторы
-// 7.11 Скобочные группы
-// 7.12 Обратные ссылки в шаблоне: \N и \k<имя>
-// 7.13 Альтернация (или) |
-// 7.14 Опережающие и ретроспективные проверки
 // 7.15 Катастрофический возврат
 // 7.16 Поиск на заданной позиции, флаг "y"
 // 7.17 Методы RegExp и String
