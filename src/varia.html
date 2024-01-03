@@ -112,6 +112,107 @@
     <img src="https://en.js.cx/clipart/ball.svg" width="40" height="40" id="ball">
   </div> -->
 
+  <!-- --- 6.2 Пользовательские элементы (Custom Elements) --- -->
+
+  <!-- <script>
+    class TimeFormatted extends HTMLElement {
+      render() { // (1)
+        let date = new Date(this.getAttribute('datetime') || Date.now());
+        this.innerHTML = new Intl.DateTimeFormat("default", {
+          year: this.getAttribute('year') || undefined,
+          month: this.getAttribute('month') || undefined,
+          day: this.getAttribute('day') || undefined,
+          hour: this.getAttribute('hour') || undefined,
+          minute: this.getAttribute('minute') || undefined,
+          second: this.getAttribute('second') || undefined,
+          timeZoneName: this.getAttribute('time-zone-name') || undefined,
+        }).format(date);
+      };
+      connectedCallback() { // (2)
+        if (!this.rendered) {
+          this.render();
+          this.rendered = true;
+        }
+      };
+      static get observedAttributes() { // (3)
+        return ['datetime', 'year', 'month', 'day', 'hour', 'minute', 'second', 'time-zone-name'];
+      };
+      attributeChangedCallback(name, oldValue, newValue) { // (4)
+        this.render();
+      };
+    };
+
+    customElements.define("time-formatted", TimeFormatted);
+  </script>
+
+  <time-formatted id="elem" hour="numeric" minute="numeric" second="numeric"></time-formatted>
+
+  <script>
+    setInterval(() => elem.setAttribute('datetime', new Date()), 1000); // (5)
+  </script> -->
+
+  <!-- <script>
+    class TimeFormatted extends HTMLElement {
+      render() {
+        let date = new Date(this.getAttribute('datetime') || Date.now());
+        this.innerHTML = new Intl.DateTimeFormat("default", {
+          year: this.getAttribute('year') || undefined,
+          month: this.getAttribute('month') || undefined,
+          day: this.getAttribute('day') || undefined,
+          hour: this.getAttribute('hour') || undefined,
+          minute: this.getAttribute('minute') || undefined,
+          second: this.getAttribute('second') || undefined,
+          timeZoneName: this.getAttribute('time-zone-name') || undefined,
+        }).format(date);
+      };
+      connectedCallback() {
+        if (!this.rendered) {
+          this.render();
+          this.rendered = true;
+        }
+      };
+      static get observedAttributes() {
+        return ['datetime', 'year', 'month', 'day', 'hour', 'minute', 'second', 'time-zone-name'];
+      };
+      attributeChangedCallback(name, oldValue, newValue) {
+        this.render();
+      }
+    };
+    customElements.define("time-formatted", TimeFormatted);
+  </script>
+
+  <script>
+    class LiveTimer extends HTMLElement {
+      render() {
+        this.innerHTML = `<time-formatted hour="numeric" minute="numeric" second="numeric"></time-formatted>`;
+        this.timerElem = this.firstElementChild;
+      };
+      connectedCallback() { // (2)
+        if (!this.rendered) {
+          this.render();
+          this.rendered = true;
+        }
+        this.timer = setInterval(() => this.update(), 1000);
+      };
+      update() {
+        this.date = new Date();
+        this.timerElem.setAttribute('datetime', this.date);
+        this.dispatchEvent(new CustomEvent('tick', { detail: this.date }));
+      };
+      disconnectedCallback() {
+        clearInterval(this.timer); // важно, чтобы элемент мог быть собранным сборщиком мусора
+      };
+    };
+    customElements.define("live-timer", LiveTimer);
+  </script>
+
+  <live-timer id="elem"></live-timer>
+
+  <script>
+    elem.addEventListener('tick', evt => console.log(evt.detail));
+  </script> -->
+
+
   <script src="./js/varia.js" type="module"></script>
 </body>
 
