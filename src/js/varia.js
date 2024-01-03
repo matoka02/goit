@@ -520,5 +520,286 @@
 
 /*--- 7.1 Введение: шаблоны и флаги ---*/
 
+// let str = "Любо, братцы, любо!";
+// console.log(str.match(/любо/gi));       // ['Любо', 'любо']
+// let result = str.match(/любо/i);
+// console.log(result[0]);                 // Любо
+// console.log(result.length);             // 1
+// console.log(result.index);              // 0
+// console.log(result.input);              // Любо, братцы, любо!
+
+// let matches = "JavaScript".match(/HTML/) || [];
+// if (!matches.length) {
+//   console.log("Совпадений нет");        // Совпадений нет
+// };
+
+// console.log('We will, we will'.replace(/we/i, 'I'));    // I will, we will
+// console.log('We will, we will'.replace(/we/ig, 'I'));   // I will, I will
+// console.log('Люблю HTML'.replace(/HTML/, '$& и JavaScript'));   // Люблю HTML и JavaScript
+
+// let str = 'Я ЛюБлЮ JavaScript';
+// let regexp = /люблю/i;
+// console.log(regexp.test(str));        // true
 
 
+/*--- 7.2 Символьные классы ---*/
+
+// let str = "+7(903)-123-45-67";
+// let regexp = /\d/g;
+// console.log(str.match(regexp));             // ['7', '9', '0', '3', '1', '2', '3', '4', '5', '6', '7']
+// console.log(str.match(regexp).join(''));    // 79031234567
+// console.log(str.replace(/\D/g, ''));        // 79031234567
+
+// console.log('A\nB'.match(/A.B/));           // null
+// console.log('A\nB'.match(/A.B/s));          // ['A\nB', index: 0, input: 'A\nB', groups: undefined]
+
+// console.log('1 - 5'.match(/\d-\d/));        // null
+// console.log('1 - 5'.match(/\d - \d/));      // ['1 - 5', index: 0, input: '1 - 5', groups: undefined]
+// console.log('1 - 5'.match(/\d\s-\s\d/));    // ['1 - 5', index: 0, input: '1 - 5', groups: undefined]
+
+
+/*--- 7.3 Юникод: флаг "u" и класс \p{...} ---*/
+
+// let str = 'A ბ ㄱ';
+// console.log(str.match(/\p{L}/g));             // null
+// console.log(str.match(/\p{L}/gu));            // ['A', 'ბ', 'ㄱ']
+
+
+/*--- 7.4 Якоря: начало строки ^ и конец $ ---*/
+
+// let str1 = 'Mary had a little lamb';
+// console.log(/^Mary/.test(str1));                // true
+// console.log(/lamb$/.test(str1));                // true
+
+// let goodInput = '12:34';
+// let badInput = '12:345';
+// let regexp = /^\d\d:\d\d$/;
+// console.log(regexp.test(goodInput));            // true
+// console.log(regexp.test(badInput));             // false
+
+// 7.4.1 Какая строка подойдёт под шаблон ^$?
+
+// let newString = '';
+// console.log(/^/.test(newString));
+// console.log(/$/.test(newString));
+
+
+/*--- 7.5 Многострочный режим якорей ^ $, флаг "m" ---*/
+
+// let str = `1е место: Винни
+// 2е место: Пятачок
+// 3е место: Слонопотам`;
+// console.log(str.match(/^\d/gm));              // ['1', '2', '3']
+
+// let str2 = `Винни: 1
+// Пятачок: 2
+// Слонопотам: 3`;
+// console.log(str2.match(/\d$/gm));             // ['1', '2', '3']
+// console.log(str2.match(/\d\n/g));             // ['1\n', '2\n']
+
+
+/*--- 7.6 Граница слова: \b ---*/
+
+// let str = 'Hello, Java!';
+// console.log(str.match(/\bHello\b/));             // varia.js:603 ['Hello', index: 0, input: 'Hello, Java!', groups: undefined]
+// console.log(str.match(/\bJava\b/));              // ['Java', index: 7, input: 'Hello, Java!', groups: undefined]
+// console.log(str.match(/\bHell\b/));              // null
+// console.log(str.match(/\bJava!\b/));             // null
+
+// 7.6.1 Время имеет формат: часы:минуты. И часы, и минуты имеют две цифры, например, 09:00.
+// Введите регулярное выражение, чтобы найти время в строке: Завтрак в 09:00 в комнате 123:456.
+// P.S. В этой задаче пока нет необходимости проверять правильность времени, поэтому 25:99 также может быть верным результатом.
+// P.P.S. Регулярное выражение не должно находить 123:456.
+
+// let str = 'Завтрак в 09:00 в комнате 123:456.';
+// console.log(str.match(/\b\d\d:\d\d\b/));
+
+
+/*--- 7.7 Экранирование, специальные символы ---*/
+
+// let regexp = new RegExp('\d\.\d');
+// console.log('Глава 5.1'.match(regexp));           // null
+
+// let regStr = '\\d\\.\\d';
+// console.log(regStr);                              // \d\.\d
+// let regexp2 = new RegExp(regStr);
+// console.log('Глава 5.1'.match(regexp2));          // ['5.1', index: 6, input: 'Глава 5.1', groups: undefined]
+
+
+/*--- 7.8 Наборы и диапазоны [...] ---*/
+
+// console.log('Exception 0xAF'.match(/x[0-9A-F][0-9A-F]/g));    // ['xAF']
+
+// let regexp = /[\p{Alpha}\p{M}\p{Nd}\p{Pc}\p{Join_C}]/gu;
+// let str = `Hi 你好 12`;
+// console.log(str.match(regexp));                               // ['H', 'i', '你', '好', '1', '2']
+
+// console.log('alice15@gmail.com'.match(/[^\d\sA-Z]/gi));       // ['@', '.']
+
+// 7.8.1 У нас есть регулярное выражение /Java[^script]/.
+// Найдёт ли оно что-нибудь в строке Java? А в строке JavaScript?
+
+// console.log('Java'.match(/Java[^script]/));         // null
+// console.log('JavaScript'.match(/Java[^script]/));   // ['JavaS', index: 0, input: 'JavaScript', groups: undefined]
+
+// 7.8.2 Время может быть в формате часы:минуты или часы-минуты. И часы, и минуты имеют две цифры: 09:00 или 21-30.
+// Напишите регулярное выражение, чтобы найти время:
+// let regexp = /your regexp/g;
+// alert( "Завтрак в 09:00. Ужин в 21-30".match(regexp) ); // 09:00, 21-30
+// P.S. В этой задаче мы предполагаем, что время всегда правильное, нет необходимости отфильтровывать плохие строки, такие как «45:67». Позже мы разберёмся с этим.
+
+// let str = 'Завтрак в 09:00. Ужин в 21-30';
+// let regexp = /\d\d[-:]\d\d/g;
+// console.log(str.match(regexp));                       // ['09:00', '21-30']
+
+
+/*--- 7.9 Квантификаторы +, *, ? и {n} ---*/
+
+// let str = '+7(903)-123-45-67';
+// let numbers = str.match(/\d{1,}/g);
+// console.log(numbers);                           // ['7', '903', '123', '45', '67']
+
+// let str1 = '+7(903)-123-45-67';
+// console.log(str1.match(/\d+/g));                 // ['7', '903', '123', '45', '67']
+
+// let str2 = 'Следует писать color или colour?';
+// console.log(str2.match(/colou?r/g));            // ['color', 'colour']
+
+// let str3 = '100 10 1';
+// console.log(str3.match(/\d0*/g));               // ['100', '10', '1']
+// console.log(str3.match(/\d0+/g));               // ['100', '10']
+
+// // Регулярное выражение для десятичных дробей (чисел с плавающей точкой): \d+\.\d+
+// let str4 = '0 1 12.345 7890';
+// console.log(str4.match(/\d+\.\d+/g));           // ['12.345']
+
+// // Регулярное выражение для «открывающего HTML-тега без атрибутов», например, <span> или <p>.
+// let str5 = '<body> ... </body>';
+// console.log(str5.match(/<[a-z]+>/gi));          // ['<body>']
+// console.log(str5.match(/<[a-z][a-z0-9]*>/i));   // ['<body>', index: 0, input: '<body> ... </body>', groups: undefined]
+
+// // Регулярное выражение для «открывающего или закрывающего HTML-тега без атрибутов»: /<\/?[a-z][a-z0-9]*>/i
+// let str6 = '<h1>Привет!</h1>';
+// console.log(str6.match(/<\/?[a-z][a-z0-9]*>/gi));    // ['<h1>', '</h1>']
+
+// 7.8.1 Напишите регулярное выражение, которое ищет многоточие (3 и более точек подряд).
+// Проверьте его:
+
+// let str = 'Привет!... Как дела?.....';
+// let regexp = /\.{3,}/g;
+// console.log(str.match(regexp));                   // ['...', '.....']
+
+// 7.8.2 Напишите регулярное выражение, которое ищет HTML-цвета в формате #ABCDEF: первым идёт символ #, и потом - 6 шестнадцатеричных символов.
+// Пример использования:
+// let regexp = /...ваше выражение.../
+// let str = "color:#121212; background-color:#AA00ef bad-colors:f#fddee #fd2 #12345678";
+// alert( str.match(regexp) )  // #121212,#AA00ef
+// P.S. В рамках этого задания не нужно искать цвета, записанные в иных форматах типа #123 или rgb(1,2,3).
+
+// let str = 'color:#121212; background-color:#AA00ef bad-colors:f#fddee #fd2';
+// let regexp = /#[a-f0-9]{6}\b/gi;
+// console.log(str.match(regexp));                   // ['#121212', '#AA00ef']
+
+
+/*--- 7.10 Жадные и ленивые квантификаторы ---*/
+
+// let str = 'a "witch" and her "broom" is one';
+// let regexp = /".+"/g;
+// console.log(str.match(regexp));                     // ['"witch" and her "broom"']
+// let regexp2 = /".+?"/g;
+// console.log(str.match(regexp2));                    // ['"witch"', '"broom"']
+// let regexp3 = /"[^"]+"/g;
+// console.log(str.match(regexp3));                    // ['"witch"', '"broom"']
+
+// 7.10.1 Какое здесь будет совпадение?
+// "123 456".match(/\d+? \d+?/g) ); // ?
+
+// let str = '123 456';
+// let regexp = /\d+? \d+?/g;
+// console.log(str.match(regexp));                     // ['123 4']
+
+// 7.10.2 Найти все HTML-комментарии в тексте:
+// let regexp = /ваше регулярное выражение/g;
+// let str = `... <!-- My -- comment
+//  test --> ..  <!----> ..
+// `;
+// alert( str.match(regexp) ); // '<!-- My -- comment \n test -->', '<!---->'
+
+// let regexp = /<!--.*?-->/gs;
+// let str = `... <!-- My -- comment 
+//   test --> ..  <!----> ..
+// `;
+// console.log(str.match(regexp));             // ['\x3C!-- My -- comment \n  test -->', '\x3C!---->']
+
+// 7.10.3 Создайте регулярное выражение, чтобы найти все (открывающие и закрывающие) HTML-теги с их атрибутами.
+// Пример использования:
+// let regexp = /ваше регулярное выражение/g;
+// let str = '<> <a href="/"> <input type="radio" checked> <b>';
+// alert( str.match(regexp) ); // '<a href="/">', '<input type="radio" checked>', '<b>'
+// В этой задаче мы предполагаем, что теги выглядят как <...что угодно...>, и внутри тегов не может быть символов < и > (первый встреченный > закрывает тег).
+
+// let regexp = /<[^<>]+>/g;
+// let str = '<> <a href="/"> <input type="radio" checked> <b>';
+// console.log(str.match(regexp));               // ['<a href="/">', '<input type="radio" checked>', '<b>']
+
+
+/*--- 7.11 Скобочные группы ---*/
+
+let str1 = 'site.com my.site.com';
+let regexp1 = /(\w+\.)+\w+/g;
+console.log(str1.match(regexp1));             // ['site.com', 'my.site.com']
+
+let str2 = 'my@mail.com @ his@site.com.uk';
+let regexp2 = /[-.\w]+@([\w-]+\.)+[\w-]+/g;
+console.log(str2.match(regexp2));             // ['my@mail.com', 'his@site.com.uk']
+
+let str3 = '<h1>Hello, world!</h1>';
+let regexp3 = /<(.*?)>/;
+let tag = str3.match(regexp3)
+console.log(tag[0]);                         // <h1>
+console.log(tag[1]);                         // h1
+
+let str4 = '<span class="my">';
+let regexp4 = /<(([a-z]+)\s*([^>]*))>/;
+let result = str4.match(regexp4);
+console.log(result[0]);                         // <span class="my">
+console.log(result[1]);                         // span class="my"
+console.log(result[2]);                         // span
+console.log(result[3]);                         // class="my"
+
+let str5 = '<h1> <h2>';
+let regexp5 = /<(.*?)>/g;
+let tags = str5.match(regexp5)
+console.log(tags);                           // ['<h1>', '<h2>']
+    
+let results1 = '<h1> <h2>'.matchAll(/<(.*?)>/gi);
+console.log(results1);                        // RegExpStringIterator {}
+console.log(results1[0]);                     // undefined
+results = Array.from(results);
+console.log(results1[0]);                     // ['<h1>', 'h1', index: 0, input: '<h1> <h2>', groups: undefined]
+console.log(results1[1]);                     // ['<h2>', 'h2', index: 5, input: '<h1> <h2>', groups: undefined]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+//
+// 
+// 7.10 Жадные и ленивые квантификаторы
+// 7.11 Скобочные группы
+// 7.12 Обратные ссылки в шаблоне: \N и \k<имя>
+// 7.13 Альтернация (или) |
+// 7.14 Опережающие и ретроспективные проверки
+// 7.15 Катастрофический возврат
+// 7.16 Поиск на заданной позиции, флаг "y"
+// 7.17 Методы RegExp и String
