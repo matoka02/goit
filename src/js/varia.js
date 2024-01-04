@@ -58,7 +58,8 @@
 //   console.log(num);
 // };
 
-// 2.1.1 Дан массив из типизированных массивов Uint8Array. Напишите функцию concat(arrays), которая объединяет эти массивы в один типизированный массив и возвращает его.
+// 2.1.1 Соедините типизированные массивы
+// Дан массив из типизированных массивов Uint8Array. Напишите функцию concat(arrays), которая объединяет эти массивы в один типизированный массив и возвращает его.
 
 // function concat(arrays) {
 //   // находим общую длину переданных массивов
@@ -87,7 +88,8 @@
 
 /*--- 3.1 Fetch ---*/
 
-// 3.1.1 Создайте асинхронную функцию getUsers(names), которая получает на вход массив логинов пользователей GitHub, запрашивает у GitHub информацию о них и возвращает массив объектов-пользователей.
+// 3.1.1 Получите данные о пользователях GitHub
+// Создайте асинхронную функцию getUsers(names), которая получает на вход массив логинов пользователей GitHub, запрашивает у GitHub информацию о них и возвращает массив объектов-пользователей.
 // Информация о пользователе GitHub с логином USERNAME доступна по ссылке: https://api.github.com/users/USERNAME.
 // В песочнице есть тестовый пример.
 // Важные детали:
@@ -175,7 +177,8 @@
 
 /*--- 3.5 Fetch: запросы на другие сайты ---*/
 
-// 3.5.1 Как вы, вероятно, знаете, существует HTTP-заголовок Referer, который обычно содержит адрес страницы, инициировавшей сетевой запрос.
+// 3.5.1 Почему нам нужен Origin?
+// Как вы, вероятно, знаете, существует HTTP-заголовок Referer, который обычно содержит адрес страницы, инициировавшей сетевой запрос.
 // Например, при запросе (fetch) http://google.com с http://javascript.info/some/url заголовки выглядят так:
 // Accept: */*
 // Accept-Charset: utf-8
@@ -345,7 +348,8 @@
 //   console.log(`${key}: ${localStorage.getItem(key)}`);
 // };
 
-// 4.2.1 Создайте поле textarea, значение которого будет автоматически сохраняться при каждом его изменении.
+// 4.2.1 Автосохранение поля формы
+// Создайте поле textarea, значение которого будет автоматически сохраняться при каждом его изменении.
 // Когда пользователь закроет страницу и потом откроет её заново он должен увидеть последнее введённое значение.
 
 // 1-й вариант 
@@ -1015,9 +1019,77 @@
 // console.log(str);         // ...<body style="..."><h1>Hello</h1>...
 
 
+/*--- 7.15 Катастрофический возврат ---*/
+
+// let str = 'An input string that takes a long time or even makes this regexp to hang!';
+// // затормозит процесс
+// // let regexp1 = /^(\w+\s?)*$/;
+// // console.log(regexp1.test(str));
+// // уменьшение количества возможных комбинаций
+// console.time();
+// let regexp2 = /^(\w+\s)*\w*$/;
+// console.log(regexp2.test(str));
+// console.timeEnd();
+// // опережающая проверка
+// console.time();
+// let regexp3 = /^((?=(\w+))\2\s?)*$/;
+// console.log(regexp3.test(str));
+// console.timeEnd();
+// // опережающая проверка - рефакторинг
+// console.time();
+// let regexp4 = /^((?=(?<word>\w+))\k<word>\s?)*$/;
+// console.log(regexp4.test(str));
+// console.timeEnd();
+
+
+/*--- 7.16 Поиск на заданной позиции, флаг "y" ---*/
+
+// let str = 'let varName';
+// let regexp = /\w+/g;
+// let result;
+// while (result = regexp.exec(str)) {
+//   console.log(`Найдено ${result[0]} на позиции ${result.index}`);
+// };
+
+// let str1 = 'let varName = "value"';
+// let regexp1 = /\w+/g; // без флага g свойство lastIndex игнорируется
+// regexp.lastIndex = 4;
+// let word1 = regexp1.exec(str1);
+// console.log(word1);              // ['varName', index: 4, input: 'let varName = "value"', groups: undefined]
+
+// let str2 = 'let varName = "value"';
+// let regexp2 = /\w+/g;
+// regexp2.lastIndex = 3;
+// let word2 = regexp2.exec(str2);
+// console.log(word2[0]);                // varName
+// console.log(word2.index);             // 4
+
+// let str3 = 'let varName = "value"';
+// let regexp3 = /\w+/y;
+// regexp3.lastIndex = 3;
+// console.log(regexp3.exec(str3));        // null (на позиции 3 пробел, а не слово)
+// regexp3.lastIndex = 4;
+// console.log(regexp3.exec(str3));        // varName (слово на позиции 4)
 
 
 
-// 7.15 Катастрофический возврат
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // 7.16 Поиск на заданной позиции, флаг "y"
 // 7.17 Методы RegExp и String
