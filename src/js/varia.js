@@ -1295,3 +1295,143 @@
 // Как починить центрирование при помощи CSS? Свойства position/height менять нельзя.
 
 // См. css
+
+
+/*--- 8.11 Свойство margin ---*/
+
+// 8.11.1 Нерабочие margin?
+// В примере ниже находится блок .block фиксированной высоты, а в нём - прямоугольник .spacer.
+// При помощи margin-left: 20% и margin-right: 20%, прямоугольник центрирован в родителе по горизонтали. Это работает.
+// Далее делается попытка при помощи свойств height: 80%, margin-top: 10% и margin-bottom: 10% расположить прямоугольник в центре по вертикали, чтобы сам элемент занимал 80% высоты родителя, а сверху и снизу был одинаковый отступ.
+// Однако, как видите, это не получается. Почему? Как поправить?
+// <style>
+//   .block {
+//     height: 150px;
+//     border: 1px solid #CCC;
+//     background: #eee;
+//   }
+//   .spacer {
+//     margin-left: 20%;
+//     margin-right: 20%;
+//     height: 80%;
+//     margin-top: 10%;
+//     margin-bottom: 10%;
+//     border: 1px solid black;
+//     background: #FFF;
+//   }
+// </style>
+// <div class="block">
+//   <div class="spacer"></div>
+// </div>
+
+// См. css
+
+// 8.11.2 Расположить текст внутри INPUT
+// Создайте <input type="password"> с цветной подсказкой внутри (должен правильно выглядеть, не обязан работать):
+// В дальнейшем мы сможем при помощи JavaScript сделать, чтобы текст при клике пропадал. Получится красивая подсказка.
+// P.S. Обратите внимание: type="password"! То есть, просто value использовать нельзя, будут звёздочки. Кроме того, подсказка, которую вы реализуете, может быть как угодно стилизована.
+// P.P.S. Вокруг INPUT с подсказкой не должно быть лишних отступов, блоки до и после продолжают идти в обычном потоке.
+
+// См. css
+
+
+/*--- 8.15 Знаете ли вы селекторы? ---*/
+
+// 8.15.1 Выберите элементы селектором
+// HTML-документ:
+// <input type="checkbox">
+// <input type="checkbox" checked>
+// <input type="text" id="message">
+// <h3 id="widget-title">Сообщения:</h3>
+// <ul id="messages">
+//   <li id="message-1">Сообщение 1</li>
+//   <li id="message-2">Сообщение 2</li>
+//   <li id="message-3" data-action="delete">Сообщение 3</li>
+//   <li id="message-4" data-action="edit do-not-delete">Сообщение 4</li>
+//   <li id="message-5" data-action="edit delete">Сообщение 5</li>
+//   <li><a href="#">...</a></li>
+// </ul>
+// <a href="http://site.com/list.zip">Ссылка на архив</a>
+// <a href="http://site.com/list.pdf">..И на PDF</a>
+// Задания:
+// 1) Выбрать input типа checkbox.
+// 2) Выбрать input типа checkbox, НЕ отмеченный.
+// 3) Найти все элементы с id=message или message-*.
+// 4) Найти все элементы с id=message-*.
+// 5) Найти все ссылки с расширением href="...zip".
+// 6) Найти все элементы с атрибутом data-action, содержащим delete в списке (через пробел).
+// 7) Найти все элементы, у которых ЕСТЬ атрибут data-action, но он НЕ содержит delete в списке (через пробел).
+// 8) Выбрать все чётные элементы списка #messages.
+// 9) Выбрать один элемент сразу за заголовком h3#widget-title на том же уровне вложенности.
+// 10) Выбрать все ссылки, следующие за заголовком h3#widget-title на том же уровне вложенности.
+// 11) Выбрать ссылку внутри последнего элемента списка #messages.
+
+// let elem1 = document.querySelectorAll('input[type="checkbox"]');
+// console.log(`8.15.1.1: ${elem1.length}`);    // 2
+// let elem2 = document.querySelectorAll('input[type="checkbox"]:not(:checked)');
+// console.log(`8.15.1.2: ${elem2.length}`);    // 1
+// let elem3 = document.querySelectorAll('[id|="message"]');
+// console.log(`8.15.1.3: ${elem3.length}`);    // 6
+// let elem4 = document.querySelectorAll('[id^="message-"]');
+// console.log(`8.15.1.4: ${elem4.length}`);    // 5
+// let elem5 = document.querySelectorAll('a[href$=".zip"]');
+// console.log(`8.15.1.5: ${elem5.length}`);    // 1
+// let elem6 = document.querySelectorAll('[data-action~="delete"]');
+// console.log(`8.15.1.6: ${elem6.length}`);    // 2
+// let elem7 = document.querySelectorAll('[data-action]:not([data-action~="delete"])');
+// console.log(`8.15.1.7: ${elem7.length}`);    // 1
+// let elem8 = document.querySelectorAll('#messages li:nth-child(2n)');
+// console.log(`8.15.1.8: ${elem8.length}`);    // 3
+// let elem9 = document.querySelectorAll('h3#widget-title + *');
+// console.log(`8.15.1.9: ${elem9.length}`);    // 1
+// let elem10 = document.querySelectorAll('h3#widget-title ~ a');
+// console.log(`8.15.1.10: ${elem10.length}`);    // 2
+// let elem11= document.querySelectorAll('#messages li:last-child a');
+// console.log(`8.15.1.11: ${elem11.length}`);    // 1
+
+// 8.15.2 Отступ между элементами, размер одна строка
+// Есть список UL/LI.
+
+// Текст вверху без отступа от списка.
+// <ul>
+//   <li>Маша</li>
+//   <li>Паша</li>
+//   <li>Даша</li>
+//   <li>Женя</li>
+//   <li>Саша</li>
+//   <li>Гоша</li>
+// </ul>
+// Текст внизу без отступа от списка.
+// Размеры шрифта и строки заданы стилем:
+// body {
+//   font: 14px/1.5 serif;
+// }
+// Сделайте, чтобы между элементами был вертикальный отступ.
+// - Размер отступа: ровно 1 строка.
+// - Нужно добавить только одно правило CSS с одним псевдоселектором, можно использовать CSS3.
+// - Не должно быть лишних отступов сверху и снизу списка.
+
+// См. css
+
+// 8.15.3 Отступ между парами, размером со строку
+// Есть список UL/LI.
+// Текст вверху без отступа от списка.
+// <ul>
+//   <li>Маша</li>
+//   <li>Паша</li>
+//   <li>Даша</li>
+//   <li>Женя</li>
+//   <li>Саша</li>
+//   <li>Гоша</li>
+// </ul>
+// Текст внизу без отступа от списка.
+// Размеры шрифта и строки заданы стилем:
+// body {
+//   font: 14px/1.5 serif;
+// }
+// Сделайте, чтобы между каждой парой элементов был вертикальный отступ.
+// - Размер отступа: ровно 1 строка.
+// - Нужно добавить только одно правило CSS, можно использовать CSS3.
+// - Не должно быть лишних отступов сверху и снизу списка.
+
+// См. css

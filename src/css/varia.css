@@ -241,3 +241,70 @@ button {
 
   line-height: 60px;
 } */
+
+
+/* -- 8.11 Свойство margin --- */
+
+/* .block {
+  padding-top: 20%;
+  padding-bottom: 20%;
+
+  height: 150px;
+
+  border: 1px solid #CCC;
+  background: #eee;
+}
+
+.spacer {
+  margin-left: 20%;
+  margin-right: 20%;
+
+
+  height: 80%;
+  margin-top: 10%;
+  margin-bottom: 10%;
+
+  border: 1px solid black;
+  background: #FFF;
+} */
+
+/* input {
+  margin: 0;
+  width: 12em;
+}
+
+#placeholder {
+  color: red;
+  margin: -1.3em 0 0 0.2em;
+} */
+
+
+/* --- 8.15 Знаете ли вы селекторы? --- */
+
+/* body {
+  font: 14px/1.5 serif;
+}
+
+ul {
+  margin: 0;
+}
+
+li:nth-child(n+2) {
+  margin-top: 1.5em;
+}
+
+li + li {
+  margin-top: 1.5em;
+} */
+
+/* body {
+  font: 14px/1.5 serif;
+}
+
+ul {
+  margin: 0;
+}
+
+li:nth-child(odd):not(:first-child) {
+  margin-top: 1.5em;
+} */
