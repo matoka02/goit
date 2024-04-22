@@ -29,3 +29,29 @@
 // 2000 --> 20
 // 2742 --> 28
 // Note: this kata uses strict construction as shown in the description and the examples, you can read more about it here
+
+// Power of two
+// Complete the function power_of_two/powerOfTwo (or equivalent, depending on your language) that determines if a given non-negative integer is a power of two. From the corresponding Wikipedia entry:
+// a power of two is a number of the form 2n where n is an integer, i.e. the result of exponentiation with number two as the base and integer n as the exponent.
+// You may assume the input is always valid.
+
+// function isPowerOfTwo(n) {
+//   if (n == 1) {
+//     return true;
+//   }
+//   if (n < 1) {
+//     return false;
+//   }
+//   return isPowerOfTwo(n / 2);
+// }
+
+// function isPowerOfTwo(n) {
+//   let result;
+//   result = Number.isInteger(Math.log2(n));
+//   console.log(result);
+//   return result;
+// }
+
+// isPowerOfTwo(1024); // -> true
+// isPowerOfTwo(4096); // -> true
+// isPowerOfTwo(333);  // -> false
